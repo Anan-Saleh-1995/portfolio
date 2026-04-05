@@ -3,14 +3,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 const THEMES = {
-  dark: {
-    accent: new THREE.Color("#c41e3a"),
-    bg: "#0d0d0d",
-  },
-  light: {
-    accent: new THREE.Color("#8b0000"),
-    bg: "#f5f0e8",
-  },
+  dark: { accent: new THREE.Color("#c41e3a") },
+  light: { accent: new THREE.Color("#8b0000") },
 };
 
 function generatePositions(count: number) {
@@ -96,17 +90,15 @@ function CameraRig() {
 }
 
 export default function HeroScene({ theme }: { theme: "dark" | "light" }) {
-  const { accent, bg } = THEMES[theme];
+  const { accent } = THEMES[theme];
 
   return (
     <Canvas
       camera={{ position: [0, 0, 6], fov: 45 }}
       style={{ position: "absolute", inset: 0 }}
       dpr={[1, 1.5]}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
     >
-      <color attach="background" args={[bg]} />
-
       <CameraRig />
       <Particles color={accent} />
       <EnsoRing color={accent} />

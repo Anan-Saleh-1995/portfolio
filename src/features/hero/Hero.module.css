@@ -3,14 +3,15 @@
   height: 100dvh;
   width: 100%;
   overflow: hidden;
+  background-color: var(--bg);
+  background-image: radial-gradient(
+    ellipse at 50% 50%,
+    var(--accent-glow) 0%,
+    transparent 70%
+  );
 }
 
 .fallback {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    var(--accent-glow) 0%,
-    transparent 70%
-  );
 }
