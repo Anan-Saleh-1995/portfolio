@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "../shared/styles/variables.css";
+@import "../shared/styles/typography.css";
+@import "../shared/styles/reset.css";
+
+@theme {
+  --font-family-display: var(--font-display);
+  --font-family-body: var(--font-body);
+  --font-family-mono: var(--font-mono);
+}

@@ -1,0 +1,27 @@
+/* =============================================
+   Typography — 1.25 Major Third Scale
+   Display: Cormorant Garamond
+   Body: DM Sans
+   Mono: JetBrains Mono
+   ============================================= */
+
+:root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.563rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+  --text-4xl: 3.052rem;
+  --text-5xl: 4.5rem;
+  --text-6xl: 7rem;
+
+  --leading-tight: 1.15;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+}
