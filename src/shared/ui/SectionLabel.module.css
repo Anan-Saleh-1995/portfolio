@@ -1,0 +1,30 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--token);
+  flex-shrink: 0;
+}
+
+.number {
+  color: var(--token);
+}
+
+.slash {
+  opacity: 0.4;
+}
+
+.title {
+  color: var(--text-muted);
+}

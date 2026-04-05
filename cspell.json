@@ -25,7 +25,9 @@
     "vitejs",
     "tsconfig",
     "noEmit",
-    "fouc"
+    "fouc",
+    "lerp",
+    "anan"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
