@@ -29,7 +29,8 @@
     "lerp",
     "anan",
     "kasa",
-    "hakama"
+    "hakama",
+    "kata"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
