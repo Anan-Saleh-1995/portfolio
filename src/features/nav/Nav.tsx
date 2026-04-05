@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#arsenal", label: "Arsenal" },
   { href: "#forge", label: "Forge" },
-  { href: "#contact", label: "Contact" },
+  { href: "#contact", label: "Engagement" },
 ];
 
 export function Nav() {

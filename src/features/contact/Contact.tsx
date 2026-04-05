@@ -8,7 +8,7 @@ export function Contact() {
     <section id="contact" className={styles.root}>
       <div className={styles.container}>
         <div data-animate>
-          <SectionLabel number="05" title="Contact" />
+          <SectionLabel number="05" title="Engagement" />
         </div>
 
         <div className={styles.body} data-animate>
