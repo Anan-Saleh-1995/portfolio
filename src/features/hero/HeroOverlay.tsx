@@ -25,7 +25,7 @@ export const HeroOverlay = () => (
           Explore
         </a>
         <a
-          href="https://github.com/"
+          href="https://github.com/Anan-Saleh-1995"
           target="_blank"
           rel="noopener noreferrer"
           className={styles.ctaSecondary}
