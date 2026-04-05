@@ -1,7 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "entry": ["src/main.tsx"],
+  "entry": ["src/main.tsx", "src/vite-env.d.ts"],
   "project": ["src/**/*.{ts,tsx}"],
-  "ignore": ["src/vite-env.d.ts"],
-  "ignoreDependencies": ["@tailwindcss/vite"]
+  "ignoreDependencies": ["@tailwindcss/vite", "tailwindcss"]
 }
