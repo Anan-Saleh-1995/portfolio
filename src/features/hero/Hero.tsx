@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { useMediaQuery } from "@/shared/lib/useMediaQuery";
 import { useTheme } from "@/shared/lib/useTheme";
 import { HeroFallback } from "./HeroFallback";
+import { HeroOverlay } from "./HeroOverlay";
 import styles from "./Hero.module.css";
 
 const HeroScene = lazy(() => import("./HeroScene"));
@@ -19,6 +20,7 @@ export function Hero() {
       ) : (
         <HeroFallback />
       )}
+      <HeroOverlay />
     </section>
   );
 }
