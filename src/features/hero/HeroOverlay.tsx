@@ -11,7 +11,7 @@ export function HeroOverlay() {
         <span className={styles.label}>01 / Enter</span>
         <h1 className={styles.title}>The Dojo</h1>
         <p className={styles.subtitle}>Mastery through discipline.</p>
-        <p className={styles.role}>Backend Engineer</p>
+        <p className={styles.role}>Full-Stack Developer</p>
 
         <div className={styles.ctas}>
           <a href="#about" className={styles.ctaPrimary}>

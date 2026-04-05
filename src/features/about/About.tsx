@@ -2,7 +2,7 @@ import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./About.module.css";
 
 const STATS = [
-  { value: "5+", label: "Years building" },
+  { value: "3+", label: "Years in production" },
   { value: "3", label: "Languages spoken" },
   { value: "∞", label: "Commits to craft" },
 ];
@@ -17,13 +17,14 @@ export function About() {
           <div className={styles.content}>
             <h2 className={styles.heading}>The Path</h2>
             <p className={styles.bio}>
-              Backend engineer by trade, craftsman by discipline. I build
-              systems that are fast, reliable, and readable — because the
-              quality of your code is the quality of your practice.
+              Full-stack developer with 3 years building and maintaining
+              production systems with Node.js, TypeScript, and AWS. I deliver
+              secure API flows, S3-backed file pipelines, role-based access
+              controls, and server-side optimizations for data-heavy products.
             </p>
             <p className={styles.bio}>
-              Currently sharpening skills in Three.js and modern full-stack
-              architecture. Every commit is a step in the kata.
+              Currently building a multi-role travel platform and sharpening
+              skills in Three.js. Every commit is a step in the kata.
             </p>
             <a
               href="https://resume-site-opal-phi.vercel.app/en/"

@@ -7,7 +7,7 @@ import styles from "./Nav.module.css";
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#arsenal", label: "Arsenal" },
-  { href: "#disciplines", label: "Disciplines" },
+  { href: "#forge", label: "Forge" },
   { href: "#contact", label: "Contact" },
 ];
 

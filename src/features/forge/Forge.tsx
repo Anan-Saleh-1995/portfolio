@@ -1,22 +1,29 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Lock } from "lucide-react";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { projects } from "@/shared/config/projects";
-import styles from "./Arsenal.module.css";
+import styles from "./Forge.module.css";
 
-export function Arsenal() {
+export function Forge() {
   return (
-    <section id="arsenal" className={styles.root}>
+    <section id="forge" className={styles.root}>
       <div className={styles.container}>
-        <SectionLabel number="03" title="Arsenal" />
+        <SectionLabel number="04" title="Forge" />
         <h2 className={styles.heading}>Deployed in the Field</h2>
 
         <ul className={styles.grid} role="list">
           {projects.map((project) => (
             <li key={project.title}>
               <a
-                href={project.url}
-                target={project.placeholder ? undefined : "_blank"}
-                rel={project.placeholder ? undefined : "noopener noreferrer"}
+                href={project.private ? undefined : project.url}
+                target={
+                  project.private || project.placeholder ? undefined : "_blank"
+                }
+                rel={
+                  project.private || project.placeholder
+                    ? undefined
+                    : "noopener noreferrer"
+                }
+                role={project.private ? "presentation" : undefined}
                 className={`${styles.card} ${project.placeholder ? styles.cardPlaceholder : ""}`}
                 aria-disabled={project.placeholder}
                 tabIndex={project.placeholder ? -1 : undefined}
@@ -24,7 +31,10 @@ export function Arsenal() {
                 <span className={styles.tag}>{project.tag}</span>
                 <span className={styles.cardTitle}>{project.title}</span>
                 <span className={styles.cardDesc}>{project.description}</span>
-                {!project.placeholder && (
+                {project.private && (
+                  <Lock size={14} className={styles.icon} aria-hidden="true" />
+                )}
+                {!project.private && !project.placeholder && (
                   <ExternalLink
                     size={14}
                     className={styles.icon}
