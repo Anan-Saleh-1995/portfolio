@@ -1,9 +1,16 @@
-import { useTheme } from "../shared/lib/useTheme";
+import { ThemeProvider } from "../shared/lib/ThemeProvider";
 import { useSmoothScroll } from "../shared/lib/useSmoothScroll";
 import { Home } from "../pages/Home";
 
-export function App() {
-  useTheme();
+function AppContent() {
   useSmoothScroll();
   return <Home />;
+}
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
 }
