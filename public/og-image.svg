@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+
+  <!-- Subtle red glow -->
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#C41E3A" stop-opacity="0.15"/>
+    <stop offset="100%" stop-color="#0d0d0d" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Ensō mark -->
+  <circle cx="600" cy="280" r="160" fill="none" stroke="#C41E3A" stroke-width="3"
+    stroke-linecap="round" stroke-dasharray="880 120"/>
+
+  <!-- Name -->
+  <text x="600" y="510" font-family="Georgia, serif" font-size="72" font-weight="700"
+    fill="#f0ede8" text-anchor="middle" letter-spacing="4">ANAN SALEH</text>
+
+  <!-- Title -->
+  <text x="600" y="570" font-family="'Courier New', monospace" font-size="22"
+    fill="#888888" text-anchor="middle" letter-spacing="6">FULL STACK DEVELOPER · THE DOJO</text>
+</svg>
