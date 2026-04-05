@@ -52,3 +52,8 @@ ul,
 ol {
   list-style: none;
 }
+
+[data-custom-cursor],
+[data-custom-cursor] * {
+  cursor: none !important;
+}
