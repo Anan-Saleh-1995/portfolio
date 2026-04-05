@@ -56,12 +56,16 @@ export function Arsenal() {
   return (
     <section id="arsenal" className={styles.root}>
       <div className={styles.container}>
-        <SectionLabel number="03" title="Arsenal" />
-        <h2 className={styles.heading}>Weapons of Choice</h2>
+        <div data-animate>
+          <SectionLabel number="03" title="Arsenal" />
+        </div>
+        <h2 className={styles.heading} data-animate>
+          Weapons of Choice
+        </h2>
 
         <div className={styles.groups}>
           {SKILLS.map(({ category, items }) => (
-            <div key={category} className={styles.group}>
+            <div key={category} className={styles.group} data-animate>
               <span className={styles.category}>{category}</span>
               <ul className={styles.tags} role="list">
                 {items.map((skill) => (

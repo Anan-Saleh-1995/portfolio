@@ -4,16 +4,24 @@ import styles from "./HeroOverlay.module.css";
 
 export function HeroOverlay() {
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} data-hero-overlay>
       <SamuraiMark className={styles.samurai} />
 
       <div className={styles.content}>
-        <span className={styles.label}>01 / Enter</span>
-        <h1 className={styles.title}>The Dojo</h1>
-        <p className={styles.subtitle}>Mastery through discipline.</p>
-        <p className={styles.role}>Full-Stack Developer</p>
+        <span className={styles.label} data-animate>
+          01 / Enter
+        </span>
+        <h1 className={styles.title} data-animate>
+          The Dojo
+        </h1>
+        <p className={styles.subtitle} data-animate>
+          Mastery through discipline.
+        </p>
+        <p className={styles.role} data-animate>
+          Full-Stack Developer
+        </p>
 
-        <div className={styles.ctas}>
+        <div className={styles.ctas} data-animate>
           <a href="#about" className={styles.ctaPrimary}>
             Explore
           </a>
@@ -28,7 +36,12 @@ export function HeroOverlay() {
         </div>
       </div>
 
-      <a href="#about" className={styles.scrollCue} aria-label="Scroll down">
+      <a
+        href="#about"
+        className={styles.scrollCue}
+        data-animate
+        aria-label="Scroll down"
+      >
         <ChevronDown size={20} />
       </a>
     </div>

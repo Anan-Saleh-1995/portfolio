@@ -7,9 +7,11 @@ export function Contact() {
   return (
     <section id="contact" className={styles.root}>
       <div className={styles.container}>
-        <SectionLabel number="05" title="Contact" />
+        <div data-animate>
+          <SectionLabel number="05" title="Contact" />
+        </div>
 
-        <div className={styles.body}>
+        <div className={styles.body} data-animate>
           <div className={styles.content}>
             <h2 className={styles.heading}>Begin the Conversation</h2>
             <p className={styles.sub}>

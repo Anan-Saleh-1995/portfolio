@@ -7,10 +7,14 @@ export function Forge() {
   return (
     <section id="forge" className={styles.root}>
       <div className={styles.container}>
-        <SectionLabel number="04" title="Forge" />
-        <h2 className={styles.heading}>Deployed in the Field</h2>
+        <div data-animate>
+          <SectionLabel number="04" title="Forge" />
+        </div>
+        <h2 className={styles.heading} data-animate>
+          Deployed in the Field
+        </h2>
 
-        <ul className={styles.grid} role="list">
+        <ul className={styles.grid} role="list" data-animate>
           {projects.map((project) => (
             <li key={project.title}>
               <a
