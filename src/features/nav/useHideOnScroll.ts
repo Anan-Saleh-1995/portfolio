@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 const SCROLL_THRESHOLD = 80;
 
-export function useHideOnScroll() {
+export const useHideOnScroll = () => {
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
 
@@ -21,4 +21,4 @@ export function useHideOnScroll() {
   }, []);
 
   return hidden;
-}
+};

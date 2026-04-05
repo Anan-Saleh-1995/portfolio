@@ -1,7 +1,7 @@
 import { useCursorTracking } from "./useCursorTracking";
 import styles from "./Cursor.module.css";
 
-export function Cursor() {
+export const Cursor = () => {
   const { hasMouse, dotRef, ringRef } = useCursorTracking();
 
   if (!hasMouse) return null;
@@ -12,4 +12,4 @@ export function Cursor() {
       <div ref={ringRef} className={styles.ring} aria-hidden="true" />
     </>
   );
-}
+};

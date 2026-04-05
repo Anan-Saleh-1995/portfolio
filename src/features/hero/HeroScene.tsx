@@ -8,7 +8,7 @@ const THEMES = {
   light: { accent: new THREE.Color("#8b0000") },
 };
 
-function generatePositions(count: number) {
+const generatePositions = (count: number): Float32Array => {
   const arr = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
     const theta = Math.random() * Math.PI * 2;
@@ -19,11 +19,11 @@ function generatePositions(count: number) {
     arr[i * 3 + 2] = r * Math.cos(phi);
   }
   return arr;
-}
+};
 
 const PARTICLE_POSITIONS = generatePositions(300);
 
-function Particles({ color }: { color: THREE.Color }) {
+const Particles = ({ color }: { color: THREE.Color }) => {
   const ref = useRef<THREE.Points>(null!);
 
   useFrame((_, delta) => {
@@ -49,9 +49,9 @@ function Particles({ color }: { color: THREE.Color }) {
       />
     </points>
   );
-}
+};
 
-function EnsoRing({ color }: { color: THREE.Color }) {
+const EnsoRing = ({ color }: { color: THREE.Color }) => {
   const ref = useRef<THREE.Mesh>(null!);
 
   useFrame((_, delta) => {
@@ -64,9 +64,9 @@ function EnsoRing({ color }: { color: THREE.Color }) {
       <meshBasicMaterial color={color} transparent opacity={0.9} />
     </mesh>
   );
-}
+};
 
-function CameraRig() {
+const CameraRig = () => {
   const mouse = useMouseParallax();
   const smoothed = useRef({ x: 0, y: 0 });
 
@@ -79,9 +79,9 @@ function CameraRig() {
   });
 
   return null;
-}
+};
 
-export default function HeroScene({ theme }: { theme: "dark" | "light" }) {
+const HeroScene = ({ theme }: { theme: "dark" | "light" }) => {
   const { accent } = THEMES[theme];
 
   return (
@@ -96,4 +96,6 @@ export default function HeroScene({ theme }: { theme: "dark" | "light" }) {
       <EnsoRing color={accent} />
     </Canvas>
   );
-}
+};
+
+export default HeroScene;

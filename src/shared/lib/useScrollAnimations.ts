@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useScrollAnimations() {
+export const useScrollAnimations = () => {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -29,9 +29,9 @@ export function useScrollAnimations() {
 
     return () => ctx.revert();
   }, []);
-}
+};
 
-function heroEntrance() {
+const heroEntrance = () => {
   const overlay = document.querySelector("[data-hero-overlay]");
   if (!overlay) return;
 
@@ -46,9 +46,9 @@ function heroEntrance() {
     stagger: 0.15,
     delay: 0.4,
   });
-}
+};
 
-function revealSection(id: string) {
+const revealSection = (id: string) => {
   const section = document.getElementById(id);
   if (!section) return;
 
@@ -69,9 +69,9 @@ function revealSection(id: string) {
       });
     },
   });
-}
+};
 
-function footerReveal() {
+const footerReveal = () => {
   const footer = document.querySelector("footer");
   if (!footer) return;
 
@@ -85,4 +85,4 @@ function footerReveal() {
       gsap.to(footer, { opacity: 1, duration: 0.5, ease: "power2.out" });
     },
   });
-}
+};

@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useSmoothScroll() {
+export const useSmoothScroll = () => {
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.1,
@@ -26,4 +26,4 @@ export function useSmoothScroll() {
       gsap.ticker.remove(tickerCallback);
     };
   }, []);
-}
+};

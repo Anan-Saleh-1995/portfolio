@@ -7,18 +7,16 @@ import { Contact } from "@/features/contact/Contact";
 import { Footer } from "@/features/footer/Footer";
 import styles from "./Home.module.css";
 
-export function Home() {
-  return (
-    <>
-      <Nav />
-      <main className={styles.root}>
-        <Hero />
-        <About />
-        <Arsenal />
-        <Forge />
-        <Contact />
-      </main>
-      <Footer />
-    </>
-  );
-}
+export const Home = () => (
+  <>
+    <Nav />
+    <main className={styles.root}>
+      <Hero />
+      <About />
+      <Arsenal />
+      <Forge />
+      <Contact />
+    </main>
+    <Footer />
+  </>
+);

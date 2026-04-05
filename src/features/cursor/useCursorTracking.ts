@@ -5,11 +5,9 @@ import styles from "./Cursor.module.css";
 const LERP_FACTOR = 0.1;
 const OFFSCREEN = -200;
 
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t;
-}
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-export function useCursorTracking() {
+export const useCursorTracking = () => {
   const hasMouse = useMediaQuery("(hover: hover) and (pointer: fine)");
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -76,4 +74,4 @@ export function useCursorTracking() {
   }, [hasMouse]);
 
   return { hasMouse, dotRef, ringRef };
-}
+};

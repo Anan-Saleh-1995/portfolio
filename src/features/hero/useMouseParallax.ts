@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function useMouseParallax() {
+export const useMouseParallax = () => {
   const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -13,4 +13,4 @@ export function useMouseParallax() {
   }, []);
 
   return mouse;
-}
+};

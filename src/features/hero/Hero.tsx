@@ -7,7 +7,7 @@ import styles from "./Hero.module.css";
 
 const HeroScene = lazy(() => import("./HeroScene"));
 
-export function Hero() {
+export const Hero = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { theme } = useTheme();
 
@@ -23,4 +23,4 @@ export function Hero() {
       <HeroOverlay />
     </section>
   );
-}
+};

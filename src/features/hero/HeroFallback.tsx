@@ -1,5 +1,3 @@
 import styles from "./Hero.module.css";
 
-export function HeroFallback() {
-  return <div className={styles.fallback} />;
-}
+export const HeroFallback = () => <div className={styles.fallback} />;

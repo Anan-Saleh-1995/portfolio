@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: "#contact", label: "Engagement" },
 ];
 
-export function Nav() {
+export const Nav = () => {
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -76,4 +76,4 @@ export function Nav() {
       </div>
     </header>
   );
-}
+};

@@ -52,32 +52,30 @@ const SKILLS = [
   },
 ];
 
-export function Arsenal() {
-  return (
-    <section id="arsenal" className={styles.root}>
-      <div className={styles.container}>
-        <div data-animate>
-          <SectionLabel number="03" title="Arsenal" />
-        </div>
-        <h2 className={styles.heading} data-animate>
-          Weapons of Choice
-        </h2>
-
-        <div className={styles.groups}>
-          {SKILLS.map(({ category, items }) => (
-            <div key={category} className={styles.group} data-animate>
-              <span className={styles.category}>{category}</span>
-              <ul className={styles.tags} role="list">
-                {items.map((skill) => (
-                  <li key={skill} className={styles.tag}>
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+export const Arsenal = () => (
+  <section id="arsenal" className={styles.root}>
+    <div className={styles.container}>
+      <div data-animate>
+        <SectionLabel number="03" title="Arsenal" />
       </div>
-    </section>
-  );
-}
+      <h2 className={styles.heading} data-animate>
+        Weapons of Choice
+      </h2>
+
+      <div className={styles.groups}>
+        {SKILLS.map(({ category, items }) => (
+          <div key={category} className={styles.group} data-animate>
+            <span className={styles.category}>{category}</span>
+            <ul className={styles.tags} role="list">
+              {items.map((skill) => (
+                <li key={skill} className={styles.tag}>
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);

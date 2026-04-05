@@ -3,15 +3,15 @@ import { ThemeContext } from "./themeContext";
 
 type Theme = "dark" | "light";
 
-function getInitialTheme(): Theme {
+const getInitialTheme = (): Theme => {
   const saved = localStorage.getItem("theme") as Theme | null;
   if (saved === "dark" || saved === "light") return saved;
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
-}
+};
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
@@ -24,4 +24,4 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return <ThemeContext value={{ theme, toggle }}>{children}</ThemeContext>;
-}
+};

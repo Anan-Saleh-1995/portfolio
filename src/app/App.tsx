@@ -4,7 +4,7 @@ import { useScrollAnimations } from "../shared/lib/useScrollAnimations";
 import { Cursor } from "../features/cursor/Cursor";
 import { Home } from "../pages/Home";
 
-function AppContent() {
+const AppContent = () => {
   useSmoothScroll();
   useScrollAnimations();
   return (
@@ -13,12 +13,10 @@ function AppContent() {
       <Home />
     </>
   );
-}
+};
 
-export function App() {
-  return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
-  );
-}
+export const App = () => (
+  <ThemeProvider>
+    <AppContent />
+  </ThemeProvider>
+);
