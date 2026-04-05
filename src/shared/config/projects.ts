@@ -9,12 +9,10 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Travel Guide Platform",
-    description:
-      "Multi-role travel platform — Node.js, MySQL, Redis, MFA, S3 uploads, PayPal webhooks, Prometheus/Grafana.",
-    tag: "wip",
-    url: "#",
-    private: true,
+    title: "GitHub",
+    description: "Clean public repositories and open source contributions.",
+    tag: "oss",
+    url: "https://github.com/Anan-Saleh-1995",
   },
   {
     title: "Hugo Docs",
@@ -30,9 +28,11 @@ export const projects: Project[] = [
     url: "https://resume-site-opal-phi.vercel.app/en/",
   },
   {
-    title: "GitHub",
-    description: "Clean public repositories and open source contributions.",
-    tag: "oss",
-    url: "https://github.com/",
+    title: "Travel Platform",
+    description:
+      "Multi-role travel platform — Node.js, MySQL, Redis, MFA, S3 uploads, PayPal webhooks, Prometheus/Grafana.",
+    tag: "wip",
+    url: "#",
+    private: true,
   },
 ];

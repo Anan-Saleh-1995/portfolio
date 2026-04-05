@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
+import { useHideOnScroll } from "./useHideOnScroll";
+import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import styles from "./Nav.module.css";
 
 const NAV_LINKS = [
@@ -12,31 +14,11 @@ const NAV_LINKS = [
 ];
 
 export function Nav() {
-  const [hidden, setHidden] = useState(false);
+  const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
-  const lastScrollY = useRef(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setHidden(currentScrollY > lastScrollY.current && currentScrollY > 80);
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
-    };
-    document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
-  }, [menuOpen]);
-
-  const handleLinkClick = () => setMenuOpen(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  useEscapeKey(closeMenu, menuOpen);
 
   return (
     <header className={`${styles.root} ${hidden ? styles.hidden : ""}`}>
@@ -83,7 +65,7 @@ export function Nav() {
                 <a
                   href={href}
                   className={styles.mobileNavLink}
-                  onClick={handleLinkClick}
+                  onClick={closeMenu}
                 >
                   {label}
                 </a>

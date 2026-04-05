@@ -1,6 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useMouseParallax } from "./useMouseParallax";
 
 const THEMES = {
   dark: { accent: new THREE.Color("#c41e3a") },
@@ -66,17 +67,8 @@ function EnsoRing({ color }: { color: THREE.Color }) {
 }
 
 function CameraRig() {
-  const mouse = useRef({ x: 0, y: 0 });
+  const mouse = useMouseParallax();
   const smoothed = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
 
   useFrame((state) => {
     smoothed.current.x += (mouse.current.x * 0.5 - smoothed.current.x) * 0.03;
