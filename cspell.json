@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "enso",
+    "musashi",
+    "dojo",
+    "dokkodo",
+    "samurai",
+    "katana",
+    "bushido",
+    "Cormorant",
+    "Garamond",
+    "lucide",
+    "tailwindcss",
+    "postprocessing",
+    "drei",
+    "lenis",
+    "gsap",
+    "commitlint",
+    "markdownlint",
+    "editorconfig",
+    "prettierrc",
+    "knip",
+    "vitejs",
+    "tsconfig",
+    "noEmit",
+    "fouc"
+  ],
+  "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
+}
