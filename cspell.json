@@ -27,7 +27,9 @@
     "noEmit",
     "fouc",
     "lerp",
-    "anan"
+    "anan",
+    "kasa",
+    "hakama"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }

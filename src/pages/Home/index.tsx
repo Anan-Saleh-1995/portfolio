@@ -1,5 +1,6 @@
 import { Nav } from "@/features/nav/Nav";
 import { Hero } from "@/features/hero/Hero";
+import { About } from "@/features/about/About";
 import styles from "./Home.module.css";
 
 export function Home() {
@@ -8,6 +9,7 @@ export function Home() {
       <Nav />
       <main className={styles.root}>
         <Hero />
+        <About />
       </main>
     </>
   );
