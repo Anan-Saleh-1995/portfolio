@@ -15,6 +15,10 @@ const SKILLS = [
     ],
   },
   {
+    category: "Frontend",
+    items: ["React", "TypeScript", "JavaScript", "HTML", "CSS", "Vite"],
+  },
+  {
     category: "Languages",
     items: ["TypeScript", "JavaScript", "SQL", "Bash", "PowerShell"],
   },
