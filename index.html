@@ -7,17 +7,14 @@
 
     <!-- Anti-FOUC: set theme before first paint -->
     <script>
-      (function () {
+      function initTheme() {
         var saved = localStorage.getItem("theme");
-        var preferred = window.matchMedia("(prefers-color-scheme: dark)")
-          .matches
+        var preferred = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
-        document.documentElement.setAttribute(
-          "data-theme",
-          saved || preferred || "dark",
-        );
-      })();
+        document.documentElement.setAttribute("data-theme", saved || preferred || "dark");
+      }
+      initTheme();
     </script>
 
     <!-- Fonts -->

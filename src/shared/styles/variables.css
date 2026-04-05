@@ -15,6 +15,7 @@
   --accent-deep: #8b0000;
   --accent-glow: rgba(196, 30, 58, 0.25);
   --gold: #c9a84c;
+  --text-on-accent: #ffffff;
   --token: var(--accent);
 }
 
@@ -30,5 +31,6 @@
   --accent-deep: #5c0000;
   --accent-glow: rgba(139, 0, 0, 0.15);
   --gold: #8b6914;
+  --text-on-accent: #ffffff;
   --token: var(--accent);
 }

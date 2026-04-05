@@ -75,7 +75,7 @@
 
 .ctaPrimary {
   background: var(--token);
-  color: #fff;
+  color: var(--text-on-accent);
 }
 
 .ctaPrimary:hover {
