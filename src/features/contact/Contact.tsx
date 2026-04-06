@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Mail, ExternalLink } from "lucide-react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
@@ -10,7 +10,7 @@ import styles from "./Contact.module.css";
 export const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { contact } = homeContent;
+  const { contact } = getHomeContent();
 
   return (
     <section ref={sectionRef} id="contact" className={styles.root}>

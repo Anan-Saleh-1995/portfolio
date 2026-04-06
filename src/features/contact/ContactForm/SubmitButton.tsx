@@ -1,9 +1,9 @@
 import { useFormStatus } from "react-dom";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import styles from "./ContactForm.module.css";
 
 export const SubmitButton = () => {
-  const { submit } = homeContent.contact.form;
+  const { submit } = getHomeContent().contact.form;
   const { pending } = useFormStatus();
 
   return (

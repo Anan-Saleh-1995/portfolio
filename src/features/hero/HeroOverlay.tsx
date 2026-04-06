@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { useHeroIntroAnimation } from "./useHeroIntroAnimation";
 import { SamuraiMark } from "./SamuraiMark";
 import styles from "./HeroOverlay.module.css";
@@ -8,7 +8,7 @@ import styles from "./HeroOverlay.module.css";
 export const HeroOverlay = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   useHeroIntroAnimation(overlayRef);
-  const { hero } = homeContent;
+  const { hero } = getHomeContent();
 
   return (
     <div ref={overlayRef} className={styles.overlay}>

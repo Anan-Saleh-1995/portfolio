@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
 import { useHideOnScroll } from "./useHideOnScroll";
@@ -12,7 +12,7 @@ const MOBILE_MENU_EVENT = "portfolio:mobile-menu-toggle";
 export const Nav = () => {
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { nav } = homeContent;
+  const { nav } = getHomeContent();
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   useEscapeKey(closeMenu, menuOpen);

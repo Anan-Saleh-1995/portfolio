@@ -1,11 +1,11 @@
 import { useActionState, useState } from "react";
-import { homeContent } from "@/shared/content/en/home";
-import styles from "./ContactForm.module.css";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { submitContactAction } from "../contact.action";
 import { initialContactFormState } from "../contact.initialState";
 import { ContactSuccess } from "../ContactSuccess/ContactSuccess";
 import { SubmitButton } from "./SubmitButton";
 import { PurposeSelect } from "../PurposeSelect/PurposeSelect";
+import styles from "./ContactForm.module.css";
 
 export const ContactForm = () => {
   const [formVersion, setFormVersion] = useState(0);
@@ -23,7 +23,7 @@ interface ContactFormContentProps {
 }
 
 const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
-  const { form } = homeContent.contact;
+  const { form } = getHomeContent().contact;
   const [state, formAction, isPending] = useActionState(
     submitContactAction,
     initialContactFormState,

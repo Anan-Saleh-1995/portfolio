@@ -1,5 +1,5 @@
 import type { ContactErrors } from "./contact.types";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_MESSAGE_LENGTH = 10;
@@ -10,7 +10,7 @@ const getStringField = (formData: FormData, key: string) => {
 };
 
 export const validateContactForm = (formData: FormData): ContactErrors => {
-  const { validation } = homeContent.contact.form;
+  const { validation } = getHomeContent().contact.form;
   const name = getStringField(formData, "name");
   const email = getStringField(formData, "email");
   const message = getStringField(formData, "message");

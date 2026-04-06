@@ -1,9 +1,9 @@
 import { EnsoMark } from "@/shared/ui/EnsoMark";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import styles from "./Footer.module.css";
 
 export const Footer = () => {
-  const { footer } = homeContent;
+  const { footer } = getHomeContent();
 
   return (
     <footer className={styles.root}>

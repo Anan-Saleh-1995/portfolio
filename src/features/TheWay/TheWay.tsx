@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./TheWay.module.css";
@@ -7,7 +7,7 @@ import styles from "./TheWay.module.css";
 export const TheWay = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { theWay } = homeContent;
+  const { theWay } = getHomeContent();
 
   return (
     <section ref={sectionRef} id="the-way" className={styles.root}>

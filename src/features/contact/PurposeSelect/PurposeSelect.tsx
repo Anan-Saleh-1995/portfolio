@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import styles from "./PurposeSelect.module.css";
 
 export const PurposeSelect = () => {
-  const { purposeSelect } = homeContent.contact.form;
+  const { purposeSelect } = getHomeContent().contact.form;
   const options = purposeSelect.options;
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("");

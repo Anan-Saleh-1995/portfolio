@@ -1,6 +1,6 @@
 import { validateContactForm } from "./contact.validation";
 import type { ContactFormState } from "./contact.types";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string;
 const WEB3FORMS_MAIL_API = import.meta.env.VITE_WEB3FORMS_MAIL_API as string;
@@ -21,7 +21,7 @@ export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
-  const { delivery } = homeContent.contact.form;
+  const { delivery } = getHomeContent().contact.form;
   const errors = validateContactForm(formData);
 
   if (Object.keys(errors).length > 0) {

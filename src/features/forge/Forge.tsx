@@ -1,15 +1,14 @@
 import { useRef } from "react";
 import { ExternalLink, Lock } from "lucide-react";
-import { homeContent } from "@/shared/content/en/home";
+import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
-import { projects } from "@/shared/config/projects";
 import styles from "./Forge.module.css";
 
 export const Forge = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { forge } = homeContent;
+  const { forge } = getHomeContent();
 
   return (
     <section ref={sectionRef} id="forge" className={styles.root}>
@@ -25,7 +24,7 @@ export const Forge = () => {
         </h2>
 
         <ul className={styles.grid} role="list" data-animate>
-          {projects.map((project) => (
+          {forge.projects.map((project) => (
             <li key={project.title}>
               {project.private || project.placeholder ? (
                 <article
