@@ -9,6 +9,11 @@ export const homeContent = {
       { href: "#forge", label: "Forge" },
       { href: "#contact", label: "Engagement" },
     ],
+    sourceRepo: {
+      href: "https://github.com/Anan-Saleh-1995/portfolio",
+      label: "Source",
+      ariaLabel: "View portfolio source on GitHub",
+    },
     backToTopLabel: "Back to top",
     mainNavigationLabel: "Main navigation",
     mobileNavigationLabel: "Mobile navigation",
@@ -168,7 +173,7 @@ export const homeContent = {
     constraints:
       "The hard parts were not just CRUD. The system had to enforce multi-role access, protect private media, recover safely from payment edge cases, keep local development practical, and stay observable enough to debug background and runtime behavior.",
     systems: [
-      "Role-segmented frontend routes and layouts for admin, guide, and traveler flows",
+      "Separate the frontend into traveler, guide, and admin route shells so each role gets its own navigation, permissions boundary, and UI flow from the first screen onward.",
       "Server modules for auth, trips, enrollments, favorites, photos, payments, reports, reviews, profiles, and guide applications",
       "TOTP MFA with enrollment, login challenge, recovery codes, password re-authentication, audit logging, and dedicated implementation docs",
       "Protected photo uploads with server-side image validation, opaque file keys, local and S3 storage drivers, and authorized read access",
@@ -187,6 +192,8 @@ export const homeContent = {
         "Abstract storage behind local and S3 drivers so upload behavior stays consistent across local development and production.",
         "Treat payments as a lifecycle, not a single endpoint, so capture, rollback, refund, and audit paths stay explicit.",
         "Organize the backend around domain modules instead of route sprawl so auth, trips, media, payments, and reports can evolve independently.",
+        "Keep local development production-shaped with Docker, metrics, and health checks so integration issues surface early instead of waiting for deployment.",
+        "Layer authentication across MFA, recovery codes, and re-auth checks so sensitive actions are protected beyond a single login event.",
       ],
     },
     impact:

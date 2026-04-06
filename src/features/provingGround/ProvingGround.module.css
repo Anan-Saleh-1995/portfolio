@@ -146,16 +146,11 @@
 }
 
 .story,
-.aside {
+.aside,
+.proofCard {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.proofCard {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
 }
 
 .story {
@@ -203,13 +198,13 @@
 .stats {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .decisionList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 .decisionItem {
@@ -235,7 +230,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
