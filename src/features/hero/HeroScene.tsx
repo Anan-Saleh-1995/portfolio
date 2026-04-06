@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { THEME_ACCENT_HEX, type Theme } from "@/shared/config/theme";
 import { useMouseParallax } from "./useMouseParallax";
 
-const THEMES = {
-  dark: { accent: new THREE.Color("#c41e3a") },
-  light: { accent: new THREE.Color("#8b0000") },
+const THEME_ACCENTS: Record<Theme, { accent: THREE.Color }> = {
+  dark: { accent: new THREE.Color(THEME_ACCENT_HEX.dark) },
+  light: { accent: new THREE.Color(THEME_ACCENT_HEX.light) },
 };
 
 const generatePositions = (count: number): Float32Array => {
@@ -81,8 +82,8 @@ const CameraRig = () => {
   return null;
 };
 
-const HeroScene = ({ theme }: { theme: "dark" | "light" }) => {
-  const { accent } = THEMES[theme];
+const HeroScene = ({ theme }: { theme: Theme }) => {
+  const { accent } = THEME_ACCENTS[theme];
 
   return (
     <Canvas

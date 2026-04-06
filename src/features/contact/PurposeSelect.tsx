@@ -88,6 +88,7 @@ export const PurposeSelect = () => {
 
   return (
     <div className={styles.customSelect} ref={rootRef}>
+      <input type="hidden" name="subject" value={selected} />
       <button
         type="button"
         className={styles.selectTrigger}

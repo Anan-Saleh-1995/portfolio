@@ -1,7 +1,8 @@
 import { createContext } from "react";
+import type { Theme } from "@/shared/config/theme";
 
 interface ThemeContextValue {
-  theme: "dark" | "light";
+  theme: Theme;
   toggle: () => void;
 }
 
