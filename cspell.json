@@ -33,7 +33,9 @@
     "kata",
     "saleh",
     "botcheck",
-    "passwordless"
+    "passwordless",
+    "TOTP",
+    "mdlint"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }

@@ -149,7 +149,13 @@
 .aside {
   display: flex;
   flex-direction: column;
-  align-self: start;
+  height: 100%;
+}
+
+.proofCard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .story {
