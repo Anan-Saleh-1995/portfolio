@@ -25,7 +25,20 @@ export const useCursorTracking = () => {
     };
 
     const onOver = (e: MouseEvent) => {
-      if ((e.target as Element).closest("a, button")) {
+      const target = e.target as Element;
+      const overNativeControl = target.closest("input, textarea, select");
+
+      if (overNativeControl) {
+        if (dotRef.current) dotRef.current.style.opacity = "0";
+        if (ringRef.current) ringRef.current.style.opacity = "0";
+        ringRef.current?.classList.remove(styles.active);
+        return;
+      }
+
+      if (dotRef.current) dotRef.current.style.opacity = "1";
+      if (ringRef.current) ringRef.current.style.opacity = "1";
+
+      if (target.closest("a, button")) {
         ringRef.current?.classList.add(styles.active);
       } else {
         ringRef.current?.classList.remove(styles.active);

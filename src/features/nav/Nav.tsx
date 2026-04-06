@@ -5,6 +5,7 @@ import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
 import { useHideOnScroll } from "./useHideOnScroll";
 import { useEscapeKey } from "@/shared/lib/useEscapeKey";
+import { SourceRepoLink } from "./SourceRepoLink";
 import styles from "./Nav.module.css";
 
 const MOBILE_MENU_EVENT = "portfolio:mobile-menu-toggle";
@@ -98,10 +99,14 @@ export const Nav = () => {
               </li>
             ))}
           </ul>
-          <ThemeToggle />
+          <div className={styles.utilityGroup}>
+            <SourceRepoLink />
+            <ThemeToggle />
+          </div>
         </nav>
 
         <div className={styles.mobileControls}>
+          <SourceRepoLink compact />
           <ThemeToggle />
           <button
             ref={toggleRef}

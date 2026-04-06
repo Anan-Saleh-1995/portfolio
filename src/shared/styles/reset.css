@@ -58,6 +58,6 @@ ol {
   cursor: none !important;
 }
 
-[data-custom-cursor] :is(input, textarea, option) {
+[data-custom-cursor] :is(input, textarea, select, option) {
   cursor: auto !important;
 }

@@ -17,6 +17,11 @@ export interface HomeContent {
   nav: {
     brand: string;
     links: NavLinkContent[];
+    sourceRepo: {
+      href: string;
+      label: string;
+      ariaLabel: string;
+    };
     backToTopLabel: string;
     mainNavigationLabel: string;
     mobileNavigationLabel: string;
