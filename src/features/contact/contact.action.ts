@@ -1,10 +1,9 @@
 import { validateContactForm } from "./contact.validation";
 import type { ContactFormState } from "./contact.types";
+import { homeContent } from "@/shared/content/en/home";
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string;
 const WEB3FORMS_MAIL_API = import.meta.env.VITE_WEB3FORMS_MAIL_API as string;
-const DELIVERY_ERROR =
-  "Your word could not be delivered. Try again or use a direct channel.";
 
 interface Web3FormsResponse {
   success?: boolean;
@@ -22,6 +21,7 @@ export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
+  const { delivery } = homeContent.contact.form;
   const errors = validateContactForm(formData);
 
   if (Object.keys(errors).length > 0) {
@@ -47,7 +47,7 @@ export const submitContactAction = async (
     body.append("email", getStringField(formData, "email"));
     body.append(
       "subject",
-      getStringField(formData, "subject") || "Portfolio Contact",
+      getStringField(formData, "subject") || delivery.defaultSubject,
     );
     body.append("message", getStringField(formData, "message"));
     body.append("botcheck", "");
@@ -63,7 +63,7 @@ export const submitContactAction = async (
       return {
         success: false,
         errors: {},
-        errorMessage: DELIVERY_ERROR,
+        errorMessage: delivery.error,
       };
     }
 
@@ -76,7 +76,7 @@ export const submitContactAction = async (
     return {
       success: false,
       errors: {},
-      errorMessage: DELIVERY_ERROR,
+      errorMessage: delivery.error,
     };
   }
 };

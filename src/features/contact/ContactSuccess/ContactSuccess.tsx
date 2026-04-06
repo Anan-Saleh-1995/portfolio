@@ -1,4 +1,5 @@
 import { EnsoMark } from "@/shared/ui/EnsoMark";
+import { homeContent } from "@/shared/content/en/home";
 import styles from "./ContactSuccess.module.css";
 
 interface Props {
@@ -6,15 +7,15 @@ interface Props {
 }
 
 export const ContactSuccess = ({ onReset }: Props) => {
+  const { success } = homeContent.contact.form;
+
   return (
     <div className={styles.success} role="status" aria-live="polite">
       <EnsoMark size={48} className={styles.successEnso} />
-      <h3 className={styles.successHeading}>Word Received</h3>
-      <p className={styles.successText}>
-        Your message has been received. I will respond within 48 hours.
-      </p>
+      <h3 className={styles.successHeading}>{success.heading}</h3>
+      <p className={styles.successText}>{success.message}</p>
       <button type="button" onClick={onReset} className={styles.resetLink}>
-        Send Another
+        {success.reset}
       </button>
     </div>
   );

@@ -1,4 +1,5 @@
 import type { ContactErrors } from "./contact.types";
+import { homeContent } from "@/shared/content/en/home";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_MESSAGE_LENGTH = 10;
@@ -9,24 +10,28 @@ const getStringField = (formData: FormData, key: string) => {
 };
 
 export const validateContactForm = (formData: FormData): ContactErrors => {
+  const { validation } = homeContent.contact.form;
   const name = getStringField(formData, "name");
   const email = getStringField(formData, "email");
   const message = getStringField(formData, "message");
 
   const errors: ContactErrors = {};
 
-  if (!name) errors.name = "State your name";
+  if (!name) errors.name = validation.nameRequired;
 
   if (!email) {
-    errors.email = "An email is required";
+    errors.email = validation.emailRequired;
   } else if (!EMAIL_REGEX.test(email)) {
-    errors.email = "Enter a valid email address";
+    errors.email = validation.emailInvalid;
   }
 
   if (!message) {
-    errors.message = "State your message";
+    errors.message = validation.messageRequired;
   } else if (message.length < MIN_MESSAGE_LENGTH) {
-    errors.message = `Your message must be at least ${MIN_MESSAGE_LENGTH} characters`;
+    errors.message = validation.messageTooShort.replace(
+      "{min}",
+      String(MIN_MESSAGE_LENGTH),
+    );
   }
 
   return errors;

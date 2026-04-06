@@ -1,4 +1,5 @@
 import { useActionState, useState } from "react";
+import { homeContent } from "@/shared/content/en/home";
 import styles from "./ContactForm.module.css";
 import { submitContactAction } from "../contact.action";
 import { initialContactFormState } from "../contact.initialState";
@@ -22,6 +23,7 @@ interface ContactFormContentProps {
 }
 
 const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
+  const { form } = homeContent.contact;
   const [state, formAction, isPending] = useActionState(
     submitContactAction,
     initialContactFormState,
@@ -34,7 +36,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
   return (
     <form action={formAction} noValidate className={styles.form}>
       <div className={styles.srOnly} aria-live="polite">
-        {isPending && "Sending your message..."}
+        {isPending && form.liveRegion.pending}
         {!isPending && state.errorMessage}
       </div>
 
@@ -44,7 +46,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
 
       <div className={styles.field}>
         <label htmlFor="contact-name" className={styles.label}>
-          Name
+          {form.labels.name}
         </label>
         <input
           id="contact-name"
@@ -67,7 +69,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
 
       <div className={styles.field}>
         <label htmlFor="contact-email" className={styles.label}>
-          Email
+          {form.labels.email}
         </label>
         <input
           id="contact-email"
@@ -91,14 +93,14 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
 
       <div className={styles.field}>
         <label htmlFor="contact-subject" className={styles.label}>
-          Purpose
+          {form.labels.purpose}
         </label>
         <PurposeSelect />
       </div>
 
       <div className={styles.field}>
         <label htmlFor="contact-message" className={styles.label}>
-          Message
+          {form.labels.message}
         </label>
         <textarea
           id="contact-message"

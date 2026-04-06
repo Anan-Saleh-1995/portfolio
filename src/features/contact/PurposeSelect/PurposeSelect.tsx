@@ -1,24 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { homeContent } from "@/shared/content/en/home";
 import styles from "./PurposeSelect.module.css";
 
-interface Option {
-  label: string;
-  value: string;
-}
-
-const OPTIONS: Option[] = [
-  { value: "Hiring Inquiry", label: "Hiring Inquiry" },
-  { value: "Collaboration", label: "Collaboration" },
-  { value: "General", label: "General" },
-];
-
 export const PurposeSelect = () => {
+  const { purposeSelect } = homeContent.contact.form;
+  const options = purposeSelect.options;
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const selectedOption = OPTIONS.find((option) => option.value === selected);
+  const selectedOption = options.find((option) => option.value === selected);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -66,7 +58,7 @@ export const PurposeSelect = () => {
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      handleSelect(OPTIONS[index].value);
+      handleSelect(options[index].value);
     }
 
     if (event.key === "ArrowDown") {
@@ -103,11 +95,11 @@ export const PurposeSelect = () => {
             selectedOption ? styles.selectValue : styles.selectPlaceholder
           }
         >
-          {selectedOption ? selectedOption.label : "Select a purpose"}
+          {selectedOption ? selectedOption.label : purposeSelect.placeholder}
         </span>
 
         <span className={styles.selectChevron} aria-hidden="true">
-          ▾
+          v
         </span>
       </button>
 
@@ -116,9 +108,9 @@ export const PurposeSelect = () => {
           ref={listRef}
           className={styles.selectMenu}
           role="listbox"
-          aria-label="Purpose"
+          aria-label={purposeSelect.ariaLabel}
         >
-          {OPTIONS.map((option, index) => {
+          {options.map((option, index) => {
             const isSelected = selected === option.value;
 
             return (
