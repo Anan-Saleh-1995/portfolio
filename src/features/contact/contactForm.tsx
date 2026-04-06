@@ -1,4 +1,4 @@
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import styles from "./Contact.module.css";
 import { submitContactAction } from "./contact.action";
 import { initialContactFormState } from "./contact.initialState";
@@ -7,19 +7,32 @@ import { SubmitButton } from "./SubmitButton";
 import { PurposeSelect } from "./PurposeSelect";
 
 export const ContactForm = () => {
+  const [formVersion, setFormVersion] = useState(0);
+
+  return (
+    <ContactFormContent
+      key={formVersion}
+      onReset={() => setFormVersion((prev) => prev + 1)}
+    />
+  );
+};
+
+type ContactFormContentProps = {
+  onReset: () => void;
+};
+
+const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
   const [state, formAction, isPending] = useActionState(
     submitContactAction,
     initialContactFormState,
   );
 
-  const resetKey = state.success ? "success" : "form";
-
   if (state.success) {
-    return <ContactSuccess onReset={() => window.location.reload()} />;
+    return <ContactSuccess onReset={onReset} />;
   }
 
   return (
-    <form action={formAction} noValidate className={styles.form} key={resetKey}>
+    <form action={formAction} noValidate className={styles.form}>
       <div className={styles.srOnly} aria-live="polite">
         {isPending && "Sending your message..."}
         {!isPending && state.errorMessage}
