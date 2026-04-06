@@ -10,26 +10,29 @@ type Project = {
 export const projects: Project[] = [
   {
     title: "GitHub",
-    description: "Clean public repositories and open source contributions.",
+    description:
+      "Public code, backend patterns, frontend experiments, and ongoing open-source work that show how I structure real projects.",
     tag: "oss",
     url: "https://github.com/Anan-Saleh-1995",
   },
   {
     title: "Hugo Docs",
-    description: "Technical documentation and writing dojo.",
+    description:
+      "Technical writing project focused on clear documentation, structured content, and maintainable docs architecture.",
     tag: "docs",
     url: "https://personal-hugo-docs.vercel.app/docs/",
   },
   {
     title: "Resume Site",
-    description: "Multilingual resume built with Hugo — Hebrew, English.",
+    description:
+      "Multilingual resume site built with Hugo to present experience, technical depth, and bilingual content clearly in Hebrew and English.",
     tag: "design",
     url: "https://resume-site-opal-phi.vercel.app/en/",
   },
   {
     title: "Travel Platform",
     description:
-      "Multi-role travel platform — Node.js, MySQL, Redis, MFA, S3 uploads, PayPal webhooks, Prometheus/Grafana.",
+      "Private multi-role travel platform with guide and traveler flows, MFA, secure S3 uploads, PayPal webhooks, Redis, and Docker-based monitoring.",
     tag: "wip",
     url: "#",
     private: true,

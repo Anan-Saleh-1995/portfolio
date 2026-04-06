@@ -20,14 +20,20 @@ export const TheWay = () => (
             The Way
           </h2>
           <p className={styles.bio} data-animate>
-            Full-stack developer with 3 years building and maintaining
-            production systems with Node.js, TypeScript, and AWS. I deliver
-            secure API flows, S3-backed file pipelines, role-based access
-            controls, and server-side optimizations for data-heavy products.
+            Full-stack developer with 3 years shipping production features
+            across React, Meteor, Node.js, MongoDB, and AWS for live web
+            products.
           </p>
           <p className={styles.bio} data-animate>
-            Currently building a multi-role travel platform and sharpening
-            skills in Three.js. Every commit is a step in the kata.
+            Built secure S3 upload flows, 2FA and passwordless login systems,
+            role-based access strategies, and cron-driven sitemap automation.
+            Improved responsiveness on data-heavy screens by moving pagination
+            to the server.
+          </p>
+          <p className={styles.bio} data-animate>
+            Currently building a private travel platform for solo travelers and
+            guides with MySQL, Redis, MFA, PayPal webhooks, Docker, and
+            observability tooling.
           </p>
           <a
             href="https://resume-site-opal-phi.vercel.app/en/"
