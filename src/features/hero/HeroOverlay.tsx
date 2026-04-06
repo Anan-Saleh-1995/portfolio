@@ -1,47 +1,54 @@
+import { useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { useHeroIntroAnimation } from "./useHeroIntroAnimation";
 import { SamuraiMark } from "./SamuraiMark";
 import styles from "./HeroOverlay.module.css";
 
-export const HeroOverlay = () => (
-  <div className={styles.overlay} data-hero-overlay>
-    <SamuraiMark className={styles.samurai} />
+export const HeroOverlay = () => {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  useHeroIntroAnimation(overlayRef);
 
-    <div className={styles.content}>
-      <span className={styles.label} data-animate>
-        01 / Enter
-      </span>
-      <h1 className={styles.title} data-animate>
-        The Dojo
-      </h1>
-      <p className={styles.subtitle} data-animate>
-        Mastery through discipline.
-      </p>
-      <p className={styles.role} data-animate>
-        Full-Stack Developer
-      </p>
+  return (
+    <div ref={overlayRef} className={styles.overlay}>
+      <SamuraiMark className={styles.samurai} />
 
-      <div className={styles.ctas} data-animate>
-        <a href="#the-way" className={styles.ctaPrimary}>
-          Explore
-        </a>
-        <a
-          href="https://github.com/Anan-Saleh-1995"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.ctaSecondary}
-        >
-          GitHub
-        </a>
+      <div className={styles.content}>
+        <span className={styles.label} data-animate>
+          01 / Enter
+        </span>
+        <h1 className={styles.title} data-animate>
+          The Dojo
+        </h1>
+        <p className={styles.subtitle} data-animate>
+          Mastery through discipline.
+        </p>
+        <p className={styles.role} data-animate>
+          Full-Stack Developer
+        </p>
+
+        <div className={styles.ctas} data-animate>
+          <a href="#the-way" className={styles.ctaPrimary}>
+            Explore
+          </a>
+          <a
+            href="https://github.com/Anan-Saleh-1995"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaSecondary}
+          >
+            GitHub
+          </a>
+        </div>
       </div>
-    </div>
 
-    <a
-      href="#the-way"
-      className={styles.scrollCue}
-      data-animate
-      aria-label="Scroll down"
-    >
-      <ChevronDown size={20} />
-    </a>
-  </div>
-);
+      <a
+        href="#the-way"
+        className={styles.scrollCue}
+        data-animate
+        aria-label="Scroll down"
+      >
+        <ChevronDown size={20} />
+      </a>
+    </div>
+  );
+};

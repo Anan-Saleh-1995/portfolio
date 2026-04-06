@@ -1,21 +1,28 @@
+import { useRef } from "react";
+import { useFooterFadeIn } from "./useFooterFadeIn";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import styles from "./Footer.module.css";
 
-export const Footer = () => (
-  <footer className={styles.root}>
-    <div className={styles.inner}>
-      <a href="#" className={styles.brand} aria-label="Back to top">
-        <EnsoMark size={16} />
-        <span>anan</span>
-      </a>
+export const Footer = () => {
+  const footerRef = useRef<HTMLElement>(null);
+  useFooterFadeIn(footerRef);
 
-      <p className={styles.quote}>
-        "Today is victory over yourself of yesterday."
-      </p>
+  return (
+    <footer ref={footerRef} className={styles.root}>
+      <div className={styles.inner}>
+        <a href="#" className={styles.brand} aria-label="Back to top">
+          <EnsoMark size={16} />
+          <span>anan</span>
+        </a>
 
-      <p className={styles.copy}>
-        &copy; {new Date().getFullYear()} Anan Saleh
-      </p>
-    </div>
-  </footer>
-);
+        <p className={styles.quote}>
+          "Today is victory over yourself of yesterday."
+        </p>
+
+        <p className={styles.copy}>
+          &copy; {new Date().getFullYear()} Anan Saleh
+        </p>
+      </div>
+    </footer>
+  );
+};

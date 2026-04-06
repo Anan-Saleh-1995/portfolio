@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./Arsenal.module.css";
 
@@ -52,30 +54,35 @@ const SKILLS = [
   },
 ];
 
-export const Arsenal = () => (
-  <section id="arsenal" className={styles.root}>
-    <div className={styles.container}>
-      <div data-animate>
-        <SectionLabel number="03" title="Arsenal" />
-      </div>
-      <h2 className={styles.heading} data-animate>
-        Weapons of Choice
-      </h2>
+export const Arsenal = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  useScrollReveal(sectionRef);
 
-      <div className={styles.groups}>
-        {SKILLS.map(({ category, items }) => (
-          <div key={category} className={styles.group} data-animate>
-            <span className={styles.category}>{category}</span>
-            <ul className={styles.tags} role="list">
-              {items.map((skill) => (
-                <li key={skill} className={styles.tag}>
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+  return (
+    <section ref={sectionRef} id="arsenal" className={styles.root}>
+      <div className={styles.container}>
+        <div data-animate>
+          <SectionLabel number="03" title="Arsenal" />
+        </div>
+        <h2 className={styles.heading} data-animate>
+          Weapons of Choice
+        </h2>
+
+        <div className={styles.groups}>
+          {SKILLS.map(({ category, items }) => (
+            <div key={category} className={styles.group} data-animate>
+              <span className={styles.category}>{category}</span>
+              <ul className={styles.tags} role="list">
+                {items.map((skill) => (
+                  <li key={skill} className={styles.tag}>
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

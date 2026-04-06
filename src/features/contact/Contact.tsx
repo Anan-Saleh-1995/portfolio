@@ -1,12 +1,17 @@
+import { useRef } from "react";
 import { Mail, ExternalLink } from "lucide-react";
+import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ContactForm } from "./contactForm";
 import styles from "./Contact.module.css";
 
 export const Contact = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  useScrollReveal(sectionRef);
+
   return (
-    <section id="contact" className={styles.root}>
+    <section ref={sectionRef} id="contact" className={styles.root}>
       <div className={styles.container}>
         <div data-animate>
           <SectionLabel number="05" title="Engagement" />
