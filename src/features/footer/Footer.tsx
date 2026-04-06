@@ -1,14 +1,9 @@
-import { useRef } from "react";
-import { useFooterFadeIn } from "./useFooterFadeIn";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import styles from "./Footer.module.css";
 
 export const Footer = () => {
-  const footerRef = useRef<HTMLElement>(null);
-  useFooterFadeIn(footerRef);
-
   return (
-    <footer ref={footerRef} className={styles.root}>
+    <footer className={styles.root}>
       <div className={styles.inner}>
         <a href="#" className={styles.brand} aria-label="Back to top">
           <EnsoMark size={16} />
