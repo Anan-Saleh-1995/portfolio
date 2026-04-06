@@ -72,7 +72,9 @@ export const submitContactAction = async (
       errors: {},
       errorMessage: "",
     };
-  } catch {
+  } catch (e) {
+    console.log(e, WEB3FORMS_MAIL_API, WEB3FORMS_KEY);
+
     return {
       success: false,
       errors: {},
