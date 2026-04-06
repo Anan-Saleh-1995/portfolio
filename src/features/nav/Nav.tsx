@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { homeContent } from "@/shared/content/en/home";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
 import { useHideOnScroll } from "./useHideOnScroll";
@@ -8,16 +9,10 @@ import styles from "./Nav.module.css";
 
 const MOBILE_MENU_EVENT = "portfolio:mobile-menu-toggle";
 
-const NAV_LINKS = [
-  { href: "#the-way", label: "The Way" },
-  { href: "#arsenal", label: "Arsenal" },
-  { href: "#forge", label: "Forge" },
-  { href: "#contact", label: "Engagement" },
-];
-
 export const Nav = () => {
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { nav } = homeContent;
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   useEscapeKey(closeMenu, menuOpen);
@@ -41,14 +36,14 @@ export const Nav = () => {
   return (
     <header className={`${styles.root} ${hidden ? styles.hidden : ""}`}>
       <div className={styles.inner}>
-        <a href="#" className={styles.brand} aria-label="Back to top">
+        <a href="#" className={styles.brand} aria-label={nav.backToTopLabel}>
           <EnsoMark size={20} />
-          <span className={styles.brandName}>anan</span>
+          <span className={styles.brandName}>{nav.brand}</span>
         </a>
 
-        <nav className={styles.desktopNav} aria-label="Main navigation">
+        <nav className={styles.desktopNav} aria-label={nav.mainNavigationLabel}>
           <ul className={styles.navList} role="list">
-            {NAV_LINKS.map(({ href, label }) => (
+            {nav.links.map(({ href, label }) => (
               <li key={href}>
                 <a href={href} className={styles.navLink}>
                   {label}
@@ -65,7 +60,7 @@ export const Nav = () => {
             className={styles.hamburger}
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? nav.closeMenuLabel : nav.openMenuLabel}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -76,9 +71,9 @@ export const Nav = () => {
         className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
         aria-hidden={!menuOpen}
       >
-        <nav aria-label="Mobile navigation">
+        <nav aria-label={nav.mobileNavigationLabel}>
           <ul className={styles.mobileNavList} role="list">
-            {NAV_LINKS.map(({ href, label }) => (
+            {nav.links.map(({ href, label }) => (
               <li key={href}>
                 <a
                   href={href}

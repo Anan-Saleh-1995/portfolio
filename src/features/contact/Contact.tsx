@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Mail, ExternalLink } from "lucide-react";
+import { homeContent } from "@/shared/content/en/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
@@ -9,21 +10,22 @@ import styles from "./Contact.module.css";
 export const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+  const { contact } = homeContent;
 
   return (
     <section ref={sectionRef} id="contact" className={styles.root}>
       <div className={styles.container}>
         <div data-animate>
-          <SectionLabel number="05" title="Engagement" />
+          <SectionLabel
+            number={contact.sectionNumber}
+            title={contact.sectionTitle}
+          />
         </div>
 
         <div className={styles.body} data-animate>
           <div className={styles.formColumn}>
-            <h2 className={styles.heading}>State Your Intent</h2>
-            <p className={styles.sub}>
-              Opportunities, alliances, and worthy challenges are welcome. Send
-              word.
-            </p>
+            <h2 className={styles.heading}>{contact.heading}</h2>
+            <p className={styles.sub}>{contact.subheading}</p>
 
             <ContactForm />
           </div>
@@ -32,17 +34,17 @@ export const Contact = () => {
         </div>
 
         <div className={styles.channels} data-animate>
-          <span className={styles.channelsLabel}>Direct Channels</span>
+          <span className={styles.channelsLabel}>{contact.channelsLabel}</span>
           <ul className={styles.links} role="list">
             <li>
-              <a href="mailto:anansaleh18@gmail.com" className={styles.link}>
+              <a href={`mailto:${contact.email}`} className={styles.link}>
                 <Mail size={16} aria-hidden="true" />
-                anansaleh18@gmail.com
+                {contact.email}
               </a>
             </li>
             <li>
               <a
-                href="https://github.com/Anan-Saleh-1995"
+                href={contact.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.link}

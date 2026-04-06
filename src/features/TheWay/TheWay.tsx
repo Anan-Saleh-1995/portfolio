@@ -1,60 +1,48 @@
 import { useRef } from "react";
+import { homeContent } from "@/shared/content/en/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./TheWay.module.css";
 
-const STATS = [
-  { value: "3+", label: "Years in production" },
-  { value: "3", label: "Languages spoken" },
-  { value: "∞", label: "Commits to craft" },
-];
-
 export const TheWay = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+  const { theWay } = homeContent;
 
   return (
     <section ref={sectionRef} id="the-way" className={styles.root}>
       <div className={styles.container}>
         <div data-animate>
-          <SectionLabel number="02" title="The Way" />
+          <SectionLabel
+            number={theWay.sectionNumber}
+            title={theWay.sectionTitle}
+          />
         </div>
 
         <div className={styles.grid}>
           <div className={styles.content}>
             <h2 className={styles.heading} data-animate>
-              The Way
+              {theWay.heading}
             </h2>
-            <p className={styles.bio} data-animate>
-              Full-stack developer with 3 years shipping production features
-              across React, Meteor, Node.js, MongoDB, and AWS for live web
-              products.
-            </p>
-            <p className={styles.bio} data-animate>
-              Built secure S3 upload flows, 2FA and passwordless login systems,
-              role-based access strategies, and cron-driven sitemap automation.
-              Improved responsiveness on data-heavy screens by moving pagination
-              to the server.
-            </p>
-            <p className={styles.bio} data-animate>
-              Currently building a private travel platform for solo travelers
-              and guides with MySQL, Redis, MFA, PayPal webhooks, Docker, and
-              observability tooling.
-            </p>
+            {theWay.paragraphs.map((paragraph) => (
+              <p key={paragraph} className={styles.bio} data-animate>
+                {paragraph}
+              </p>
+            ))}
             <a
-              href="https://resume-site-opal-phi.vercel.app/en/"
+              href={theWay.resume.href}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.link}
               data-animate
             >
-              View Resume →
+              {theWay.resume.label}
             </a>
           </div>
 
           <aside className={styles.aside}>
             <ul className={styles.stats} role="list">
-              {STATS.map(({ value, label }) => (
+              {theWay.stats.map(({ value, label }) => (
                 <li key={label} className={styles.stat} data-animate>
                   <span className={styles.statValue}>{value}</span>
                   <span className={styles.statLabel}>{label}</span>

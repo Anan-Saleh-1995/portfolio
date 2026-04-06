@@ -1,77 +1,29 @@
 import { useRef } from "react";
+import { homeContent } from "@/shared/content/en/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./Arsenal.module.css";
 
-const SKILLS = [
-  {
-    category: "Backend",
-    items: [
-      "Node.js",
-      "Express",
-      "NestJS",
-      "REST APIs",
-      "OpenAPI",
-      "Swagger",
-      "Authentication",
-    ],
-  },
-  {
-    category: "Frontend",
-    items: [
-      "React",
-      "React Router",
-      "TanStack Query",
-      "React Hook Form",
-      "Vite",
-    ],
-  },
-  {
-    category: "UI Systems",
-    items: ["Ant Design", "MUI", "shadcn/ui", "Tailwind CSS"],
-  },
-  {
-    category: "Languages",
-    items: ["TypeScript", "JavaScript", "SQL", "Bash", "PowerShell"],
-  },
-  {
-    category: "Data",
-    items: ["MySQL", "MongoDB", "Redis", "Prisma", "Knex"],
-  },
-  {
-    category: "Cloud & Platform",
-    items: [
-      "AWS S3",
-      "AWS EC2",
-      "AWS IAM",
-      "Docker",
-      "Docker Compose",
-      "Linux",
-      "SSH",
-    ],
-  },
-  {
-    category: "Quality & Workflow",
-    items: ["Jest", "Vitest", "Unit Testing", "Git", "Jira", "Agile"],
-  },
-];
-
 export const Arsenal = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+  const { arsenal } = homeContent;
 
   return (
     <section ref={sectionRef} id="arsenal" className={styles.root}>
       <div className={styles.container}>
         <div data-animate>
-          <SectionLabel number="03" title="Arsenal" />
+          <SectionLabel
+            number={arsenal.sectionNumber}
+            title={arsenal.sectionTitle}
+          />
         </div>
         <h2 className={styles.heading} data-animate>
-          Weapons of Choice
+          {arsenal.heading}
         </h2>
 
         <div className={styles.groups}>
-          {SKILLS.map(({ category, items }) => (
+          {arsenal.groups.map(({ category, items }) => (
             <div key={category} className={styles.group} data-animate>
               <span className={styles.category}>{category}</span>
               <ul className={styles.tags} role="list">

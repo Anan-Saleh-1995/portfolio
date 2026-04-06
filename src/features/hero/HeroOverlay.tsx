@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { homeContent } from "@/shared/content/en/home";
 import { useHeroIntroAnimation } from "./useHeroIntroAnimation";
 import { SamuraiMark } from "./SamuraiMark";
 import styles from "./HeroOverlay.module.css";
@@ -7,6 +8,7 @@ import styles from "./HeroOverlay.module.css";
 export const HeroOverlay = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   useHeroIntroAnimation(overlayRef);
+  const { hero } = homeContent;
 
   return (
     <div ref={overlayRef} className={styles.overlay}>
@@ -14,29 +16,29 @@ export const HeroOverlay = () => {
 
       <div className={styles.content}>
         <span className={styles.label} data-animate>
-          01 / Enter
+          {hero.sectionNumber} / {hero.sectionTitle}
         </span>
         <h1 className={styles.title} data-animate>
-          The Dojo
+          {hero.title}
         </h1>
         <p className={styles.subtitle} data-animate>
-          Mastery through discipline.
+          {hero.subtitle}
         </p>
         <p className={styles.role} data-animate>
-          Full-Stack Developer
+          {hero.role}
         </p>
 
         <div className={styles.ctas} data-animate>
-          <a href="#the-way" className={styles.ctaPrimary}>
-            Explore
+          <a href={hero.primaryCta.href} className={styles.ctaPrimary}>
+            {hero.primaryCta.label}
           </a>
           <a
-            href="https://github.com/Anan-Saleh-1995"
+            href={hero.secondaryCta.href}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaSecondary}
           >
-            GitHub
+            {hero.secondaryCta.label}
           </a>
         </div>
       </div>
@@ -45,7 +47,7 @@ export const HeroOverlay = () => {
         href="#the-way"
         className={styles.scrollCue}
         data-animate
-        aria-label="Scroll down"
+        aria-label={hero.scrollCueLabel}
       >
         <ChevronDown size={20} />
       </a>
