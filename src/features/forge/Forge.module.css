@@ -104,6 +104,14 @@
   color: var(--text-muted);
 }
 
+.status {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .icon {
   color: var(--text-muted);
   margin-top: auto;

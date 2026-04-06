@@ -10,6 +10,7 @@ export interface ProjectContent {
   url: string;
   placeholder?: boolean;
   private?: boolean;
+  statusLabel?: string;
 }
 
 export interface HomeContent {
@@ -68,6 +69,10 @@ export interface HomeContent {
     constraints: string;
     systems: string[];
     proofPoints: { value: string; label: string }[];
+    decisions: {
+      heading: string;
+      items: string[];
+    };
     impact: string;
   };
   contact: {

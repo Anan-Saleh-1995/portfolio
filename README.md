@@ -2,11 +2,7 @@
 
 Design-forward portfolio site for Anan Saleh, built with React, TypeScript, and Vite.
 
-The project focuses on three things:
-
-- a distinct visual identity
-- lightweight but intentional motion
-- clean, maintainable frontend structure
+This repo is intentionally small in surface area, but it treats frontend quality seriously: typed content, accessible interaction patterns, a measured motion system, and a distinct visual identity anchored by a desktop-only Three.js hero.
 
 ## Stack
 
@@ -17,26 +13,43 @@ The project focuses on three things:
 - GSAP
 - Lenis
 - Three.js / `@react-three/fiber`
+- Vitest
+- React Testing Library
 
-## Highlights
+## What This Repo Optimizes For
 
-- Desktop-only lazy-loaded 3D hero with a fallback for smaller screens
-- Theme switching with persisted preference
-- Scroll-triggered section reveals with reduced-motion support
-- Contact form with client-side validation and async submission flow
-- Mobile navigation with smooth-scroll locking
-- SEO metadata and structured data in `index.html`
+- A portfolio that looks deliberate rather than template-generated
+- Clear feature ownership and maintainable folder boundaries
+- Typed content access through a lightweight i18n-ready content layer
+- Accessibility and keyboard behavior that hold up under review
+- A strong first impression without turning the whole repo into animation glue
 
-## Project Structure
+## Architecture Notes
 
-```text
-src/
-  app/          App shell and global CSS imports
-  features/     Page sections and feature-specific logic
-  pages/        Top-level page composition
-  shared/       Reusable hooks, config, styles, and UI primitives
-public/         Static assets
-```
+- Content is routed through `getHomeContent()` and validated by shared content types in `src/shared/content/home.types.ts`.
+- The repo stays English-only for now, but the typed content/i18n scaffolding remains in place so future locales can be added without another structural refactor.
+- Motion is split by purpose:
+  - hero intro animation
+  - section reveal on scroll
+  - smooth-scroll coordination
+- The Three.js hero is intentionally isolated behind a lazy-loaded boundary so the rest of the app stays simple and the expensive part is easy to reason about.
+
+## Accessibility Notes
+
+- Private project cards in Forge are rendered as non-interactive content, not disabled links.
+- The contact purpose input uses a native `<select>` to keep keyboard and screen-reader behavior predictable.
+- Mobile navigation closes on Escape and locks background scrolling while open.
+- Reduced-motion handling is respected in section reveals and smooth-scroll behavior, and the hero falls back to a static version when motion should be reduced.
+
+## Testing Approach
+
+- Small unit tests stay colocated with the feature logic they protect.
+- Pure helper behavior is tested close to the helper itself.
+- Lightweight component tests cover the interaction flows most likely to regress:
+  - contact validation
+  - contact success/reset
+  - theme helpers
+  - mobile nav open/close
 
 ## Running Locally
 
@@ -64,11 +77,18 @@ Preview the production build:
 npm run preview
 ```
 
+Run tests:
+
+```bash
+npm run test
+```
+
 ## Available Scripts
 
 - `npm run dev` starts the Vite dev server
 - `npm run build` creates a production build
 - `npm run preview` serves the built app locally
+- `npm run test` runs the Vitest suite
 - `npm run lint` runs ESLint
 - `npm run format` formats source files with Prettier
 - `npm run format:check` checks formatting without writing changes
@@ -86,27 +106,20 @@ VITE_WEB3FORMS_KEY=your_key
 VITE_WEB3FORMS_MAIL_API=your_endpoint
 ```
 
-Without them, the contact form will not deliver messages correctly.
-
-## Frontend Notes
-
-- Motion is split by purpose:
-  - hero intro animation
-  - section reveal on scroll
-  - footer fade-in
-- Reduced-motion handling is centralized in shared motion helpers.
-- Smooth scrolling is driven by Lenis and coordinated with GSAP scroll updates.
-- The 3D hero is intentionally isolated so it can be optimized or replaced without affecting the rest of the page.
+Without them, the contact form UI still renders, but message delivery will fail.
 
 ## Current Tradeoffs
 
-- The Three.js hero is the heaviest part of the bundle.
-- There is currently no automated test suite.
-- This is a single-page portfolio, so most architecture choices optimize for clarity and presentation rather than app-scale complexity.
+- The Three.js hero is still the heaviest part of the bundle. That cost is currently accepted because it carries a large part of the site identity.
+- This is a one-page portfolio, so the architecture is intentionally lighter than a product app.
+- Additional locales such as Japanese or Hebrew are planned, but they are intentionally not exposed until the copy quality is strong enough to publish.
 
-## Next Improvements
+## Public Repo Checklist
 
-- Reduce the cost of the 3D hero
-- Add tests for nav, theme, and contact flows
-- Expand project cards into stronger case-study style proof points
-- Continue accessibility auditing for keyboard and mobile behavior
+Before making the repo public, verify:
+
+- no secrets are committed
+- README claims still match the code
+- contact env vars are documented
+- links and metadata assets are still valid
+- tests, lint, and build all pass

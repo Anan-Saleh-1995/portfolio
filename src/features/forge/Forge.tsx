@@ -34,6 +34,9 @@ export const Forge = () => {
                   <span className={styles.tag}>{project.tag}</span>
                   <span className={styles.cardTitle}>{project.title}</span>
                   <span className={styles.cardDesc}>{project.description}</span>
+                  {project.statusLabel && (
+                    <span className={styles.status}>{project.statusLabel}</span>
+                  )}
                   {project.private && (
                     <Lock
                       size={14}

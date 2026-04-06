@@ -137,6 +137,7 @@ export const homeContent = {
         tag: "wip",
         url: "#",
         private: true,
+        statusLabel: "Private build",
       },
     ],
   },
@@ -179,6 +180,14 @@ export const homeContent = {
       { value: "3", label: "Role-based app shells" },
       { value: "65", label: "Server test files" },
     ],
+    decisions: {
+      heading: "Key Engineering Decisions",
+      items: [
+        "Keep traveler, guide, and admin flows isolated in route structure so permissions are reinforced in both UI and backend design.",
+        "Abstract storage behind local and S3 drivers so upload behavior stays consistent across local development and production.",
+        "Treat payments as a lifecycle, not a single endpoint, so capture, rollback, refund, and audit paths stay explicit.",
+      ],
+    },
     impact:
       "The result is a platform with clearer role boundaries, safer upload and payment flows, better operational visibility, and a backend shape that can grow feature-by-feature instead of collapsing into a monolith of route handlers.",
   },

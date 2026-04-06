@@ -80,6 +80,19 @@ export const ProvingGround = () => {
             </div>
 
             <div className={styles.proofCard} data-animate>
+              <span className={styles.eyebrow}>
+                {provingGround.decisions.heading}
+              </span>
+              <ul className={styles.decisionList} role="list">
+                {provingGround.decisions.items.map((item) => (
+                  <li key={item} className={styles.decisionItem}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={styles.proofCard} data-animate>
               <span className={styles.eyebrow}>Impact</span>
               <p className={styles.copy}>{provingGround.impact}</p>
             </div>
