@@ -47,4 +47,16 @@ describe("validateContactForm", () => {
       email: "Enter a valid email address",
     });
   });
+
+  it("returns an error for a message that is too short", () => {
+    const formData = createFormData({
+      name: "Anan",
+      email: "anan@example.com",
+      message: "short",
+    });
+
+    expect(validateContactForm(formData)).toEqual({
+      message: "Your message must be at least 10 characters",
+    });
+  });
 });

@@ -20,4 +20,10 @@ export default defineConfig(({ mode }) => ({
       "@": resolve(__dirname, "src"),
     },
   },
+  test: {
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts",
+    globals: true,
+    css: true,
+  },
 }));
