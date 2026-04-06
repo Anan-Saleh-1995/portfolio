@@ -35,4 +35,16 @@ describe("validateContactForm", () => {
 
     expect(validateContactForm(formData)).toEqual({});
   });
+
+  it("returns an error for an invalid email", () => {
+    const formData = createFormData({
+      name: "Anan",
+      email: "invalid",
+      message: "This is a valid message.",
+    });
+
+    expect(validateContactForm(formData)).toEqual({
+      email: "Enter a valid email address",
+    });
+  });
 });
