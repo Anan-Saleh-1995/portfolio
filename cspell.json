@@ -35,7 +35,8 @@
     "botcheck",
     "passwordless",
     "TOTP",
-    "mdlint"
+    "mdlint",
+    "frameloop"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }

@@ -1,12 +1,18 @@
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  BufferGeometry,
+  Color,
+  Float32BufferAttribute,
+  Mesh,
+  Points,
+} from "three";
 import { THEME_ACCENT_HEX, type Theme } from "@/shared/config/theme";
 import { useMouseParallax } from "./useMouseParallax";
 
-const THEME_ACCENTS: Record<Theme, { accent: THREE.Color }> = {
-  dark: { accent: new THREE.Color(THEME_ACCENT_HEX.dark) },
-  light: { accent: new THREE.Color(THEME_ACCENT_HEX.light) },
+const THEME_ACCENTS: Record<Theme, { accent: Color }> = {
+  dark: { accent: new Color(THEME_ACCENT_HEX.dark) },
+  light: { accent: new Color(THEME_ACCENT_HEX.light) },
 };
 
 const generatePositions = (count: number): Float32Array => {
@@ -22,29 +28,27 @@ const generatePositions = (count: number): Float32Array => {
   return arr;
 };
 
-const PARTICLE_POSITIONS = generatePositions(300);
+const PARTICLE_POSITIONS = generatePositions(160);
 
-const Particles = ({ color }: { color: THREE.Color }) => {
-  const ref = useRef<THREE.Points>(null!);
-
-  useFrame((_, delta) => {
-    ref.current.rotation.y += delta * 0.02;
-    ref.current.rotation.x += delta * 0.01;
-  });
+const Particles = ({ color }: { color: Color }) => {
+  const ref = useRef<Points>(null!);
+  const geometry = useMemo(() => {
+    const instance = new BufferGeometry();
+    instance.setAttribute(
+      "position",
+      new Float32BufferAttribute(PARTICLE_POSITIONS, 3),
+    );
+    return instance;
+  }, []);
 
   return (
     <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[PARTICLE_POSITIONS, 3]}
-        />
-      </bufferGeometry>
+      <primitive object={geometry} attach="geometry" />
       <pointsMaterial
-        size={0.035}
+        size={0.03}
         color={color}
         transparent
-        opacity={0.5}
+        opacity={0.42}
         sizeAttenuation
         depthWrite={false}
       />
@@ -52,31 +56,35 @@ const Particles = ({ color }: { color: THREE.Color }) => {
   );
 };
 
-const EnsoRing = ({ color }: { color: THREE.Color }) => {
-  const ref = useRef<THREE.Mesh>(null!);
-
-  useFrame((_, delta) => {
-    ref.current.rotation.z += delta * 0.12;
-  });
-
+const EnsoRing = ({ color }: { color: Color }) => {
+  const ref = useRef<Mesh>(null!);
   return (
-    <mesh ref={ref} rotation={[Math.PI * 0.15, 0, 0]}>
-      <torusGeometry args={[2, 0.08, 16, 100, 5.5]} />
-      <meshBasicMaterial color={color} transparent opacity={0.9} />
+    <mesh ref={ref} rotation={[Math.PI * 0.18, 0, 0.08]}>
+      <torusGeometry args={[2, 0.065, 12, 72, 5.5]} />
+      <meshBasicMaterial color={color} transparent opacity={0.88} />
     </mesh>
   );
 };
 
 const CameraRig = () => {
-  const mouse = useMouseParallax();
+  const { invalidate } = useThree();
+  const mouse = useMouseParallax(invalidate);
   const smoothed = useRef({ x: 0, y: 0 });
 
   useFrame((state) => {
-    smoothed.current.x += (mouse.current.x * 0.5 - smoothed.current.x) * 0.03;
-    smoothed.current.y += (mouse.current.y * 0.3 - smoothed.current.y) * 0.03;
+    smoothed.current.x += (mouse.current.x * 0.35 - smoothed.current.x) * 0.08;
+    smoothed.current.y += (mouse.current.y * 0.2 - smoothed.current.y) * 0.08;
     state.camera.position.x = smoothed.current.x;
     state.camera.position.y = smoothed.current.y;
     state.camera.lookAt(0, 0, 0);
+
+    const stillMoving =
+      Math.abs(mouse.current.x * 0.35 - smoothed.current.x) > 0.001 ||
+      Math.abs(mouse.current.y * 0.2 - smoothed.current.y) > 0.001;
+
+    if (stillMoving) {
+      invalidate();
+    }
   });
 
   return null;
@@ -87,9 +95,10 @@ const HeroScene = ({ theme }: { theme: Theme }) => {
 
   return (
     <Canvas
+      frameloop="demand"
       camera={{ position: [0, 0, 6], fov: 45 }}
       style={{ position: "absolute", inset: 0 }}
-      dpr={[1, 1.5]}
+      dpr={[1, 1.25]}
       gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
     >
       <CameraRig />
