@@ -12,7 +12,7 @@ export const useSmoothScroll = () => {
       smoothWheel: true,
     });
 
-    lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", () => ScrollTrigger.update());
 
     const tickerCallback = (time: number) => {
       lenis.raf(time * 1000);

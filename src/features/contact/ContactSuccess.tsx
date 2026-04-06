@@ -1,9 +1,9 @@
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import styles from "./Contact.module.css";
 
-type Props = {
+interface Props {
   onReset: () => void;
-};
+}
 
 export const ContactSuccess = ({ onReset }: Props) => {
   return (

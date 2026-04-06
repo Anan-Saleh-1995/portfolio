@@ -17,9 +17,9 @@ export const ContactForm = () => {
   );
 };
 
-type ContactFormContentProps = {
+interface ContactFormContentProps {
   onReset: () => void;
-};
+}
 
 const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
   const [state, formAction, isPending] = useActionState(

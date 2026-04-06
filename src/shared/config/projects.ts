@@ -1,11 +1,11 @@
-type Project = {
+interface Project {
   title: string;
   description: string;
   tag: string;
   url: string;
   placeholder?: boolean;
   private?: boolean;
-};
+}
 
 export const projects: Project[] = [
   {

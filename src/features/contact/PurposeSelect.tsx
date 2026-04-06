@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Contact.module.css";
 
-type Option = {
+interface Option {
   label: string;
   value: string;
-};
+}
 
 const OPTIONS: Option[] = [
   { value: "Hiring Inquiry", label: "Hiring Inquiry" },

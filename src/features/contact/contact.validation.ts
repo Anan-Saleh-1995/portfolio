@@ -3,10 +3,15 @@ import type { ContactErrors } from "./contact.types";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_MESSAGE_LENGTH = 10;
 
+const getStringField = (formData: FormData, key: string) => {
+  const value = formData.get(key);
+  return typeof value === "string" ? value.trim() : "";
+};
+
 export const validateContactForm = (formData: FormData): ContactErrors => {
-  const name = formData.get("name")?.toString().trim() || "";
-  const email = formData.get("email")?.toString().trim() || "";
-  const message = formData.get("message")?.toString().trim() || "";
+  const name = getStringField(formData, "name");
+  const email = getStringField(formData, "email");
+  const message = getStringField(formData, "message");
 
   const errors: ContactErrors = {};
 

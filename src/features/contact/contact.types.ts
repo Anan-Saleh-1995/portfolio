@@ -1,11 +1,11 @@
-export type ContactErrors = {
+export interface ContactErrors {
   name?: string;
   email?: string;
   message?: string;
-};
+}
 
-export type ContactFormState = {
+export interface ContactFormState {
   success: boolean;
   errors: ContactErrors;
   errorMessage: string;
-};
+}
