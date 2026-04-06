@@ -11,7 +11,7 @@ import styles from "./Home.module.css";
 export const Home = () => (
   <>
     <Nav />
-    <main className={styles.root}>
+    <main id="main-content" className={styles.root}>
       <Hero />
       <TheWay />
       <Arsenal />

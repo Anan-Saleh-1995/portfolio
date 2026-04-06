@@ -147,6 +147,12 @@
   border-radius: 50%;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .scrollCue {
+    animation: none;
+  }
+}
+
 @keyframes bounce {
   0%,
   100% {

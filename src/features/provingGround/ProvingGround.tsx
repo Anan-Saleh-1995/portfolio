@@ -64,6 +64,9 @@ export const ProvingGround = () => {
                 </li>
               ))}
             </ul>
+
+            <span className={styles.eyebrow}>Impact</span>
+            <p className={styles.copy}>{provingGround.impact}</p>
           </article>
 
           <aside className={styles.aside}>
@@ -90,11 +93,6 @@ export const ProvingGround = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className={styles.proofCard} data-animate>
-              <span className={styles.eyebrow}>Impact</span>
-              <p className={styles.copy}>{provingGround.impact}</p>
             </div>
           </aside>
         </div>
