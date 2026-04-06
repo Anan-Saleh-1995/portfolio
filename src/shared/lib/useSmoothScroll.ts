@@ -14,6 +14,7 @@ interface MobileMenuToggleDetail {
 export const useSmoothScroll = () => {
   useEffect(() => {
     const lenis = new Lenis({
+      anchors: true,
       lerp: 0.1,
       smoothWheel: true,
     });
