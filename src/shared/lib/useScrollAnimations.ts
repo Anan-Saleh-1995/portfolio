@@ -20,7 +20,7 @@ export const useScrollAnimations = () => {
 
     const ctx = gsap.context(() => {
       heroEntrance();
-      revealSection("about");
+      revealSection("the-way");
       revealSection("arsenal");
       revealSection("forge");
       revealSection("contact");

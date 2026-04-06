@@ -21,7 +21,7 @@ export const HeroOverlay = () => (
       </p>
 
       <div className={styles.ctas} data-animate>
-        <a href="#about" className={styles.ctaPrimary}>
+        <a href="#the-way" className={styles.ctaPrimary}>
           Explore
         </a>
         <a
@@ -36,7 +36,7 @@ export const HeroOverlay = () => (
     </div>
 
     <a
-      href="#about"
+      href="#the-way"
       className={styles.scrollCue}
       data-animate
       aria-label="Scroll down"

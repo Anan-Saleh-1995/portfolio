@@ -7,7 +7,7 @@ import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import styles from "./Nav.module.css";
 
 const NAV_LINKS = [
-  { href: "#about", label: "About" },
+  { href: "#the-way", label: "The Way" },
   { href: "#arsenal", label: "Arsenal" },
   { href: "#forge", label: "Forge" },
   { href: "#contact", label: "Engagement" },

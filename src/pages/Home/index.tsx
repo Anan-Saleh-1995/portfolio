@@ -1,6 +1,6 @@
 import { Nav } from "@/features/nav/Nav";
 import { Hero } from "@/features/hero/Hero";
-import { About } from "@/features/about/About";
+import { TheWay } from "@/features/TheWay/TheWay";
 import { Arsenal } from "@/features/arsenal/Arsenal";
 import { Forge } from "@/features/forge/Forge";
 import { Contact } from "@/features/contact/Contact";
@@ -12,7 +12,7 @@ export const Home = () => (
     <Nav />
     <main className={styles.root}>
       <Hero />
-      <About />
+      <TheWay />
       <Arsenal />
       <Forge />
       <Contact />

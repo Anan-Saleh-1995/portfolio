@@ -1,5 +1,5 @@
 import { SectionLabel } from "@/shared/ui/SectionLabel";
-import styles from "./About.module.css";
+import styles from "./TheWay.module.css";
 
 const STATS = [
   { value: "3+", label: "Years in production" },
@@ -7,17 +7,17 @@ const STATS = [
   { value: "∞", label: "Commits to craft" },
 ];
 
-export const About = () => (
-  <section id="about" className={styles.root}>
+export const TheWay = () => (
+  <section id="the-way" className={styles.root}>
     <div className={styles.container}>
       <div data-animate>
-        <SectionLabel number="02" title="About" />
+        <SectionLabel number="02" title="The Way" />
       </div>
 
       <div className={styles.grid}>
         <div className={styles.content}>
           <h2 className={styles.heading} data-animate>
-            The Path
+            The Way
           </h2>
           <p className={styles.bio} data-animate>
             Full-stack developer with 3 years building and maintaining
