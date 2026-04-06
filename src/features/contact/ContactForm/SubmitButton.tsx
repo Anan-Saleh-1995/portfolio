@@ -1,5 +1,5 @@
 import { useFormStatus } from "react-dom";
-import styles from "./Contact.module.css";
+import styles from "./ContactForm.module.css";
 
 export const SubmitButton = () => {
   const { pending } = useFormStatus();

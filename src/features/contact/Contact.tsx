@@ -4,7 +4,7 @@ import { homeContent } from "@/shared/content/en/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
-import { ContactForm } from "./contactForm";
+import { ContactForm } from "./ContactForm/ContactForm";
 import styles from "./Contact.module.css";
 
 export const Contact = () => {

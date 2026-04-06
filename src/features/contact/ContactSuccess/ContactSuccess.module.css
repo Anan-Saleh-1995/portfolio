@@ -1,0 +1,48 @@
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+.successEnso {
+  opacity: 0.2;
+}
+
+.successHeading {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.successText {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.resetLink {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--token);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  align-self: flex-start;
+  padding: 0;
+  transition: opacity 200ms ease;
+}
+
+.resetLink:hover {
+  opacity: 0.7;
+}
+
+.resetLink:focus-visible {
+  outline: 2px solid var(--token);
+  outline-offset: 2px;
+}

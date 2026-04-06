@@ -1,0 +1,130 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.input,
+.textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+  min-height: 44px;
+  width: 100%;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input:hover,
+.textarea:hover {
+  border-color: var(--text-muted);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: 2px solid var(--token);
+  outline-offset: 2px;
+  border-color: var(--token);
+}
+
+.input[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: var(--token);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.error {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.03em;
+  color: var(--token);
+}
+
+.errorBanner {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--token);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--token);
+  background-color: var(--accent-glow);
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.05em;
+  background: var(--token);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+  margin-top: 0.5rem;
+}
+
+.submit:hover {
+  opacity: 0.85;
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--token);
+  outline-offset: 2px;
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.honeypot {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

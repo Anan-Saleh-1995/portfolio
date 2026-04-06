@@ -1,10 +1,10 @@
 import { useActionState, useState } from "react";
-import styles from "./Contact.module.css";
-import { submitContactAction } from "./contact.action";
-import { initialContactFormState } from "./contact.initialState";
-import { ContactSuccess } from "./ContactSuccess";
+import styles from "./ContactForm.module.css";
+import { submitContactAction } from "../contact.action";
+import { initialContactFormState } from "../contact.initialState";
+import { ContactSuccess } from "../ContactSuccess/ContactSuccess";
 import { SubmitButton } from "./SubmitButton";
-import { PurposeSelect } from "./PurposeSelect";
+import { PurposeSelect } from "../PurposeSelect/PurposeSelect";
 
 export const ContactForm = () => {
   const [formVersion, setFormVersion] = useState(0);

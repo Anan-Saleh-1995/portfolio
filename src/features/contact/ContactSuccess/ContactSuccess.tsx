@@ -1,5 +1,5 @@
 import { EnsoMark } from "@/shared/ui/EnsoMark";
-import styles from "./Contact.module.css";
+import styles from "./ContactSuccess.module.css";
 
 interface Props {
   onReset: () => void;

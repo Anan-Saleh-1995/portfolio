@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./Contact.module.css";
+import styles from "./PurposeSelect.module.css";
 
 interface Option {
   label: string;
@@ -90,6 +90,7 @@ export const PurposeSelect = () => {
     <div className={styles.customSelect} ref={rootRef}>
       <input type="hidden" name="subject" value={selected} />
       <button
+        id="contact-subject"
         type="button"
         className={styles.selectTrigger}
         aria-haspopup="listbox"
