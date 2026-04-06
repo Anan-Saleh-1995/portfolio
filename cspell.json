@@ -31,7 +31,8 @@
     "kasa",
     "hakama",
     "kata",
-    "saleh"
+    "saleh",
+    "botcheck"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
