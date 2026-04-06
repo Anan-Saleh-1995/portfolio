@@ -18,7 +18,17 @@ const SKILLS = [
   },
   {
     category: "Frontend",
-    items: ["React", "TypeScript", "JavaScript", "HTML", "CSS", "Vite"],
+    items: [
+      "React",
+      "React Router",
+      "TanStack Query",
+      "React Hook Form",
+      "Vite",
+    ],
+  },
+  {
+    category: "UI Systems",
+    items: ["Ant Design", "MUI", "shadcn/ui", "Tailwind CSS"],
   },
   {
     category: "Languages",
@@ -42,15 +52,7 @@ const SKILLS = [
   },
   {
     category: "Quality & Workflow",
-    items: [
-      "Jest",
-      "Vitest",
-      "Supertest",
-      "Integration Testing",
-      "Git",
-      "Jira",
-      "Agile",
-    ],
+    items: ["Jest", "Vitest", "Unit Testing", "Git", "Jira", "Agile"],
   },
 ];
 
