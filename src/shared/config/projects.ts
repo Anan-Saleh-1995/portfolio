@@ -1,4 +1,4 @@
-export type Project = {
+type Project = {
   title: string;
   description: string;
   tag: string;
@@ -22,8 +22,7 @@ export const projects: Project[] = [
   },
   {
     title: "Resume Site",
-    description:
-      "Multilingual resume built with Next.js — Arabic, Hebrew, English.",
+    description: "Multilingual resume built with Hugo — Hebrew, English.",
     tag: "design",
     url: "https://resume-site-opal-phi.vercel.app/en/",
   },
