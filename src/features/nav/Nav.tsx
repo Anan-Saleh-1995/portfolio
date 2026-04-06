@@ -1,10 +1,12 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
 import { useHideOnScroll } from "./useHideOnScroll";
 import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import styles from "./Nav.module.css";
+
+const MOBILE_MENU_EVENT = "portfolio:mobile-menu-toggle";
 
 const NAV_LINKS = [
   { href: "#the-way", label: "The Way" },
@@ -19,6 +21,22 @@ export const Nav = () => {
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   useEscapeKey(closeMenu, menuOpen);
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent(MOBILE_MENU_EVENT, {
+        detail: { open: menuOpen },
+      }),
+    );
+
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent(MOBILE_MENU_EVENT, {
+          detail: { open: false },
+        }),
+      );
+    };
+  }, [menuOpen]);
 
   return (
     <header className={`${styles.root} ${hidden ? styles.hidden : ""}`}>

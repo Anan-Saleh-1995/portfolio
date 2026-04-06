@@ -72,17 +72,28 @@ const revealSection = (id: string) => {
 };
 
 const footerReveal = () => {
-  const footer = document.querySelector("footer");
+  const footer = document.querySelector<HTMLElement>("footer");
   if (!footer) return;
 
-  gsap.set(footer, { opacity: 0 });
+  if (footer.getBoundingClientRect().top <= window.innerHeight) {
+    gsap.set(footer, { opacity: 1 });
+    return;
+  }
 
-  ScrollTrigger.create({
-    trigger: footer,
-    start: "top 95%",
-    once: true,
-    onEnter: () => {
-      gsap.to(footer, { opacity: 1, duration: 0.5, ease: "power2.out" });
+  gsap.fromTo(
+    footer,
+    { opacity: 0 },
+    {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power2.out",
+      immediateRender: false,
+      scrollTrigger: {
+        trigger: footer,
+        start: "top bottom",
+        once: true,
+        invalidateOnRefresh: true,
+      },
     },
-  });
+  );
 };
