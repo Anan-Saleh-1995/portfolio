@@ -10,7 +10,7 @@ export const Forge = () => (
         <SectionLabel number="04" title="Forge" />
       </div>
       <h2 className={styles.heading} data-animate>
-        Deployed in the Field
+        Blades Forged
       </h2>
 
       <ul className={styles.grid} role="list" data-animate>

@@ -1,23 +1,33 @@
 import { Mail, ExternalLink } from "lucide-react";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
+import { ContactForm } from "./contactForm";
 import styles from "./Contact.module.css";
 
-export const Contact = () => (
-  <section id="contact" className={styles.root}>
-    <div className={styles.container}>
-      <div data-animate>
-        <SectionLabel number="05" title="Engagement" />
-      </div>
+export const Contact = () => {
+  return (
+    <section id="contact" className={styles.root}>
+      <div className={styles.container}>
+        <div data-animate>
+          <SectionLabel number="05" title="Engagement" />
+        </div>
 
-      <div className={styles.body} data-animate>
-        <div className={styles.content}>
-          <h2 className={styles.heading}>Begin the Conversation</h2>
-          <p className={styles.sub}>
-            Open to new opportunities, collaborations, and interesting problems.
-            Reach out directly.
-          </p>
+        <div className={styles.body} data-animate>
+          <div className={styles.formColumn}>
+            <h2 className={styles.heading}>State Your Intent</h2>
+            <p className={styles.sub}>
+              Opportunities, alliances, and worthy challenges are welcome. Send
+              word.
+            </p>
 
+            <ContactForm />
+          </div>
+
+          <EnsoMark size={160} className={styles.enso} />
+        </div>
+
+        <div className={styles.channels} data-animate>
+          <span className={styles.channelsLabel}>Direct Channels</span>
           <ul className={styles.links} role="list">
             <li>
               <a href="mailto:anansaleh18@gmail.com" className={styles.link}>
@@ -38,9 +48,7 @@ export const Contact = () => (
             </li>
           </ul>
         </div>
-
-        <EnsoMark size={160} className={styles.enso} />
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
