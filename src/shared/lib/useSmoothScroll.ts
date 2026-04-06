@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "./motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +14,10 @@ interface MobileMenuToggleDetail {
 
 export const useSmoothScroll = () => {
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      return;
+    }
+
     const lenis = new Lenis({
       anchors: true,
       lerp: 0.1,

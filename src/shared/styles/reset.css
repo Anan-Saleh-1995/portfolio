@@ -57,3 +57,7 @@ ol {
 [data-custom-cursor] * {
   cursor: none !important;
 }
+
+[data-custom-cursor] :is(input, textarea, select, option) {
+  cursor: auto !important;
+}
