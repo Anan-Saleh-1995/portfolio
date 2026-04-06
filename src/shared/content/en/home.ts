@@ -186,6 +186,7 @@ export const homeContent = {
         "Keep traveler, guide, and admin flows isolated in route structure so permissions are reinforced in both UI and backend design.",
         "Abstract storage behind local and S3 drivers so upload behavior stays consistent across local development and production.",
         "Treat payments as a lifecycle, not a single endpoint, so capture, rollback, refund, and audit paths stay explicit.",
+        "Organize the backend around domain modules instead of route sprawl so auth, trips, media, payments, and reports can evolve independently.",
       ],
     },
     impact:
