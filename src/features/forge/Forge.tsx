@@ -16,35 +16,35 @@ export const Forge = () => (
       <ul className={styles.grid} role="list" data-animate>
         {projects.map((project) => (
           <li key={project.title}>
-            <a
-              href={project.private ? undefined : project.url}
-              target={
-                project.private || project.placeholder ? undefined : "_blank"
-              }
-              rel={
-                project.private || project.placeholder
-                  ? undefined
-                  : "noopener noreferrer"
-              }
-              role={project.private ? "presentation" : undefined}
-              className={`${styles.card} ${project.placeholder ? styles.cardPlaceholder : ""}`}
-              aria-disabled={project.placeholder}
-              tabIndex={project.placeholder ? -1 : undefined}
-            >
-              <span className={styles.tag}>{project.tag}</span>
-              <span className={styles.cardTitle}>{project.title}</span>
-              <span className={styles.cardDesc}>{project.description}</span>
-              {project.private && (
-                <Lock size={14} className={styles.icon} aria-hidden="true" />
-              )}
-              {!project.private && !project.placeholder && (
+            {project.private || project.placeholder ? (
+              <article
+                className={`${styles.card} ${styles.cardPlaceholder}`}
+                aria-label={`${project.title} project card`}
+              >
+                <span className={styles.tag}>{project.tag}</span>
+                <span className={styles.cardTitle}>{project.title}</span>
+                <span className={styles.cardDesc}>{project.description}</span>
+                {project.private && (
+                  <Lock size={14} className={styles.icon} aria-hidden="true" />
+                )}
+              </article>
+            ) : (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.card}
+              >
+                <span className={styles.tag}>{project.tag}</span>
+                <span className={styles.cardTitle}>{project.title}</span>
+                <span className={styles.cardDesc}>{project.description}</span>
                 <ExternalLink
                   size={14}
                   className={styles.icon}
                   aria-hidden="true"
                 />
-              )}
-            </a>
+              </a>
+            )}
           </li>
         ))}
       </ul>
