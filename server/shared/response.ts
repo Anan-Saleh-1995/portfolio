@@ -1,4 +1,4 @@
-import type { ApiResponseShape } from "./types";
+import type { ApiResponseShape } from "./types.js";
 
 export const json = <TBody>(
   res: ApiResponseShape,

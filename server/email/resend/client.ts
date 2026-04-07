@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { getEmailConfig } from "./config";
+import { getEmailConfig } from "./config.js";
 
 let cachedClient: Resend | null | undefined;
 

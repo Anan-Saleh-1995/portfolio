@@ -1,6 +1,6 @@
-import { ApiEvent } from "./events";
-import { getLogSource, logInfo } from "./logger";
-import { getEnvString } from "./strings";
+import { ApiEvent } from "./events.js";
+import { getLogSource, logInfo } from "./logger.js";
+import { getEnvString } from "./strings.js";
 
 interface ServerEnv {
   allowedOrigins: string[];

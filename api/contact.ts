@@ -1,1 +1,1 @@
-export { handler as default } from "./contact/handler";
+export { handler as default } from "../server/contact/handler.js";

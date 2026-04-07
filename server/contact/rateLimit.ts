@@ -1,7 +1,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { getServerEnv } from "../shared/env";
-import type { ApiRequestShape } from "../shared/types";
+import { getServerEnv } from "../shared/env.js";
+import type { ApiRequestShape } from "../shared/types.js";
 
 const WINDOW_LIMIT = 1;
 const WINDOW_DURATION = "1 d";

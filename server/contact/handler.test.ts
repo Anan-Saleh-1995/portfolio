@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ContactApiErrorCode } from "../../src/shared/contracts/contact";
+import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
 
 vi.mock("../email/resend", () => ({
   sendContactEmail: vi.fn(),
@@ -10,17 +10,17 @@ vi.mock("./rateLimit", () => ({
   resetRateLimitStore: vi.fn(),
 }));
 
-import { sendContactEmail } from "../email/resend";
-import { SendEmailResult } from "../email/types";
-import { HttpMethod, HttpStatus } from "../shared/http";
-import type { ApiRequestShape, ApiResponseShape } from "../shared/types";
-import { handler } from "./handler";
-import type { ContactPayload } from "./types";
-import { isRateLimited, resetRateLimitStore } from "./rateLimit";
+import { sendContactEmail } from "../email/resend/index.js";
+import { SendEmailResult } from "../email/types.js";
+import { HttpMethod, HttpStatus } from "../shared/http.js";
+import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
+import { handler } from "./handler.js";
+import type { ContactPayload } from "./types.js";
+import { isRateLimited, resetRateLimitStore } from "./rateLimit.js";
 import {
   CONTACT_SUCCESS_RESPONSE,
   createContactFailureResponse,
-} from "./responses";
+} from "./responses.js";
 
 const mockedSendContactEmail = vi.mocked(sendContactEmail);
 const mockedIsRateLimited = vi.mocked(isRateLimited);

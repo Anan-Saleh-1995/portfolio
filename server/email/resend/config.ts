@@ -4,9 +4,9 @@ interface EmailConfig {
   toEmail: string;
 }
 
-import { ApiEvent } from "../../shared/events";
-import { getServerEnv } from "../../shared/env";
-import { getLogSource, logInfo } from "../../shared/logger";
+import { ApiEvent } from "../../shared/events.js";
+import { getServerEnv } from "../../shared/env.js";
+import { getLogSource, logInfo } from "../../shared/logger.js";
 
 let cachedConfig: EmailConfig | null | undefined;
 const LOG_SOURCE = getLogSource(import.meta.url);

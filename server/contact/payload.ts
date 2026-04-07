@@ -1,5 +1,5 @@
-import type { ContactPayload } from "./types";
-import { getTrimmedString } from "../shared/strings";
+import type { ContactPayload } from "./types.js";
+import { getTrimmedString } from "../shared/strings.js";
 
 const DEFAULT_SUBJECT = "Portfolio Contact";
 

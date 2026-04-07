@@ -1,18 +1,18 @@
-import { ContactApiErrorCode } from "../../src/shared/contracts/contact";
-import { sendContactEmail } from "../email/resend";
-import { SendEmailResult } from "../email/types";
-import { ApiEvent } from "../shared/events";
-import { HttpMethod, HttpStatus } from "../shared/http";
-import { getLogSource, logInfo } from "../shared/logger";
-import { getOriginHeader, isAllowedOrigin } from "../shared/origin";
-import { json } from "../shared/response";
-import type { ApiRequestShape, ApiResponseShape } from "../shared/types";
-import { parsePayload } from "./payload";
-import { isRateLimited } from "./rateLimit";
+import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
+import { sendContactEmail } from "../email/resend/index.js";
+import { SendEmailResult } from "../email/types.js";
+import { ApiEvent } from "../shared/events.js";
+import { HttpMethod, HttpStatus } from "../shared/http.js";
+import { getLogSource, logInfo } from "../shared/logger.js";
+import { getOriginHeader, isAllowedOrigin } from "../shared/origin.js";
+import { json } from "../shared/response.js";
+import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
+import { parsePayload } from "./payload.js";
+import { isRateLimited } from "./rateLimit.js";
 import {
   CONTACT_SUCCESS_RESPONSE,
   createContactFailureResponse,
-} from "./responses";
+} from "./responses.js";
 
 const LOG_SOURCE = getLogSource(import.meta.url);
 

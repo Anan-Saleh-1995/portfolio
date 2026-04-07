@@ -24,8 +24,8 @@ vi.mock("@upstash/redis", () => ({
   Redis: MockRedis,
 }));
 
-import { resetServerEnv } from "../shared/env";
-import { isRateLimited, resetRateLimitStore } from "./rateLimit";
+import { resetServerEnv } from "../shared/env.js";
+import { isRateLimited, resetRateLimitStore } from "./rateLimit.js";
 
 describe("isRateLimited", () => {
   afterEach(() => {

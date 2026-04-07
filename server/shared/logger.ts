@@ -1,6 +1,6 @@
 import { basename, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { ApiEventName } from "./events";
+import type { ApiEventName } from "./events.js";
 
 const serializeError = (error: unknown) => {
   if (error instanceof Error) {

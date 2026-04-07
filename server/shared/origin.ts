@@ -1,6 +1,6 @@
-import type { ApiRequestShape } from "./types";
-import { getServerEnv } from "./env";
-import { isString } from "./strings";
+import type { ApiRequestShape } from "./types.js";
+import { getServerEnv } from "./env.js";
+import { isString } from "./strings.js";
 
 const LOCALHOST_ORIGIN_PATTERN = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 

@@ -39,11 +39,11 @@ vi.mock("resend", () => ({
   Resend: MockResend,
 }));
 
-import { resetResendClient } from "./client";
-import { resetEmailConfig } from "./config";
-import { sendContactEmail } from "./index";
-import { SendEmailResult } from "../types";
-import { resetServerEnv } from "../../shared/env";
+import { resetResendClient } from "./client.js";
+import { resetEmailConfig } from "./config.js";
+import { sendContactEmail } from "./index.js";
+import { SendEmailResult } from "../types.js";
+import { resetServerEnv } from "../../shared/env.js";
 
 describe("sendContactEmail", () => {
   afterEach(() => {
@@ -106,7 +106,8 @@ describe("sendContactEmail", () => {
 
     expect(result).toBe(SendEmailResult.Sent);
     expect(MockResend).toHaveBeenCalledTimes(1);
-    const firstArg = sendEmail.mock.calls.at(0)?.at(0);
+    const firstCall = sendEmail.mock.calls[0];
+    const firstArg = firstCall?.[0];
 
     expect(firstArg).toMatchObject({
       from: "Portfolio <contact@send.anansaleh.com>",

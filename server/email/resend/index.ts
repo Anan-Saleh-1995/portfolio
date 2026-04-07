@@ -1,11 +1,11 @@
-import type { ContactPayload } from "../../contact/types";
-import { EmailProvider } from "../providers";
-import { ApiEvent } from "../../shared/events";
-import { SendEmailResult } from "../types";
-import { getResendClient } from "./client";
-import { getEmailConfig } from "./config";
-import { getLogSource, logError, logInfo } from "../../shared/logger";
-import { ResendTemplate } from "./templates";
+import type { ContactPayload } from "../../contact/types.js";
+import { EmailProvider } from "../providers.js";
+import { ApiEvent } from "../../shared/events.js";
+import { SendEmailResult } from "../types.js";
+import { getResendClient } from "./client.js";
+import { getEmailConfig } from "./config.js";
+import { getLogSource, logError, logInfo } from "../../shared/logger.js";
+import { ResendTemplate } from "./templates.js";
 
 const LOG_SOURCE = getLogSource(import.meta.url);
 

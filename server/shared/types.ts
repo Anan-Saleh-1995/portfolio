@@ -1,4 +1,4 @@
-import type { HttpMethod } from "./http";
+import type { HttpMethod } from "./http.js";
 
 export interface ApiRequestShape<TBody = unknown> {
   method?: HttpMethod;
