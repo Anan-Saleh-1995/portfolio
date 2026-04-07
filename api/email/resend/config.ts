@@ -1,4 +1,4 @@
-export interface EmailConfig {
+interface EmailConfig {
   apiKey: string;
   fromEmail: string;
   toEmail: string;
