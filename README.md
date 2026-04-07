@@ -28,7 +28,7 @@ This repo is intentionally small in surface area, but it treats frontend quality
 
 - Content is routed through `getHomeContent()` and validated by shared content types in `src/shared/content/home.types.ts`.
 - The repo stays English-only for now, but the typed content/i18n scaffolding remains in place so future locales can be added without another structural refactor.
-- Contact delivery is handled through a Vercel serverless function at `api/contact.js`, so the mail key stays server-side instead of being exposed to the browser bundle.
+- Contact delivery is handled through a Vercel serverless function at `api/contact.ts`, backed by Resend so the API key stays server-side.
 - Motion is split by purpose:
   - hero intro animation
   - section reveal on scroll
@@ -109,8 +109,9 @@ npm run test
 The contact form expects the following variables in `.env.local`:
 
 ```env
-WEB3FORMS_KEY=your_key
-WEB3FORMS_MAIL_API=your_endpoint
+RESEND_API_KEY=your_key
+RESEND_FROM_EMAIL=Portfolio <contact@send.anansaleh.com>
+CONTACT_TO_EMAIL=anansaleh18@gmail.com
 ```
 
 Without them, the contact form UI still renders, but message delivery will fail.

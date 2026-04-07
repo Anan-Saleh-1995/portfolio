@@ -27,12 +27,22 @@ describe("ContactForm", () => {
 
     mockedUseActionState
       .mockReturnValueOnce([
-        { success: true, errors: {}, errorMessage: "" },
+        {
+          success: true,
+          errors: {},
+          errorMessage: "",
+          values: { name: "", email: "", subject: "", message: "" },
+        },
         action,
         false,
       ])
       .mockReturnValue([
-        { success: false, errors: {}, errorMessage: "" },
+        {
+          success: false,
+          errors: {},
+          errorMessage: "",
+          values: { name: "", email: "", subject: "", message: "" },
+        },
         action,
         false,
       ]);
@@ -46,5 +56,32 @@ describe("ContactForm", () => {
     expect(screen.getByLabelText("Purpose")).toBeInTheDocument();
     expect(screen.getByLabelText("Message")).toBeInTheDocument();
     expect(screen.queryByText("Word Received")).not.toBeInTheDocument();
+  });
+
+  it("keeps submitted values when the action returns an error state", () => {
+    const action = vi.fn();
+
+    mockedUseActionState.mockReturnValue([
+      {
+        success: false,
+        errors: {},
+        errorMessage: "Your word could not be delivered.",
+        values: {
+          name: "Anan",
+          email: "anan@example.com",
+          subject: "Hiring Inquiry",
+          message: "Hold the line.",
+        },
+      },
+      action,
+      false,
+    ]);
+
+    render(<ContactForm />);
+
+    expect(screen.getByLabelText("Name")).toHaveValue("Anan");
+    expect(screen.getByLabelText("Email")).toHaveValue("anan@example.com");
+    expect(screen.getByLabelText("Purpose")).toHaveValue("Hiring Inquiry");
+    expect(screen.getByLabelText("Message")).toHaveValue("Hold the line.");
   });
 });
