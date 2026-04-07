@@ -37,17 +37,25 @@ const isValidPayload = (body) => {
 
 const handler = async (req, res) => {
   if (req.method !== "POST") {
+    console.log({ route: "/api/contact", error: "method_not_allowed", method: req.method });
     res.setHeader("Allow", "POST");
     return json(res, 405, { success: false });
   }
 
   const config = getConfig();
 
+  console.log({
+    route: "/api/contact",
+    hasKey: Boolean(config?.accessKey),
+    hasEndpoint: Boolean(config?.endpoint),
+  });
+
   if (!config) {
     return json(res, 500, { success: false });
   }
 
   if (!isValidPayload(req.body)) {
+    console.log({ route: "/api/contact", error: "invalid_payload" });
     return json(res, 400, { success: false });
   }
 
@@ -71,6 +79,12 @@ const handler = async (req, res) => {
 
     const contentType = upstream.headers.get("content-type");
 
+    console.log({
+      route: "/api/contact",
+      upstreamStatus: upstream.status,
+      contentType,
+    });
+
     if (!upstream.ok || !contentType?.includes("application/json")) {
       return json(res, 502, { success: false });
     }
@@ -78,11 +92,13 @@ const handler = async (req, res) => {
     const data = await upstream.json();
 
     if (data?.success !== true) {
+      console.log({ route: "/api/contact", error: "upstream_rejected" });
       return json(res, 502, { success: false });
     }
 
     return json(res, 200, { success: true });
   } catch {
+    console.log({ route: "/api/contact", error: "upstream_request_failed" });
     return json(res, 502, { success: false });
   }
 };
