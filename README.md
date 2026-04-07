@@ -28,7 +28,7 @@ This repo is intentionally small in surface area, but it treats frontend quality
 
 - Content is routed through `getHomeContent()` and validated by shared content types in `src/shared/content/home.types.ts`.
 - The repo stays English-only for now, but the typed content/i18n scaffolding remains in place so future locales can be added without another structural refactor.
-- Contact delivery is handled through a Vercel serverless function at `api/contact.ts`, with the route split into shared API helpers, contact request parsing, and a Resend-backed email sender.
+- Contact delivery is handled through a single Vercel serverless entry at `api/contact.ts`, with the server-only implementation split under `server/` for contact handling, shared server utilities, and the Resend-backed sender.
 - Incoming contact mail is sent with the published Resend template alias `direct-word`, so the email styling stays in the provider template rather than inside the app bundle.
 - Motion is split by purpose:
   - hero intro animation
@@ -71,10 +71,10 @@ npm run dev
 To test the contact form end-to-end with the serverless route locally, use:
 
 ```bash
-npx vercel dev
+npm run vercel:dev
 ```
 
-`npm run dev` only starts the Vite frontend, so `/api/contact` will 404 there. Use `npx vercel dev` whenever you need the real contact route locally.
+`npm run dev` only starts the Vite frontend, so `/api/contact` will 404 there. Use `npm run vercel:dev` whenever you need the real contact route locally.
 
 Build for production:
 

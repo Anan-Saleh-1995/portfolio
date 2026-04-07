@@ -108,4 +108,44 @@ describe("ContactForm", () => {
       duration: 5000,
     });
   });
+
+  it("shows a warning toast without rendering the inline error banner", () => {
+    const action = vi.fn();
+
+    mockedUseActionState.mockReturnValue([
+      {
+        success: false,
+        errors: {},
+        errorMessage:
+          "The channel is cooling. Try again in 24 hours or use a direct channel.",
+        values: {
+          name: "Anan",
+          email: "anan@example.com",
+          subject: "Hiring Inquiry",
+          message: "Hold the line.",
+        },
+        feedback: {
+          kind: "warning",
+          title: "The Gate Is Closed",
+          message:
+            "The channel is cooling. Try again in 24 hours or use a direct channel.",
+        },
+      },
+      action,
+      false,
+    ]);
+
+    render(<ContactForm />);
+
+    expect(
+      screen.queryByText(
+        "The channel is cooling. Try again in 24 hours or use a direct channel.",
+      ),
+    ).not.toBeInTheDocument();
+    expect(mockedToast.warning).toHaveBeenCalledWith("The Gate Is Closed", {
+      description:
+        "The channel is cooling. Try again in 24 hours or use a direct channel.",
+      duration: 7000,
+    });
+  });
 });
