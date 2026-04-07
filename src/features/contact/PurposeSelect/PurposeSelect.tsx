@@ -1,7 +1,11 @@
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import styles from "./PurposeSelect.module.css";
 
-export const PurposeSelect = () => {
+interface Props {
+  defaultValue: string;
+}
+
+export const PurposeSelect = ({ defaultValue }: Props) => {
   const { purposeSelect } = getHomeContent().contact.form;
 
   return (
@@ -9,7 +13,7 @@ export const PurposeSelect = () => {
       <select
         id="contact-subject"
         name="subject"
-        defaultValue=""
+        defaultValue={defaultValue}
         className={styles.select}
         aria-label={purposeSelect.ariaLabel}
       >

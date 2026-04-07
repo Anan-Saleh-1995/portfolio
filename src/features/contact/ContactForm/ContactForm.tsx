@@ -33,8 +33,10 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
     return <ContactSuccess onReset={onReset} />;
   }
 
+  const formKey = JSON.stringify(state.values);
+
   return (
-    <form action={formAction} noValidate className={styles.form}>
+    <form key={formKey} action={formAction} noValidate className={styles.form}>
       <div className={styles.srOnly} aria-live="polite">
         {isPending && form.liveRegion.pending}
         {!isPending && state.errorMessage}
@@ -52,6 +54,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
           id="contact-name"
           name="name"
           type="text"
+          defaultValue={state.values.name}
           required
           autoComplete="name"
           aria-describedby={
@@ -75,6 +78,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
           id="contact-email"
           name="email"
           type="email"
+          defaultValue={state.values.email}
           inputMode="email"
           required
           autoComplete="email"
@@ -95,7 +99,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
         <label htmlFor="contact-subject" className={styles.label}>
           {form.labels.purpose}
         </label>
-        <PurposeSelect />
+        <PurposeSelect defaultValue={state.values.subject} />
       </div>
 
       <div className={styles.field}>
@@ -105,6 +109,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
         <textarea
           id="contact-message"
           name="message"
+          defaultValue={state.values.message}
           required
           rows={5}
           aria-describedby={

@@ -1,8 +1,8 @@
 import { validateContactForm } from "./contact.validation";
-import type { ContactFormState } from "./contact.types";
+import type { ContactFormState, ContactFormValues } from "./contact.types";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
 
-interface Web3FormsResponse {
+interface ContactApiResponse {
   success?: boolean;
 }
 
@@ -11,36 +11,31 @@ const getStringField = (formData: FormData, key: string) => {
   return typeof value === "string" ? value.trim() : "";
 };
 
-const isWeb3FormsResponse = (value: unknown): value is Web3FormsResponse =>
+const isContactApiResponse = (value: unknown): value is ContactApiResponse =>
   typeof value === "object" && value !== null && "success" in value;
 
-const getEnvString = (value: unknown) =>
-  typeof value === "string" ? value.trim() : "";
-
-const getWeb3FormsConfig = () => {
-  const accessKey = getEnvString(import.meta.env.VITE_WEB3FORMS_KEY);
-  const endpoint = getEnvString(import.meta.env.VITE_WEB3FORMS_MAIL_API);
-
-  if (accessKey === "" || endpoint === "") {
-    return null;
-  }
-
-  return {
-    accessKey,
-    endpoint,
-  };
-};
+const getFormValues = (
+  formData: FormData,
+  defaultSubject: string,
+): ContactFormValues => ({
+  name: getStringField(formData, "name"),
+  email: getStringField(formData, "email"),
+  subject: getStringField(formData, "subject") || defaultSubject,
+  message: getStringField(formData, "message"),
+});
 
 export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
   const { delivery } = getHomeContent().contact.form;
+  const values = getFormValues(formData, delivery.defaultSubject);
   const errors = validateContactForm(formData);
   const failureState: ContactFormState = {
     success: false,
     errors: {},
     errorMessage: delivery.error,
+    values,
   };
 
   if (Object.keys(errors).length > 0) {
@@ -48,6 +43,7 @@ export const submitContactAction = async (
       success: false,
       errors,
       errorMessage: "",
+      values,
     };
   }
 
@@ -56,47 +52,25 @@ export const submitContactAction = async (
       success: true,
       errors: {},
       errorMessage: "",
+      values: {
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      },
     };
   }
 
-  const config = getWeb3FormsConfig();
-
-  if (!config) {
-    return failureState;
-  }
-
   try {
-    const body = new FormData();
-    body.append("access_key", config.accessKey);
-    body.append("name", getStringField(formData, "name"));
-    body.append("email", getStringField(formData, "email"));
-    body.append(
-      "subject",
-      getStringField(formData, "subject") || delivery.defaultSubject,
-    );
-    body.append("message", getStringField(formData, "message"));
-    body.append("botcheck", "");
-
-    console.log({
-      route: "web3forms",
-      hasKey: config.accessKey,
-      endpoint: config.endpoint,
-    });
-
-    const res = await fetch(config.endpoint, {
+    const res = await fetch("/api/contact", {
       method: "POST",
-      body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...values, botcheck: "" }),
     });
 
     const contentType = res.headers.get("content-type");
-
-    console.log({
-      route: "web3forms",
-      hasKey: config.accessKey !== "",
-      endpoint: config.endpoint,
-      status: res.status,
-      contentType,
-    });
 
     if (!res.ok || !contentType?.includes("application/json")) {
       return failureState;
@@ -104,12 +78,7 @@ export const submitContactAction = async (
 
     const data: unknown = await res.json();
 
-    console.log({
-      route: "web3forms",
-      success: isWeb3FormsResponse(data) ? data.success === true : false,
-    });
-
-    if (!isWeb3FormsResponse(data) || data.success !== true) {
+    if (!isContactApiResponse(data) || data.success !== true) {
       return failureState;
     }
 
@@ -117,14 +86,14 @@ export const submitContactAction = async (
       success: true,
       errors: {},
       errorMessage: "",
+      values: {
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      },
     };
   } catch {
-    console.log({
-      route: "web3forms",
-      error: "request_failed",
-      endpoint: config.endpoint,
-    });
-
     return failureState;
   }
 };
