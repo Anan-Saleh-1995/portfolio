@@ -36,7 +36,8 @@
     "passwordless",
     "TOTP",
     "mdlint",
-    "frameloop"
+    "frameloop",
+    "unstub"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }

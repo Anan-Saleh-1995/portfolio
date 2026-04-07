@@ -2,9 +2,6 @@ import { validateContactForm } from "./contact.validation";
 import type { ContactFormState } from "./contact.types";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
 
-const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string;
-const WEB3FORMS_MAIL_API = import.meta.env.VITE_WEB3FORMS_MAIL_API as string;
-
 interface Web3FormsResponse {
   success?: boolean;
 }
@@ -17,12 +14,34 @@ const getStringField = (formData: FormData, key: string) => {
 const isWeb3FormsResponse = (value: unknown): value is Web3FormsResponse =>
   typeof value === "object" && value !== null && "success" in value;
 
+const getEnvString = (value: unknown) =>
+  typeof value === "string" ? value.trim() : "";
+
+const getWeb3FormsConfig = () => {
+  const accessKey = getEnvString(import.meta.env.VITE_WEB3FORMS_KEY);
+  const endpoint = getEnvString(import.meta.env.VITE_WEB3FORMS_MAIL_API);
+
+  if (accessKey === "" || endpoint === "") {
+    return null;
+  }
+
+  return {
+    accessKey,
+    endpoint,
+  };
+};
+
 export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
   const { delivery } = getHomeContent().contact.form;
   const errors = validateContactForm(formData);
+  const failureState: ContactFormState = {
+    success: false,
+    errors: {},
+    errorMessage: delivery.error,
+  };
 
   if (Object.keys(errors).length > 0) {
     return {
@@ -40,9 +59,15 @@ export const submitContactAction = async (
     };
   }
 
+  const config = getWeb3FormsConfig();
+
+  if (!config) {
+    return failureState;
+  }
+
   try {
     const body = new FormData();
-    body.append("access_key", WEB3FORMS_KEY);
+    body.append("access_key", config.accessKey);
     body.append("name", getStringField(formData, "name"));
     body.append("email", getStringField(formData, "email"));
     body.append(
@@ -52,19 +77,21 @@ export const submitContactAction = async (
     body.append("message", getStringField(formData, "message"));
     body.append("botcheck", "");
 
-    const res = await fetch(WEB3FORMS_MAIL_API, {
+    const res = await fetch(config.endpoint, {
       method: "POST",
       body,
     });
 
+    const contentType = res.headers.get("content-type");
+
+    if (!res.ok || !contentType?.includes("application/json")) {
+      return failureState;
+    }
+
     const data: unknown = await res.json();
 
     if (!isWeb3FormsResponse(data) || data.success !== true) {
-      return {
-        success: false,
-        errors: {},
-        errorMessage: delivery.error,
-      };
+      return failureState;
     }
 
     return {
@@ -72,13 +99,7 @@ export const submitContactAction = async (
       errors: {},
       errorMessage: "",
     };
-  } catch (e) {
-    console.log(e, WEB3FORMS_MAIL_API, WEB3FORMS_KEY);
-
-    return {
-      success: false,
-      errors: {},
-      errorMessage: delivery.error,
-    };
+  } catch {
+    return failureState;
   }
 };
