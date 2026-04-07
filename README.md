@@ -28,7 +28,8 @@ This repo is intentionally small in surface area, but it treats frontend quality
 
 - Content is routed through `getHomeContent()` and validated by shared content types in `src/shared/content/home.types.ts`.
 - The repo stays English-only for now, but the typed content/i18n scaffolding remains in place so future locales can be added without another structural refactor.
-- Contact delivery is handled through a Vercel serverless function at `api/contact.ts`, backed by Resend so the API key stays server-side.
+- Contact delivery is handled through a Vercel serverless function at `api/contact.ts`, with the route split into shared API helpers, contact request parsing, and a Resend-backed email sender.
+- Incoming contact mail is sent with the published Resend template alias `direct-word`, so the email styling stays in the provider template rather than inside the app bundle.
 - Motion is split by purpose:
   - hero intro animation
   - section reveal on scroll
@@ -48,6 +49,7 @@ This repo is intentionally small in surface area, but it treats frontend quality
 - Pure helper behavior is tested close to the helper itself.
 - Lightweight component tests cover the interaction flows most likely to regress:
   - contact validation
+  - contact input preservation after failed submit
   - contact success/reset
   - theme helpers
   - mobile nav open/close
@@ -71,6 +73,8 @@ To test the contact form end-to-end with the serverless route locally, use:
 ```bash
 npx vercel dev
 ```
+
+`npm run dev` only starts the Vite frontend, so `/api/contact` will 404 there. Use `npx vercel dev` whenever you need the real contact route locally.
 
 Build for production:
 
@@ -109,17 +113,23 @@ npm run test
 The contact form expects the following variables in `.env.local`:
 
 ```env
+ALLOWED_ORIGINS=https://anansaleh.com,https://www.anansaleh.com
 RESEND_API_KEY=your_key
 RESEND_FROM_EMAIL=Portfolio <contact@send.anansaleh.com>
-CONTACT_TO_EMAIL=anansaleh18@gmail.com
+CONTACT_TO_EMAIL=your_inbox@example.com
+UPSTASH_REDIS_REST_URL=https://your-db.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 ```
 
 Without them, the contact form UI still renders, but message delivery will fail.
+
+For deployed environments, set the same values in Vercel for `Production` and `Preview`.
 
 ## Current Tradeoffs
 
 - The Three.js hero is still the heaviest part of the bundle. That cost is currently accepted because it carries a large part of the site identity.
 - This is a one-page portfolio, so the architecture is intentionally lighter than a product app.
+- Contact abuse protection uses an Upstash-backed server-side rate limit plus origin checks and a honeypot.
 - Additional locales such as Japanese or Hebrew are planned, but they are intentionally not exposed until the copy quality is strong enough to publish.
 
 ## Public Repo Checklist

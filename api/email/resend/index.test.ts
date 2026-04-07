@@ -43,6 +43,7 @@ import { resetResendClient } from "./client";
 import { resetEmailConfig } from "./config";
 import { sendContactEmail } from "./index";
 import { SendEmailResult } from "../types";
+import { resetServerEnv } from "../../shared/env";
 
 describe("sendContactEmail", () => {
   afterEach(() => {
@@ -50,6 +51,7 @@ describe("sendContactEmail", () => {
     MockResend.mockClear();
     resetEmailConfig();
     resetResendClient();
+    resetServerEnv();
     vi.unstubAllEnvs();
   });
 

@@ -5,26 +5,24 @@ interface EmailConfig {
 }
 
 import { ApiEvent } from "../../shared/events";
+import { getServerEnv } from "../../shared/env";
 import { getLogSource, logInfo } from "../../shared/logger";
 
 let cachedConfig: EmailConfig | null | undefined;
 const LOG_SOURCE = getLogSource(import.meta.url);
 
-const getEnvString = (value: string | undefined) =>
-  typeof value === "string" ? value.trim() : "";
-
 const readEmailConfig = (): EmailConfig | null => {
-  const apiKey = getEnvString(process.env.RESEND_API_KEY);
-  const fromEmail = getEnvString(process.env.RESEND_FROM_EMAIL);
-  const toEmail = getEnvString(process.env.CONTACT_TO_EMAIL);
-
-  logInfo(LOG_SOURCE, ApiEvent.EmailResendConfigCheck, {
-    hasApiKey: apiKey !== "",
-    hasFromEmail: fromEmail !== "",
-    hasToEmail: toEmail !== "",
-  });
+  const env = getServerEnv();
+  const apiKey = env.resendApiKey;
+  const fromEmail = env.resendFromEmail;
+  const toEmail = env.contactToEmail;
 
   if (apiKey === "" || fromEmail === "" || toEmail === "") {
+    logInfo(LOG_SOURCE, ApiEvent.EmailResendMissingConfig, {
+      hasApiKey: apiKey !== "",
+      hasFromEmail: fromEmail !== "",
+      hasToEmail: toEmail !== "",
+    });
     return null;
   }
 
