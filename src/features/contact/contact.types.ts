@@ -11,9 +11,16 @@ export interface ContactFormValues {
   message: string;
 }
 
+export interface ContactFormFeedback {
+  kind: "success" | "error" | "warning";
+  title: string;
+  message: string;
+}
+
 export interface ContactFormState {
   success: boolean;
   errors: ContactErrors;
   errorMessage: string;
   values: ContactFormValues;
+  feedback: ContactFormFeedback | null;
 }

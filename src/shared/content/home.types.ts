@@ -121,7 +121,13 @@ export interface HomeContent {
       };
       delivery: {
         error: string;
+        rateLimited: string;
         defaultSubject: string;
+      };
+      toast: {
+        successTitle: string;
+        errorTitle: string;
+        rateLimitedTitle: string;
       };
     };
   };

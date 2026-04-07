@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useActionState } from "react";
+import { toast } from "sonner";
 
 vi.mock("react", async () => {
   const actual = await vi.importActual<typeof import("react")>("react");
@@ -12,13 +13,25 @@ vi.mock("react", async () => {
   };
 });
 
+vi.mock("sonner", () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  },
+}));
+
 import { ContactForm } from "./ContactForm";
 
 const mockedUseActionState = vi.mocked(useActionState);
+const mockedToast = vi.mocked(toast);
 
 describe("ContactForm", () => {
   afterEach(() => {
     mockedUseActionState.mockReset();
+    mockedToast.success.mockReset();
+    mockedToast.error.mockReset();
+    mockedToast.warning.mockReset();
   });
 
   it("returns to a fresh form after resetting from the success state", async () => {
@@ -32,6 +45,7 @@ describe("ContactForm", () => {
           errors: {},
           errorMessage: "",
           values: { name: "", email: "", subject: "", message: "" },
+          feedback: null,
         },
         action,
         false,
@@ -42,6 +56,7 @@ describe("ContactForm", () => {
           errors: {},
           errorMessage: "",
           values: { name: "", email: "", subject: "", message: "" },
+          feedback: null,
         },
         action,
         false,
@@ -72,6 +87,11 @@ describe("ContactForm", () => {
           subject: "Hiring Inquiry",
           message: "Hold the line.",
         },
+        feedback: {
+          kind: "error",
+          title: "Delivery Faltered",
+          message: "Your word could not be delivered.",
+        },
       },
       action,
       false,
@@ -83,5 +103,9 @@ describe("ContactForm", () => {
     expect(screen.getByLabelText("Email")).toHaveValue("anan@example.com");
     expect(screen.getByLabelText("Purpose")).toHaveValue("Hiring Inquiry");
     expect(screen.getByLabelText("Message")).toHaveValue("Hold the line.");
+    expect(mockedToast.error).toHaveBeenCalledWith("Delivery Faltered", {
+      description: "Your word could not be delivered.",
+      duration: 5000,
+    });
   });
 });

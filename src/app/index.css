@@ -9,3 +9,82 @@
   --font-family-body: var(--font-body);
   --font-family-mono: var(--font-mono);
 }
+
+.samuraiToast {
+  border: 1px solid var(--border) !important;
+  border-left: 3px solid var(--token) !important;
+  border-radius: 0 !important;
+  background: color-mix(
+    in srgb,
+    var(--surface-raised) 92%,
+    var(--bg)
+  ) !important;
+  color: var(--text) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22) !important;
+  padding: 0.95rem 1rem !important;
+}
+
+.samuraiToast::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent 0,
+    transparent calc(100% - 28px),
+    color-mix(in srgb, var(--token) 16%, transparent) 100%
+  );
+}
+
+.samuraiToastTitle {
+  font-family: var(--font-mono) !important;
+  font-size: var(--text-xs) !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: var(--text) !important;
+}
+
+.samuraiToastDescription {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-sm) !important;
+  line-height: var(--leading-normal) !important;
+  color: var(--text-muted) !important;
+}
+
+.samuraiToastSuccess {
+  border-left-color: var(--gold) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--gold) 10%, transparent) 0%,
+      transparent 35%
+    ),
+    color-mix(in srgb, var(--surface-raised) 94%, var(--bg)) !important;
+}
+
+.samuraiToastWarning {
+  border-left-color: var(--token) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--token) 8%, transparent) 0%,
+      transparent 32%
+    ),
+    color-mix(in srgb, var(--surface-raised) 92%, var(--bg)) !important;
+}
+
+.samuraiToastWarning {
+  border-left-color: var(--accent) !important;
+}
+
+.samuraiToastError {
+  border-left-color: var(--accent-deep) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-deep) 14%, transparent) 0%,
+      transparent 34%
+    ),
+    color-mix(in srgb, var(--surface-raised) 91%, var(--bg)) !important;
+}

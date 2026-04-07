@@ -10,4 +10,5 @@ export const initialContactFormState: ContactFormState = {
     subject: "",
     message: "",
   },
+  feedback: null,
 };

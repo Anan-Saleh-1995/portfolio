@@ -1,4 +1,5 @@
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { submitContactAction } from "../contact.action";
 import { initialContactFormState } from "../contact.initialState";
@@ -29,11 +30,30 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
     initialContactFormState,
   );
 
+  useEffect(() => {
+    if (!state.feedback || isPending) {
+      return;
+    }
+
+    const showToast = {
+      success: toast.success,
+      error: toast.error,
+      warning: toast.warning,
+    }[state.feedback.kind];
+
+    showToast(state.feedback.title, {
+      description: state.feedback.message,
+      duration: state.feedback.kind === "warning" ? 7000 : 5000,
+    });
+  }, [isPending, state.feedback]);
+
   if (state.success) {
     return <ContactSuccess onReset={onReset} />;
   }
 
   const formKey = JSON.stringify(state.values);
+  const shouldShowErrorBanner =
+    state.errorMessage !== "" && state.feedback?.kind !== "warning";
 
   return (
     <form key={formKey} action={formAction} noValidate className={styles.form}>
@@ -129,7 +149,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
         )}
       </div>
 
-      {state.errorMessage && (
+      {shouldShowErrorBanner && (
         <div className={styles.errorBanner} role="alert">
           {state.errorMessage}
         </div>

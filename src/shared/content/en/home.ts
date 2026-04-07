@@ -247,7 +247,14 @@ export const homeContent = {
       delivery: {
         error:
           "Your word could not be delivered. Try again or use a direct channel.",
+        rateLimited:
+          "The channel is cooling. Try again in 24 hours or use a direct channel.",
         defaultSubject: "Portfolio Contact",
+      },
+      toast: {
+        successTitle: "Word Received",
+        errorTitle: "Delivery Faltered",
+        rateLimitedTitle: "The Gate Is Closed",
       },
     },
   },

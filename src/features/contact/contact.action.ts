@@ -1,18 +1,26 @@
+import {
+  ContactApiErrorCode,
+  type ContactApiResponse,
+} from "@/shared/contracts/contact";
+import { isString } from "@/shared/lib/isString";
 import { validateContactForm } from "./contact.validation";
-import type { ContactFormState, ContactFormValues } from "./contact.types";
+import type {
+  ContactFormFeedback,
+  ContactFormState,
+  ContactFormValues,
+} from "./contact.types";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
-
-interface ContactApiResponse {
-  success?: boolean;
-}
 
 const getStringField = (formData: FormData, key: string) => {
   const value = formData.get(key);
-  return typeof value === "string" ? value.trim() : "";
+  return isString(value) ? value.trim() : "";
 };
 
 const isContactApiResponse = (value: unknown): value is ContactApiResponse =>
-  typeof value === "object" && value !== null && "success" in value;
+  typeof value === "object" &&
+  value !== null &&
+  "success" in value &&
+  typeof value.success === "boolean";
 
 const getFormValues = (
   formData: FormData,
@@ -24,11 +32,28 @@ const getFormValues = (
   message: getStringField(formData, "message"),
 });
 
+const emptyValues: ContactFormValues = {
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+};
+
+const createFeedback = (
+  kind: ContactFormFeedback["kind"],
+  title: string,
+  message: string,
+): ContactFormFeedback => ({
+  kind,
+  title,
+  message,
+});
+
 export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
-  const { delivery } = getHomeContent().contact.form;
+  const { delivery, success, toast } = getHomeContent().contact.form;
   const values = getFormValues(formData, delivery.defaultSubject);
   const errors = validateContactForm(formData);
   const failureState: ContactFormState = {
@@ -36,6 +61,29 @@ export const submitContactAction = async (
     errors: {},
     errorMessage: delivery.error,
     values,
+    feedback: createFeedback("error", toast.errorTitle, delivery.error),
+  };
+
+  const rateLimitedState: ContactFormState = {
+    success: false,
+    errors: {},
+    errorMessage: delivery.rateLimited,
+    values,
+    feedback: createFeedback(
+      "warning",
+      toast.rateLimitedTitle,
+      delivery.rateLimited,
+    ),
+  };
+
+  const getFailureStateFromCode = (
+    code: ContactApiErrorCode | undefined,
+  ): ContactFormState => {
+    if (code === ContactApiErrorCode.RateLimited) {
+      return rateLimitedState;
+    }
+
+    return failureState;
   };
 
   if (Object.keys(errors).length > 0) {
@@ -44,6 +92,7 @@ export const submitContactAction = async (
       errors,
       errorMessage: "",
       values,
+      feedback: null,
     };
   }
 
@@ -52,12 +101,8 @@ export const submitContactAction = async (
       success: true,
       errors: {},
       errorMessage: "",
-      values: {
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      },
+      values: emptyValues,
+      feedback: null,
     };
   }
 
@@ -72,13 +117,21 @@ export const submitContactAction = async (
 
     const contentType = res.headers.get("content-type");
 
-    if (!res.ok || !contentType?.includes("application/json")) {
+    if (!contentType?.includes("application/json")) {
       return failureState;
     }
 
     const data: unknown = await res.json();
 
-    if (!isContactApiResponse(data) || data.success !== true) {
+    if (!isContactApiResponse(data)) {
+      return failureState;
+    }
+
+    if (data.success !== true) {
+      return getFailureStateFromCode(data.code);
+    }
+
+    if (!res.ok) {
       return failureState;
     }
 
@@ -86,12 +139,8 @@ export const submitContactAction = async (
       success: true,
       errors: {},
       errorMessage: "",
-      values: {
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      },
+      values: emptyValues,
+      feedback: createFeedback("success", toast.successTitle, success.message),
     };
   } catch {
     return failureState;
