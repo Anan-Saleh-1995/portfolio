@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { CONTACT_FEEDBACK_CODE } from "./contact.feedback";
 import { ContactApiErrorCode } from "@/shared/contracts/contact";
 
 const validFields = {
@@ -50,14 +51,11 @@ describe("submitContactAction", () => {
     expect(result).toEqual({
       success: false,
       errors: {},
-      errorMessage:
-        "Your word could not be delivered. Try again or use a direct channel.",
+      errorMessage: "",
       values: validFields,
       feedback: {
+        code: CONTACT_FEEDBACK_CODE.DELIVERY_FAILED,
         kind: "error",
-        title: "Delivery Faltered",
-        message:
-          "Your word could not be delivered. Try again or use a direct channel.",
       },
     });
   });
@@ -92,14 +90,11 @@ describe("submitContactAction", () => {
     expect(result).toEqual({
       success: false,
       errors: {},
-      errorMessage:
-        "The channel is cooling. Try again in 24 hours or use a direct channel.",
+      errorMessage: "",
       values: validFields,
       feedback: {
+        code: CONTACT_FEEDBACK_CODE.RATE_LIMITED,
         kind: "warning",
-        title: "The Gate Is Closed",
-        message:
-          "The channel is cooling. Try again in 24 hours or use a direct channel.",
       },
     });
   });
@@ -134,10 +129,8 @@ describe("submitContactAction", () => {
       errorMessage: "",
       values: { name: "", email: "", subject: "", message: "" },
       feedback: {
+        code: CONTACT_FEEDBACK_CODE.DELIVERY_SUCCEEDED,
         kind: "success",
-        title: "Word Received",
-        message:
-          "Your message has been received. I will respond within 48 hours.",
       },
     });
   });

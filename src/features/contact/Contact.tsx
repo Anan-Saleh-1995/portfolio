@@ -3,7 +3,6 @@ import { Mail, ExternalLink } from "lucide-react";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
-import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ContactForm } from "./ContactForm/ContactForm";
 import styles from "./Contact.module.css";
 
@@ -29,8 +28,6 @@ export const Contact = () => {
 
             <ContactForm />
           </div>
-
-          <EnsoMark size={160} className={styles.enso} />
         </div>
 
         <div className={styles.channels} data-animate>
@@ -51,6 +48,17 @@ export const Contact = () => {
               >
                 <ExternalLink size={16} aria-hidden="true" />
                 GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href={contact.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.link}
+              >
+                <ExternalLink size={16} aria-hidden="true" />
+                Resume
               </a>
             </li>
           </ul>

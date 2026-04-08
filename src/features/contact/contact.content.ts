@@ -14,7 +14,6 @@ export interface ContactFormContent {
   };
   success: {
     heading: string;
-    message: string;
     reset: string;
   };
   purposeSelect: {
@@ -30,14 +29,7 @@ export interface ContactFormContent {
     messageTooShort: string;
   };
   delivery: {
-    error: string;
-    rateLimited: string;
     defaultSubject: string;
-  };
-  toast: {
-    successTitle: string;
-    errorTitle: string;
-    rateLimitedTitle: string;
   };
 }
 
@@ -49,6 +41,7 @@ export interface ContactContent {
   channelsLabel: string;
   email: string;
   github: string;
+  resume: string;
   form: ContactFormContent;
 }
 
@@ -68,7 +61,6 @@ const contactFormContent = {
   },
   success: {
     heading: "Word Received",
-    message: "Your message has been received. I will respond within 48 hours.",
     reset: "Send Another",
   },
   purposeSelect: {
@@ -88,16 +80,7 @@ const contactFormContent = {
     messageTooShort: "Your message must be at least {min} characters",
   },
   delivery: {
-    error:
-      "Your word could not be delivered. Try again or use a direct channel.",
-    rateLimited:
-      "The channel is cooling. Try again in 24 hours or use a direct channel.",
     defaultSubject: "Portfolio Contact",
-  },
-  toast: {
-    successTitle: "Word Received",
-    errorTitle: "Delivery Faltered",
-    rateLimitedTitle: "The Gate Is Closed",
   },
 } satisfies ContactFormContent;
 
@@ -110,5 +93,6 @@ export const contactContent = {
   channelsLabel: "Direct Channels",
   email: "anansaleh18@gmail.com",
   github: "https://github.com/Anan-Saleh-1995",
+  resume: "https://resume-site-opal-phi.vercel.app/en/",
   form: contactFormContent,
 } satisfies ContactContent;

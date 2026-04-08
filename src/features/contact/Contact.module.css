@@ -44,11 +44,6 @@
   margin: 0;
 }
 
-.enso {
-  opacity: 0.12;
-  flex-shrink: 0;
-}
-
 .channels {
   display: flex;
   flex-direction: column;
@@ -97,10 +92,6 @@
 }
 
 @media (max-width: 767px) {
-  .enso {
-    display: none;
-  }
-
   .body {
     flex-direction: column;
     gap: 2rem;

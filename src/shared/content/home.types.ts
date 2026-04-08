@@ -70,6 +70,7 @@ export interface HomeContent {
     channelsLabel: ContactContent["channelsLabel"];
     email: ContactContent["email"];
     github: ContactContent["github"];
+    resume: ContactContent["resume"];
     form: ContactContent["form"];
   };
   footer: ShellContent["footer"];

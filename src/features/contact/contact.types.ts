@@ -1,3 +1,5 @@
+import type { ContactFeedbackCode } from "./contact.feedback";
+
 export interface ContactErrors {
   name?: string;
   email?: string;
@@ -12,9 +14,8 @@ export interface ContactFormValues {
 }
 
 export interface ContactFormFeedback {
+  code: ContactFeedbackCode;
   kind: "success" | "error" | "warning";
-  title: string;
-  message: string;
 }
 
 export interface ContactFormState {

@@ -3,6 +3,10 @@ import {
   type ContactApiResponse,
 } from "@/shared/contracts/contact";
 import { isString } from "@/shared/lib/isString";
+import {
+  CONTACT_FEEDBACK_CODE,
+  CONTACT_FEEDBACK_KIND,
+} from "./contact.feedback";
 import { validateContactForm } from "./contact.validation";
 import type {
   ContactFormFeedback,
@@ -40,40 +44,33 @@ const emptyValues: ContactFormValues = {
 };
 
 const createFeedback = (
-  kind: ContactFormFeedback["kind"],
-  title: string,
-  message: string,
+  code: ContactFormFeedback["code"],
 ): ContactFormFeedback => ({
-  kind,
-  title,
-  message,
+  code,
+  kind: CONTACT_FEEDBACK_KIND[code],
 });
 
 export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
-  const { delivery, success, toast } = getHomeContent().contact.form;
+  const { delivery } = getHomeContent().contact.form;
   const values = getFormValues(formData, delivery.defaultSubject);
   const errors = validateContactForm(formData);
   const failureState: ContactFormState = {
     success: false,
     errors: {},
-    errorMessage: delivery.error,
+    errorMessage: "",
     values,
-    feedback: createFeedback("error", toast.errorTitle, delivery.error),
+    feedback: createFeedback(CONTACT_FEEDBACK_CODE.DELIVERY_FAILED),
   };
 
   const rateLimitedState: ContactFormState = {
     success: false,
     errors: {},
-    errorMessage: delivery.rateLimited,
+    errorMessage: "",
     values,
-    feedback: createFeedback(
-      "warning",
-      toast.rateLimitedTitle,
-      delivery.rateLimited,
-    ),
+    feedback: createFeedback(CONTACT_FEEDBACK_CODE.RATE_LIMITED),
   };
 
   const getFailureStateFromCode = (
@@ -140,7 +137,7 @@ export const submitContactAction = async (
       errors: {},
       errorMessage: "",
       values: emptyValues,
-      feedback: createFeedback("success", toast.successTitle, success.message),
+      feedback: createFeedback(CONTACT_FEEDBACK_CODE.DELIVERY_SUCCEEDED),
     };
   } catch {
     return failureState;

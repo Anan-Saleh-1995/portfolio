@@ -1,6 +1,10 @@
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import {
+  CONTACT_FEEDBACK_MESSAGE,
+  CONTACT_FEEDBACK_TITLE,
+} from "../contact.feedback";
 import { submitContactAction } from "../contact.action";
 import { initialContactFormState } from "../contact.initialState";
 import { ContactSuccess } from "../ContactSuccess/ContactSuccess";
@@ -41,8 +45,8 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
       warning: toast.warning,
     }[state.feedback.kind];
 
-    showToast(state.feedback.title, {
-      description: state.feedback.message,
+    showToast(CONTACT_FEEDBACK_TITLE[state.feedback.code], {
+      description: CONTACT_FEEDBACK_MESSAGE[state.feedback.code],
       duration: state.feedback.kind === "warning" ? 7000 : 5000,
     });
   }, [isPending, state.feedback]);
@@ -52,8 +56,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
   }
 
   const formKey = JSON.stringify(state.values);
-  const shouldShowErrorBanner =
-    state.errorMessage !== "" && state.feedback?.kind !== "warning";
+  const shouldShowErrorBanner = state.feedback?.code === "DELIVERY_FAILED";
 
   return (
     <form key={formKey} action={formAction} noValidate className={styles.form}>
@@ -151,7 +154,7 @@ const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
 
       {shouldShowErrorBanner && (
         <div className={styles.errorBanner} role="alert">
-          {state.errorMessage}
+          {CONTACT_FEEDBACK_MESSAGE.DELIVERY_FAILED}
         </div>
       )}
 
