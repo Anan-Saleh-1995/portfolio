@@ -2,14 +2,14 @@ import * as Sentry from "@sentry/node";
 import { ApiEvent } from "./events.js";
 import { getEnvString } from "./strings.js";
 
-export const SENTRY_ALERT_CODE = {
+const SENTRY_ALERT_CODE = {
   SHARED_ENV_MISSING: "SHARED_ENV_MISSING",
   EMAIL_RESEND_MISSING_CONFIG: "EMAIL_RESEND_MISSING_CONFIG",
   EMAIL_RESEND_REJECTED: "EMAIL_RESEND_REJECTED",
   EMAIL_RESEND_EXCEPTION: "EMAIL_RESEND_EXCEPTION",
 } as const;
 
-export const SENTRY_ALERT_MESSAGES = {
+const SENTRY_ALERT_MESSAGES = {
   SHARED_ENV_MISSING: "Server environment is missing required variables.",
   EMAIL_RESEND_MISSING_CONFIG: "Contact email delivery is misconfigured.",
   EMAIL_RESEND_REJECTED: "Resend rejected contact email.",
