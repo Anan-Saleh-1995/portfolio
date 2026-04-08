@@ -1,4 +1,5 @@
 import type { ContactContent } from "@/features/contact/contact.content";
+import type { ShellContent } from "./shell.content";
 
 export interface NavLinkContent {
   href: string;
@@ -16,20 +17,7 @@ export interface ProjectContent {
 }
 
 export interface HomeContent {
-  nav: {
-    brand: string;
-    links: NavLinkContent[];
-    sourceRepo: {
-      href: string;
-      label: string;
-      ariaLabel: string;
-    };
-    backToTopLabel: string;
-    mainNavigationLabel: string;
-    mobileNavigationLabel: string;
-    openMenuLabel: string;
-    closeMenuLabel: string;
-  };
+  nav: ShellContent["nav"];
   hero: {
     sectionNumber: string;
     sectionTitle: string;
@@ -92,10 +80,5 @@ export interface HomeContent {
     github: ContactContent["github"];
     form: ContactContent["form"];
   };
-  footer: {
-    brand: string;
-    backToTopLabel: string;
-    quote: string;
-    copyrightName: string;
-  };
+  footer: ShellContent["footer"];
 }

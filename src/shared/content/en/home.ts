@@ -1,26 +1,9 @@
 import type { HomeContent } from "../home.types";
 import { contactContent } from "@/features/contact/contact.content";
+import { shellContent } from "../shell.content";
 
 export const homeContent = {
-  nav: {
-    brand: "anan",
-    links: [
-      { href: "#the-way", label: "The Way" },
-      { href: "#arsenal", label: "Arsenal" },
-      { href: "#forge", label: "Forge" },
-      { href: "#contact", label: "Engagement" },
-    ],
-    sourceRepo: {
-      href: "https://github.com/Anan-Saleh-1995/portfolio",
-      label: "Source",
-      ariaLabel: "View portfolio source on GitHub",
-    },
-    backToTopLabel: "Back to top",
-    mainNavigationLabel: "Main navigation",
-    mobileNavigationLabel: "Mobile navigation",
-    openMenuLabel: "Open menu",
-    closeMenuLabel: "Close menu",
-  },
+  nav: shellContent.nav,
   hero: {
     sectionNumber: "01",
     sectionTitle: "Enter",
@@ -201,10 +184,5 @@ export const homeContent = {
       "The result is a platform with clearer role boundaries, safer upload and payment flows, better operational visibility, and a backend shape that can grow feature-by-feature instead of collapsing into a monolith of route handlers.",
   },
   contact: contactContent,
-  footer: {
-    brand: "anan",
-    backToTopLabel: "Back to top",
-    quote: '"Today is victory over yourself of yesterday."',
-    copyrightName: "Anan Saleh",
-  },
+  footer: shellContent.footer,
 } satisfies HomeContent;
