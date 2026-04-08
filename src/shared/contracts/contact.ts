@@ -1,12 +1,12 @@
-export const ContactApiErrorCode = {
-  InvalidRequest: "INVALID_REQUEST",
-  ForbiddenOrigin: "FORBIDDEN_ORIGIN",
-  RateLimited: "RATE_LIMITED",
-  DeliveryUnavailable: "DELIVERY_UNAVAILABLE",
+export const CONTACT_API_ERROR_CODE = {
+  INVALID_REQUEST: "INVALID_REQUEST",
+  FORBIDDEN_ORIGIN: "FORBIDDEN_ORIGIN",
+  RATE_LIMITED: "RATE_LIMITED",
+  DELIVERY_UNAVAILABLE: "DELIVERY_UNAVAILABLE",
 } as const;
 
 export type ContactApiErrorCode =
-  (typeof ContactApiErrorCode)[keyof typeof ContactApiErrorCode];
+  (typeof CONTACT_API_ERROR_CODE)[keyof typeof CONTACT_API_ERROR_CODE];
 
 export type ContactApiResponse =
   | { success: true }

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
+import { CONTACT_API_ERROR_CODE } from "../../src/shared/contracts/contact.js";
 
 vi.mock("../email/resend", () => ({
   sendContactEmail: vi.fn(),
@@ -104,7 +104,7 @@ describe("contact handler", () => {
     expect(response.headers.Allow).toBe(HttpMethod.Post);
     expect(response.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.InvalidRequest),
+        createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
       ),
     );
   });
@@ -124,7 +124,7 @@ describe("contact handler", () => {
     expect(response.statusCode).toBe(HttpStatus.BadRequest);
     expect(response.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.InvalidRequest),
+        createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
       ),
     );
   });
@@ -162,7 +162,9 @@ describe("contact handler", () => {
     expect(response.statusCode).toBe(HttpStatus.InternalServerError);
     expect(response.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.DeliveryUnavailable),
+        createContactFailureResponse(
+          CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE,
+        ),
       ),
     );
   });
@@ -182,7 +184,7 @@ describe("contact handler", () => {
     expect(response.statusCode).toBe(HttpStatus.Forbidden);
     expect(response.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.ForbiddenOrigin),
+        createContactFailureResponse(CONTACT_API_ERROR_CODE.FORBIDDEN_ORIGIN),
       ),
     );
   });
@@ -211,7 +213,7 @@ describe("contact handler", () => {
     expect(blockedResponse.statusCode).toBe(HttpStatus.Forbidden);
     expect(blockedResponse.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.RateLimited),
+        createContactFailureResponse(CONTACT_API_ERROR_CODE.RATE_LIMITED),
       ),
     );
   });
@@ -232,7 +234,9 @@ describe("contact handler", () => {
     expect(response.statusCode).toBe(HttpStatus.BadGateway);
     expect(response.body).toBe(
       JSON.stringify(
-        createContactFailureResponse(ContactApiErrorCode.DeliveryUnavailable),
+        createContactFailureResponse(
+          CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE,
+        ),
       ),
     );
   });

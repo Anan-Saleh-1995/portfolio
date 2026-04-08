@@ -1,5 +1,6 @@
 import {
-  ContactApiErrorCode,
+  CONTACT_API_ERROR_CODE,
+  type ContactApiErrorCode,
   type ContactApiResponse,
 } from "@/shared/contracts/contact";
 import { isString } from "@/shared/lib/isString";
@@ -76,7 +77,7 @@ export const submitContactAction = async (
   const getFailureStateFromCode = (
     code: ContactApiErrorCode | undefined,
   ): ContactFormState => {
-    if (code === ContactApiErrorCode.RateLimited) {
+    if (code === CONTACT_API_ERROR_CODE.RATE_LIMITED) {
       return rateLimitedState;
     }
 

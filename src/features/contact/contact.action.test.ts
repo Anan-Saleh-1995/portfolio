@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CONTACT_FEEDBACK_CODE } from "./contact.feedback";
-import { ContactApiErrorCode } from "@/shared/contracts/contact";
+import { CONTACT_API_ERROR_CODE } from "@/shared/contracts/contact";
 
 const validFields = {
   name: "Anan",
@@ -69,7 +69,7 @@ describe("submitContactAction", () => {
         headers: new Headers({ "content-type": "application/json" }),
         json: vi.fn().mockResolvedValue({
           success: false,
-          code: ContactApiErrorCode.RateLimited,
+          code: CONTACT_API_ERROR_CODE.RATE_LIMITED,
         }),
       }),
     );

@@ -1,4 +1,7 @@
-import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
+import {
+  CONTACT_API_ERROR_CODE,
+  type ContactApiErrorCode,
+} from "../../src/shared/contracts/contact.js";
 import {
   CONTACT_METHOD_NOT_ALLOWED,
   CONTACT_ORIGIN_REJECTED,
@@ -44,7 +47,7 @@ export const checkContactMethod = (
 
   return createGuardFailure(
     HttpStatus.MethodNotAllowed,
-    ContactApiErrorCode.InvalidRequest,
+    CONTACT_API_ERROR_CODE.INVALID_REQUEST,
     { Allow: HttpMethod.Post },
   );
 };
@@ -67,7 +70,7 @@ export const checkContactOrigin = (
 
   return createGuardFailure(
     HttpStatus.Forbidden,
-    ContactApiErrorCode.ForbiddenOrigin,
+    CONTACT_API_ERROR_CODE.FORBIDDEN_ORIGIN,
   );
 };
 
@@ -95,7 +98,7 @@ export const checkContactRateLimit = async (
 
   return createGuardFailure(
     HttpStatus.Forbidden,
-    ContactApiErrorCode.RateLimited,
+    CONTACT_API_ERROR_CODE.RATE_LIMITED,
   );
 };
 

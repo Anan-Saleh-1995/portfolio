@@ -1,4 +1,4 @@
-import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
+import { CONTACT_API_ERROR_CODE } from "../../src/shared/contracts/contact.js";
 import { sendContactEmail } from "../email/resend/index.js";
 import { SendEmailResult } from "../email/types.js";
 import {
@@ -92,7 +92,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     return respond(
       res,
       HttpStatus.BadRequest,
-      createContactFailureResponse(ContactApiErrorCode.InvalidRequest),
+      createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
     );
   }
 
@@ -112,7 +112,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     return respond(
       res,
       HttpStatus.InternalServerError,
-      createContactFailureResponse(ContactApiErrorCode.DeliveryUnavailable),
+      createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
   }
 
@@ -124,7 +124,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     return respond(
       res,
       HttpStatus.BadGateway,
-      createContactFailureResponse(ContactApiErrorCode.DeliveryUnavailable),
+      createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
   }
 
