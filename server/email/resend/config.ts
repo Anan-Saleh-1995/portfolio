@@ -4,7 +4,7 @@ interface EmailConfig {
   toEmail: string;
 }
 
-import { ApiEvent } from "../../shared/events.js";
+import { EMAIL_RESEND_MISSING_CONFIG } from "../../shared/events.js";
 import { getServerEnv } from "../../shared/env.js";
 import { getLogSource, logInfo } from "../../shared/logger.js";
 
@@ -18,7 +18,7 @@ const readEmailConfig = (): EmailConfig | null => {
   const toEmail = env.contactToEmail;
 
   if (apiKey === "" || fromEmail === "" || toEmail === "") {
-    logInfo(LOG_SOURCE, ApiEvent.EmailResendMissingConfig, {
+    logInfo(LOG_SOURCE, EMAIL_RESEND_MISSING_CONFIG, {
       hasApiKey: apiKey !== "",
       hasFromEmail: fromEmail !== "",
       hasToEmail: toEmail !== "",

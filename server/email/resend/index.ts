@@ -1,6 +1,11 @@
 import type { ContactPayload } from "../../contact/types.js";
 import { EmailProvider } from "../providers.js";
-import { ApiEvent } from "../../shared/events.js";
+import {
+  EMAIL_RESEND_EXCEPTION,
+  EMAIL_RESEND_MISSING_CONFIG,
+  EMAIL_RESEND_REJECTED,
+  EMAIL_RESEND_SENT,
+} from "../../shared/events.js";
 import { SendEmailResult } from "../types.js";
 import { getResendClient } from "./client.js";
 import { getEmailConfig } from "./config.js";
@@ -19,7 +24,7 @@ export const sendContactEmail = async (
   const startedAt = Date.now();
 
   if (!config || !resend) {
-    logInfo(LOG_SOURCE, ApiEvent.EmailResendMissingConfig, {
+    logInfo(LOG_SOURCE, EMAIL_RESEND_MISSING_CONFIG, {
       ...requestContext,
     });
     return SendEmailResult.MissingConfig;
@@ -43,7 +48,7 @@ export const sendContactEmail = async (
     });
 
     if (error == null) {
-      logInfo(LOG_SOURCE, ApiEvent.EmailResendSent, {
+      logInfo(LOG_SOURCE, EMAIL_RESEND_SENT, {
         ...requestContext,
         durationMs: Date.now() - startedAt,
         provider: EmailProvider.Resend,
@@ -52,7 +57,7 @@ export const sendContactEmail = async (
       return SendEmailResult.Sent;
     }
 
-    logInfo(LOG_SOURCE, ApiEvent.EmailResendRejected, {
+    logInfo(LOG_SOURCE, EMAIL_RESEND_REJECTED, {
       ...requestContext,
       durationMs: Date.now() - startedAt,
       provider: EmailProvider.Resend,
@@ -60,7 +65,7 @@ export const sendContactEmail = async (
     });
     return SendEmailResult.Failed;
   } catch (error) {
-    logError(LOG_SOURCE, ApiEvent.EmailResendException, error, {
+    logError(LOG_SOURCE, EMAIL_RESEND_EXCEPTION, error, {
       ...requestContext,
       durationMs: Date.now() - startedAt,
       provider: EmailProvider.Resend,

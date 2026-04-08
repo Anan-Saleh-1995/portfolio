@@ -1,4 +1,4 @@
-import { ApiEvent } from "./events.js";
+import { SHARED_ENV_MISSING } from "./events.js";
 import { getLogSource, logInfo } from "./logger.js";
 import { getEnvString } from "./strings.js";
 
@@ -110,7 +110,7 @@ const readServerEnv = (): ServerEnv => {
   };
 
   if (missing.length > 0) {
-    logInfo(LOG_SOURCE, ApiEvent.SharedEnvMissing, {
+    logInfo(LOG_SOURCE, SHARED_ENV_MISSING, {
       missing,
     });
   }

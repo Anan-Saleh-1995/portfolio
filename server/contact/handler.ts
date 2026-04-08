@@ -1,16 +1,26 @@
 import { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
 import { sendContactEmail } from "../email/resend/index.js";
 import { SendEmailResult } from "../email/types.js";
-import { ApiEvent } from "../shared/events.js";
-import { HttpMethod, HttpStatus } from "../shared/http.js";
+import {
+  CONTACT_DELIVERY_FAILED,
+  CONTACT_DELIVERY_MISSING_CONFIG,
+  CONTACT_DELIVERY_SENT,
+  CONTACT_HONEYPOT_ACCEPTED,
+  CONTACT_INVALID_PAYLOAD,
+} from "../shared/events.js";
+import { HttpStatus } from "../shared/http.js";
 import { getLogSource, logInfo } from "../shared/logger.js";
-import { getOriginHeader, isAllowedOrigin } from "../shared/origin.js";
 import { createRequestContext } from "../shared/request.js";
 import { json } from "../shared/response.js";
 import { flushSentry } from "../shared/sentry.js";
 import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
+import {
+  applyContactGuardFailure,
+  checkContactMethod,
+  checkContactOrigin,
+  checkContactRateLimit,
+} from "./guards.js";
 import { parsePayload } from "./payload.js";
-import { isRateLimited } from "./rateLimit.js";
 import {
   CONTACT_SUCCESS_RESPONSE,
   createContactFailureResponse,
@@ -47,57 +57,35 @@ const describePayloadShape = (body: unknown) => {
 
 export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   const requestContext = createRequestContext();
+  const methodFailure = checkContactMethod(req, requestContext, LOG_SOURCE);
 
-  if (req.method !== HttpMethod.Post) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactMethodNotAllowed, {
-      ...requestContext,
-      method: req.method,
-    });
-    res.setHeader("Allow", HttpMethod.Post);
-    return respond(
-      res,
-      HttpStatus.MethodNotAllowed,
-      createContactFailureResponse(ContactApiErrorCode.InvalidRequest),
-    );
+  if (methodFailure) {
+    const failure = applyContactGuardFailure(res, methodFailure);
+    return respond(res, failure.status, failure.body);
   }
 
-  const origin = getOriginHeader(req.headers);
+  const originFailure = checkContactOrigin(req, requestContext, LOG_SOURCE);
 
-  if (!isAllowedOrigin(origin)) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactOriginRejected, {
-      ...requestContext,
-      origin,
-    });
-    return respond(
-      res,
-      HttpStatus.Forbidden,
-      createContactFailureResponse(ContactApiErrorCode.ForbiddenOrigin),
-    );
+  if (originFailure) {
+    const failure = applyContactGuardFailure(res, originFailure);
+    return respond(res, failure.status, failure.body);
   }
 
-  const rateLimit = await isRateLimited(req.headers);
+  const rateLimitFailure = await checkContactRateLimit(
+    req,
+    requestContext,
+    LOG_SOURCE,
+  );
 
-  if (rateLimit.limited) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactRateLimited, {
-      ...requestContext,
-      origin,
-      fingerprintHash: rateLimit.fingerprintHash,
-      limit: rateLimit.limit,
-      window: rateLimit.window,
-      remaining: rateLimit.remaining,
-      reset: rateLimit.reset,
-    });
-    return respond(
-      res,
-      HttpStatus.Forbidden,
-      createContactFailureResponse(ContactApiErrorCode.RateLimited),
-    );
+  if (rateLimitFailure) {
+    const failure = applyContactGuardFailure(res, rateLimitFailure);
+    return respond(res, failure.status, failure.body);
   }
 
   const payload = parsePayload(req.body);
 
   if (!payload) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactInvalidPayload, {
+    logInfo(LOG_SOURCE, CONTACT_INVALID_PAYLOAD, {
       ...requestContext,
       ...describePayloadShape(req.body),
     });
@@ -109,7 +97,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   }
 
   if (payload.botcheck !== "") {
-    logInfo(LOG_SOURCE, ApiEvent.ContactHoneypotAccepted, {
+    logInfo(LOG_SOURCE, CONTACT_HONEYPOT_ACCEPTED, {
       ...requestContext,
     });
     return respond(res, HttpStatus.Ok, CONTACT_SUCCESS_RESPONSE);
@@ -118,7 +106,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   const result = await sendContactEmail(payload, requestContext);
 
   if (result === SendEmailResult.MissingConfig) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactDeliveryMissingConfig, {
+    logInfo(LOG_SOURCE, CONTACT_DELIVERY_MISSING_CONFIG, {
       ...requestContext,
     });
     return respond(
@@ -129,7 +117,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   }
 
   if (result !== SendEmailResult.Sent) {
-    logInfo(LOG_SOURCE, ApiEvent.ContactDeliveryFailed, {
+    logInfo(LOG_SOURCE, CONTACT_DELIVERY_FAILED, {
       ...requestContext,
       result,
     });
@@ -140,7 +128,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     );
   }
 
-  logInfo(LOG_SOURCE, ApiEvent.ContactDeliverySent, {
+  logInfo(LOG_SOURCE, CONTACT_DELIVERY_SENT, {
     ...requestContext,
   });
   return respond(res, HttpStatus.Ok, CONTACT_SUCCESS_RESPONSE);

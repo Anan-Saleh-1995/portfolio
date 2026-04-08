@@ -1,5 +1,12 @@
 import * as Sentry from "@sentry/node";
-import { ApiEvent } from "./events.js";
+import {
+  EMAIL_RESEND_MISSING_CONFIG,
+  EMAIL_RESEND_REJECTED,
+  SHARED_ENV_MISSING,
+  SHARED_SENTRY_DISABLED,
+  SHARED_SENTRY_INITIALIZED,
+  SHARED_SENTRY_REPORTED,
+} from "./events.js";
 import { getEnvString } from "./strings.js";
 
 const SENTRY_ALERT_CODE = {
@@ -23,37 +30,25 @@ const getSentryDsn = () => getEnvString(process.env.SENTRY_DSN);
 const LOG_SOURCE = "sentry.ts";
 
 const highSignalInfoEvents = new Set<string>([
-  ApiEvent.SharedEnvMissing,
-  ApiEvent.EmailResendMissingConfig,
-  ApiEvent.EmailResendRejected,
+  SHARED_ENV_MISSING,
+  EMAIL_RESEND_MISSING_CONFIG,
+  EMAIL_RESEND_REJECTED,
 ]);
 
 let initialized = false;
 let disabledLogged = false;
 let initializedLogged = false;
 
-const getAlertCode = (event: string): SentryAlertCode | null => {
-  switch (event) {
-    case ApiEvent.SharedEnvMissing:
-      return SENTRY_ALERT_CODE.SHARED_ENV_MISSING;
-    case ApiEvent.EmailResendMissingConfig:
-      return SENTRY_ALERT_CODE.EMAIL_RESEND_MISSING_CONFIG;
-    case ApiEvent.EmailResendRejected:
-      return SENTRY_ALERT_CODE.EMAIL_RESEND_REJECTED;
-    case ApiEvent.EmailResendException:
-      return SENTRY_ALERT_CODE.EMAIL_RESEND_EXCEPTION;
-    default:
-      return null;
-  }
-};
+const isSentryAlertCode = (
+  event: string,
+): event is keyof typeof SENTRY_ALERT_CODE => event in SENTRY_ALERT_CODE;
 
 const getAlertMessage = (event: string) => {
-  const alertCode = getAlertCode(event);
-
-  if (!alertCode) {
+  if (!isSentryAlertCode(event)) {
     return event;
   }
 
+  const alertCode: SentryAlertCode = SENTRY_ALERT_CODE[event];
   return SENTRY_ALERT_MESSAGES[alertCode];
 };
 
@@ -78,7 +73,7 @@ const ensureSentry = () => {
 
   if (dsn === "") {
     if (!disabledLogged) {
-      logSentryInfo(ApiEvent.SharedSentryDisabled, {
+      logSentryInfo(SHARED_SENTRY_DISABLED, {
         hasDsn: false,
       });
       disabledLogged = true;
@@ -102,7 +97,7 @@ const ensureSentry = () => {
   initialized = true;
 
   if (!initializedLogged) {
-    logSentryInfo(ApiEvent.SharedSentryInitialized, {
+    logSentryInfo(SHARED_SENTRY_INITIALIZED, {
       environment,
     });
     initializedLogged = true;
@@ -124,7 +119,7 @@ const withScope = (
   Sentry.withScope((scope) => {
     scope.setTag("source", source);
     scope.setTag("event", event);
-    scope.setTag("alertCode", getAlertCode(event) ?? "UNKNOWN");
+    scope.setTag("alertCode", isSentryAlertCode(event) ? event : "UNKNOWN");
 
     for (const [key, value] of Object.entries(metadata)) {
       scope.setExtra(key, value);
@@ -145,7 +140,7 @@ export const reportInfoToSentry = (
 
   withScope(source, event, metadata, () => {
     Sentry.captureMessage(getAlertMessage(event), "warning");
-    logSentryInfo(ApiEvent.SharedSentryReported, {
+    logSentryInfo(SHARED_SENTRY_REPORTED, {
       level: "warning",
       targetEvent: event,
       targetSource: source,
@@ -163,7 +158,7 @@ export const reportErrorToSentry = (
   withScope(source, event, metadata, () => {
     if (error instanceof Error) {
       Sentry.captureException(error);
-      logSentryInfo(ApiEvent.SharedSentryReported, {
+      logSentryInfo(SHARED_SENTRY_REPORTED, {
         level: "error",
         targetEvent: event,
         targetSource: source,
@@ -174,7 +169,7 @@ export const reportErrorToSentry = (
     }
 
     Sentry.captureMessage(getAlertMessage(event), "error");
-    logSentryInfo(ApiEvent.SharedSentryReported, {
+    logSentryInfo(SHARED_SENTRY_REPORTED, {
       level: "error",
       targetEvent: event,
       targetSource: source,
