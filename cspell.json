@@ -40,7 +40,8 @@
     "unstub",
     "ronin",
     "urlset",
-    "changefreq"
+    "changefreq",
+    "anansaleh"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
