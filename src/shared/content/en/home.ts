@@ -1,4 +1,5 @@
 import type { HomeContent } from "../home.types";
+import { contactFormContent } from "@/features/contact/contact.content";
 
 export const homeContent = {
   nav: {
@@ -208,55 +209,7 @@ export const homeContent = {
     channelsLabel: "Direct Channels",
     email: "anansaleh18@gmail.com",
     github: "https://github.com/Anan-Saleh-1995",
-    form: {
-      labels: {
-        name: "Name",
-        email: "Email",
-        purpose: "Purpose",
-        message: "Message",
-      },
-      liveRegion: {
-        pending: "Sending your message...",
-      },
-      submit: {
-        idle: "Send Word",
-        pending: "Sending...",
-      },
-      success: {
-        heading: "Word Received",
-        message:
-          "Your message has been received. I will respond within 48 hours.",
-        reset: "Send Another",
-      },
-      purposeSelect: {
-        placeholder: "Select a purpose",
-        ariaLabel: "Purpose",
-        options: [
-          { value: "Hiring Inquiry", label: "Hiring Inquiry" },
-          { value: "Collaboration", label: "Collaboration" },
-          { value: "General", label: "General" },
-        ],
-      },
-      validation: {
-        nameRequired: "State your name",
-        emailRequired: "An email is required",
-        emailInvalid: "Enter a valid email address",
-        messageRequired: "State your message",
-        messageTooShort: "Your message must be at least {min} characters",
-      },
-      delivery: {
-        error:
-          "Your word could not be delivered. Try again or use a direct channel.",
-        rateLimited:
-          "The channel is cooling. Try again in 24 hours or use a direct channel.",
-        defaultSubject: "Portfolio Contact",
-      },
-      toast: {
-        successTitle: "Word Received",
-        errorTitle: "Delivery Faltered",
-        rateLimitedTitle: "The Gate Is Closed",
-      },
-    },
+    form: contactFormContent,
   },
   footer: {
     brand: "anan",

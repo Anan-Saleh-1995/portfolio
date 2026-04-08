@@ -1,3 +1,5 @@
+import type { ContactFormContent } from "@/features/contact/contact.content";
+
 export interface NavLinkContent {
   href: string;
   label: string;
@@ -88,48 +90,7 @@ export interface HomeContent {
     channelsLabel: string;
     email: string;
     github: string;
-    form: {
-      labels: {
-        name: string;
-        email: string;
-        purpose: string;
-        message: string;
-      };
-      liveRegion: {
-        pending: string;
-      };
-      submit: {
-        idle: string;
-        pending: string;
-      };
-      success: {
-        heading: string;
-        message: string;
-        reset: string;
-      };
-      purposeSelect: {
-        placeholder: string;
-        ariaLabel: string;
-        options: { value: string; label: string }[];
-      };
-      validation: {
-        nameRequired: string;
-        emailRequired: string;
-        emailInvalid: string;
-        messageRequired: string;
-        messageTooShort: string;
-      };
-      delivery: {
-        error: string;
-        rateLimited: string;
-        defaultSubject: string;
-      };
-      toast: {
-        successTitle: string;
-        errorTitle: string;
-        rateLimitedTitle: string;
-      };
-    };
+    form: ContactFormContent;
   };
   footer: {
     brand: string;
