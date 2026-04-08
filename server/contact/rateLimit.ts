@@ -4,7 +4,7 @@ import { getServerEnv } from "../shared/env.js";
 import { getRequestFingerprintHash } from "../shared/request.js";
 import type { ApiRequestShape } from "../shared/types.js";
 
-const WINDOW_LIMIT = 5;
+const WINDOW_LIMIT = 1;
 const WINDOW_DURATION = "1 d";
 
 let cachedRateLimit: Ratelimit | null | undefined;
