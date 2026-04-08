@@ -1,22 +1,11 @@
 import type { HomeContent } from "../home.types";
 import { contactContent } from "@/features/contact/contact.content";
+import { heroContent } from "../hero.content";
 import { shellContent } from "../shell.content";
 
 export const homeContent = {
   nav: shellContent.nav,
-  hero: {
-    sectionNumber: "01",
-    sectionTitle: "Enter",
-    title: "The Dojo",
-    subtitle: "Mastery through discipline.",
-    role: "Full-Stack Developer",
-    primaryCta: { href: "#the-way", label: "Explore" },
-    secondaryCta: {
-      href: "https://github.com/Anan-Saleh-1995",
-      label: "GitHub",
-    },
-    scrollCueLabel: "Scroll down",
-  },
+  hero: heroContent,
   theWay: {
     sectionNumber: "02",
     sectionTitle: "The Way",

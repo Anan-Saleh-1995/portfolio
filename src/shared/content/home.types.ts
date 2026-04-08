@@ -1,4 +1,5 @@
 import type { ContactContent } from "@/features/contact/contact.content";
+import type { HeroContent } from "./hero.content";
 import type { ShellContent } from "./shell.content";
 
 export interface NavLinkContent {
@@ -18,16 +19,7 @@ export interface ProjectContent {
 
 export interface HomeContent {
   nav: ShellContent["nav"];
-  hero: {
-    sectionNumber: string;
-    sectionTitle: string;
-    title: string;
-    subtitle: string;
-    role: string;
-    primaryCta: NavLinkContent;
-    secondaryCta: NavLinkContent;
-    scrollCueLabel: string;
-  };
+  hero: HeroContent;
   theWay: {
     sectionNumber: string;
     sectionTitle: string;
