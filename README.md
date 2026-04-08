@@ -1,8 +1,22 @@
 # Portfolio
 
-Design-forward portfolio site for Anan Saleh, built with React, TypeScript, and Vite.
+My personal portfolio, built with React, TypeScript, and Vite.
 
-This repo is intentionally small in surface area, but it treats frontend quality seriously: typed content, accessible interaction patterns, a measured motion system, and a distinct visual identity anchored by a desktop-only Three.js hero.
+Live: [anansaleh.com](https://anansaleh.com)
+
+I did not want this repo to be just another pretty frontend with no real engineering behind it. The goal was simple:
+
+- make the site feel intentional
+- keep the codebase clean
+- treat the contact flow like a real production feature
+
+## What is in here
+
+- a custom frontend, not a template
+- a Three.js hero for the visual identity
+- a real contact flow with server-side delivery
+- origin checks, rate limiting, honeypot protection, and monitoring
+- Vercel deployment with a health endpoint
 
 ## Stack
 
@@ -15,46 +29,26 @@ This repo is intentionally small in surface area, but it treats frontend quality
 - Three.js / `@react-three/fiber`
 - Vitest
 - React Testing Library
+- Resend
+- Upstash Redis
+- Sentry
 
-## What This Repo Optimizes For
+## Structure
 
-- A portfolio that looks deliberate rather than template-generated
-- Clear feature ownership and maintainable folder boundaries
-- Typed content access through a lightweight i18n-ready content layer
-- Accessibility and keyboard behavior that hold up under review
-- A strong first impression without turning the whole repo into animation glue
+- `src/` for the client app
+- `server/` for server-only logic
+- `api/` for thin Vercel entrypoints
+- `public/` for static assets like `robots.txt`, `sitemap.xml`, and preview assets
 
-## Architecture Notes
+The important boundary is this:
 
-- Content is routed through `getHomeContent()` and validated by shared content types in `src/shared/content/home.types.ts`.
-- The repo stays English-only for now, but the typed content/i18n scaffolding remains in place so future locales can be added without another structural refactor.
-- Contact delivery is handled through a single Vercel serverless entry at `api/contact.ts`, with the server-only implementation split under `server/` for contact handling, shared server utilities, and the Resend-backed sender.
-- Incoming contact mail is sent with the published Resend template alias `direct-word`, so the email styling stays in the provider template rather than inside the app bundle.
-- Motion is split by purpose:
-  - hero intro animation
-  - section reveal on scroll
-  - smooth-scroll coordination
-- The Three.js hero is intentionally isolated behind a lazy-loaded boundary so the rest of the app stays simple and the expensive part is easy to reason about.
+- `src/` is app code
+- `server/` is server code
+- `api/` is just the edge entry layer
 
-## Accessibility Notes
+That split matters more than adding clever abstractions.
 
-- Private project cards in Forge are rendered as non-interactive content, not disabled links.
-- The contact purpose input uses a native `<select>` to keep keyboard and screen-reader behavior predictable.
-- Mobile navigation closes on Escape and locks background scrolling while open.
-- Reduced-motion handling is respected in section reveals and smooth-scroll behavior, and the hero falls back to a static version when motion should be reduced.
-
-## Testing Approach
-
-- Small unit tests stay colocated with the feature logic they protect.
-- Pure helper behavior is tested close to the helper itself.
-- Lightweight component tests cover the interaction flows most likely to regress:
-  - contact validation
-  - contact input preservation after failed submit
-  - contact success/reset
-  - theme helpers
-  - mobile nav open/close
-
-## Running Locally
+## Running locally
 
 Install dependencies:
 
@@ -62,33 +56,35 @@ Install dependencies:
 npm install
 ```
 
-Start the development server:
+Frontend only:
 
 ```bash
 npm run dev
 ```
 
-To test the contact form end-to-end with the serverless route locally, use:
+That is just the client. It does not run `/api/contact`.
+
+If you want the real local contact flow, there is also:
 
 ```bash
 npm run vercel:dev
 ```
 
-`npm run dev` only starts the Vite frontend, so `/api/contact` will 404 there. Use `npm run vercel:dev` whenever you need the real contact route locally.
+That is optional tooling. It is not the main local dev path.
 
-For uptime checks, the repo also exposes:
+If you use it, you need:
 
-```text
-/api/health
-```
+- the Vercel CLI available on your machine
+- a real `.env.local`
+- valid contact env values if you want actual delivery
 
-It responds to `GET` with:
+What it gives you:
 
-```json
-{ "ok": true }
-```
+- the frontend
+- `/api/contact`
+- `/api/health`
 
-Build for production:
+Production build:
 
 ```bash
 npm run build
@@ -100,29 +96,19 @@ Preview the production build:
 npm run preview
 ```
 
-Run tests:
+## Quality checks
 
 ```bash
+npm run lint
 npm run test
+npm run knip
+npm run spellcheck
+npm run build
 ```
 
-## Available Scripts
+## Environment variables
 
-- `npm run dev` starts the Vite dev server
-- `npm run build` creates a production build
-- `npm run preview` serves the built app locally
-- `npm run test` runs the Vitest suite
-- `npm run lint` runs ESLint
-- `npm run format` formats source files with Prettier
-- `npm run format:check` checks formatting without writing changes
-- `npm run spellcheck` runs cspell
-- `npm run mdlint` runs markdownlint
-- `npm run knip` checks for unused files and exports
-- `npm run build:analyze` builds with bundle analysis output
-
-## Environment Variables
-
-The contact form expects the following variables in `.env.local`:
+Create `.env.local` with:
 
 ```env
 ALLOWED_ORIGINS=https://anansaleh.com,https://www.anansaleh.com
@@ -134,23 +120,56 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 SENTRY_DSN=https://your-dsn.ingest.sentry.io/project-id
 ```
 
-Without them, the contact form UI still renders, but message delivery will fail.
+Use the same variables in Vercel for deployed environments.
 
-For deployed environments, set the same values in Vercel for `Production` and `Preview`.
+## Contact pipeline
 
-## Current Tradeoffs
+The browser does not send mail directly.
 
-- The Three.js hero is still the heaviest part of the bundle. That cost is currently accepted because it carries a large part of the site identity.
-- This is a one-page portfolio, so the architecture is intentionally lighter than a product app.
-- Contact abuse protection uses an Upstash-backed server-side rate limit plus origin checks and a honeypot.
-- Additional locales such as Japanese or Hebrew are planned, but they are intentionally not exposed until the copy quality is strong enough to publish.
+It posts to:
 
-## Public Repo Checklist
+```text
+/api/contact
+```
 
-Before making the repo public, verify:
+From there the server handles:
 
-- no secrets are committed
-- README claims still match the code
-- contact env vars are documented
-- links and metadata assets are still valid
-- tests, lint, and build all pass
+- payload validation
+- origin checks
+- honeypot filtering
+- Upstash-backed rate limiting
+- Resend delivery
+- Sentry reporting for real server-side failures
+
+There is also a health endpoint:
+
+```text
+/api/health
+```
+
+It returns:
+
+```json
+{ "ok": true }
+```
+
+## Why the repo is shaped this way
+
+I care about consistency more than cleverness.
+
+So the repo tries to follow a few simple rules:
+
+- feature code should live with the feature
+- server-only code should stay out of the client
+- system logic should use explicit codes, not random string handling
+- decorative ideas should be easy to remove if they are not earning their place
+
+## Notes
+
+- this is still a single-page portfolio
+- the hero is the heaviest visual part of the app and that tradeoff is intentional
+- the contact flow is treated more seriously than most portfolio contact forms
+
+## License
+
+This repository is licensed under the terms of the [LICENSE](./LICENSE) file.
