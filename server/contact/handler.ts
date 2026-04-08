@@ -1,6 +1,6 @@
 import { CONTACT_API_ERROR_CODE } from "../../src/shared/contracts/contact.js";
 import { sendContactEmail } from "../email/resend/index.js";
-import { SendEmailResult } from "../email/types.js";
+import { SEND_EMAIL_RESULT } from "../email/types.js";
 import {
   CONTACT_DELIVERY_FAILED,
   CONTACT_DELIVERY_MISSING_CONFIG,
@@ -8,7 +8,7 @@ import {
   CONTACT_HONEYPOT_ACCEPTED,
   CONTACT_INVALID_PAYLOAD,
 } from "../shared/events.js";
-import { HttpStatus } from "../shared/http.js";
+import { HTTP_STATUS, type HttpStatus } from "../shared/http.js";
 import { getLogSource, logInfo } from "../shared/logger.js";
 import { createRequestContext } from "../shared/request.js";
 import { json } from "../shared/response.js";
@@ -91,7 +91,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     });
     return respond(
       res,
-      HttpStatus.BadRequest,
+      HTTP_STATUS.BAD_REQUEST,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
     );
   }
@@ -100,30 +100,30 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     logInfo(LOG_SOURCE, CONTACT_HONEYPOT_ACCEPTED, {
       ...requestContext,
     });
-    return respond(res, HttpStatus.Ok, CONTACT_SUCCESS_RESPONSE);
+    return respond(res, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
   }
 
   const result = await sendContactEmail(payload, requestContext);
 
-  if (result === SendEmailResult.MissingConfig) {
+  if (result === SEND_EMAIL_RESULT.MISSING_CONFIG) {
     logInfo(LOG_SOURCE, CONTACT_DELIVERY_MISSING_CONFIG, {
       ...requestContext,
     });
     return respond(
       res,
-      HttpStatus.InternalServerError,
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
   }
 
-  if (result !== SendEmailResult.Sent) {
+  if (result !== SEND_EMAIL_RESULT.SENT) {
     logInfo(LOG_SOURCE, CONTACT_DELIVERY_FAILED, {
       ...requestContext,
       result,
     });
     return respond(
       res,
-      HttpStatus.BadGateway,
+      HTTP_STATUS.BAD_GATEWAY,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
   }
@@ -131,5 +131,5 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   logInfo(LOG_SOURCE, CONTACT_DELIVERY_SENT, {
     ...requestContext,
   });
-  return respond(res, HttpStatus.Ok, CONTACT_SUCCESS_RESPONSE);
+  return respond(res, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
 };

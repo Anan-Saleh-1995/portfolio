@@ -7,7 +7,7 @@ import {
   CONTACT_ORIGIN_REJECTED,
   CONTACT_RATE_LIMITED,
 } from "../shared/events.js";
-import { HttpMethod, HttpStatus } from "../shared/http.js";
+import { HTTP_METHOD, HTTP_STATUS, type HttpStatus } from "../shared/http.js";
 import { logInfo } from "../shared/logger.js";
 import { getOriginHeader, isAllowedOrigin } from "../shared/origin.js";
 import type { RequestContext } from "../shared/request.js";
@@ -36,7 +36,7 @@ export const checkContactMethod = (
   requestContext: RequestContext,
   logSource: string,
 ) => {
-  if (req.method === HttpMethod.Post) {
+  if (req.method === HTTP_METHOD.POST) {
     return null;
   }
 
@@ -46,9 +46,9 @@ export const checkContactMethod = (
   });
 
   return createGuardFailure(
-    HttpStatus.MethodNotAllowed,
+    HTTP_STATUS.METHOD_NOT_ALLOWED,
     CONTACT_API_ERROR_CODE.INVALID_REQUEST,
-    { Allow: HttpMethod.Post },
+    { Allow: HTTP_METHOD.POST },
   );
 };
 
@@ -69,7 +69,7 @@ export const checkContactOrigin = (
   });
 
   return createGuardFailure(
-    HttpStatus.Forbidden,
+    HTTP_STATUS.FORBIDDEN,
     CONTACT_API_ERROR_CODE.FORBIDDEN_ORIGIN,
   );
 };
@@ -97,7 +97,7 @@ export const checkContactRateLimit = async (
   });
 
   return createGuardFailure(
-    HttpStatus.Forbidden,
+    HTTP_STATUS.FORBIDDEN,
     CONTACT_API_ERROR_CODE.RATE_LIMITED,
   );
 };

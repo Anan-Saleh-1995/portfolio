@@ -1,17 +1,17 @@
 import type { ContactPayload } from "../../contact/types.js";
-import { EmailProvider } from "../providers.js";
+import { EMAIL_PROVIDER } from "../providers.js";
 import {
   EMAIL_RESEND_EXCEPTION,
   EMAIL_RESEND_MISSING_CONFIG,
   EMAIL_RESEND_REJECTED,
   EMAIL_RESEND_SENT,
 } from "../../shared/events.js";
-import { SendEmailResult } from "../types.js";
+import { SEND_EMAIL_RESULT, type SendEmailResult } from "../types.js";
 import { getResendClient } from "./client.js";
 import { getEmailConfig } from "./config.js";
 import { getLogSource, logError, logInfo } from "../../shared/logger.js";
 import type { RequestContext } from "../../shared/request.js";
-import { ResendTemplate } from "./templates.js";
+import { RESEND_TEMPLATE } from "./templates.js";
 
 const LOG_SOURCE = getLogSource(import.meta.url);
 
@@ -27,7 +27,7 @@ export const sendContactEmail = async (
     logInfo(LOG_SOURCE, EMAIL_RESEND_MISSING_CONFIG, {
       ...requestContext,
     });
-    return SendEmailResult.MissingConfig;
+    return SEND_EMAIL_RESULT.MISSING_CONFIG;
   }
 
   try {
@@ -37,7 +37,7 @@ export const sendContactEmail = async (
       replyTo: payload.email,
       subject: payload.subject,
       template: {
-        id: ResendTemplate.DirectWord,
+        id: RESEND_TEMPLATE.DIRECT_WORD,
         variables: {
           name: payload.name,
           email: payload.email,
@@ -51,25 +51,25 @@ export const sendContactEmail = async (
       logInfo(LOG_SOURCE, EMAIL_RESEND_SENT, {
         ...requestContext,
         durationMs: Date.now() - startedAt,
-        provider: EmailProvider.Resend,
+        provider: EMAIL_PROVIDER.RESEND,
         providerMessageId: data?.id ?? null,
       });
-      return SendEmailResult.Sent;
+      return SEND_EMAIL_RESULT.SENT;
     }
 
     logInfo(LOG_SOURCE, EMAIL_RESEND_REJECTED, {
       ...requestContext,
       durationMs: Date.now() - startedAt,
-      provider: EmailProvider.Resend,
+      provider: EMAIL_PROVIDER.RESEND,
       message: error.message,
     });
-    return SendEmailResult.Failed;
+    return SEND_EMAIL_RESULT.FAILED;
   } catch (error) {
     logError(LOG_SOURCE, EMAIL_RESEND_EXCEPTION, error, {
       ...requestContext,
       durationMs: Date.now() - startedAt,
-      provider: EmailProvider.Resend,
+      provider: EMAIL_PROVIDER.RESEND,
     });
-    return SendEmailResult.Failed;
+    return SEND_EMAIL_RESULT.FAILED;
   }
 };

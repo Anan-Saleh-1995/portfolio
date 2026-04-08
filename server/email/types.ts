@@ -1,8 +1,8 @@
-export const SendEmailResult = {
-  Sent: "sent",
-  MissingConfig: "missing_config",
-  Failed: "failed",
+export const SEND_EMAIL_RESULT = {
+  SENT: "sent",
+  MISSING_CONFIG: "missing_config",
+  FAILED: "failed",
 } as const;
 
 export type SendEmailResult =
-  (typeof SendEmailResult)[keyof typeof SendEmailResult];
+  (typeof SEND_EMAIL_RESULT)[keyof typeof SEND_EMAIL_RESULT];

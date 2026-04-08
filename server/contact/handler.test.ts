@@ -16,8 +16,8 @@ vi.mock("./rateLimit", () => ({
 }));
 
 import { sendContactEmail } from "../email/resend/index.js";
-import { SendEmailResult } from "../email/types.js";
-import { HttpMethod, HttpStatus } from "../shared/http.js";
+import { SEND_EMAIL_RESULT } from "../email/types.js";
+import { HTTP_METHOD, HTTP_STATUS } from "../shared/http.js";
 import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
 import { handler } from "./handler.js";
 import type { ContactPayload } from "./types.js";
@@ -70,7 +70,7 @@ const validBody = {
 } satisfies ContactPayload;
 
 const createRequest = (request: Partial<ApiRequestShape>): ApiRequestShape => ({
-  method: HttpMethod.Post,
+  method: HTTP_METHOD.POST,
   headers: {},
   body: undefined,
   ...request,
@@ -96,12 +96,12 @@ describe("contact handler", () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
 
     await handler(
-      createRequest({ method: HttpMethod.Get, body: undefined }),
+      createRequest({ method: HTTP_METHOD.GET, body: undefined }),
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.MethodNotAllowed);
-    expect(response.headers.Allow).toBe(HttpMethod.Post);
+    expect(response.statusCode).toBe(HTTP_STATUS.METHOD_NOT_ALLOWED);
+    expect(response.headers.Allow).toBe(HTTP_METHOD.POST);
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
@@ -121,7 +121,7 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.BadRequest);
+    expect(response.statusCode).toBe(HTTP_STATUS.BAD_REQUEST);
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
@@ -141,14 +141,14 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.Ok);
+    expect(response.statusCode).toBe(HTTP_STATUS.OK);
     expect(response.body).toBe(JSON.stringify(CONTACT_SUCCESS_RESPONSE));
     expect(mockedSendContactEmail).not.toHaveBeenCalled();
   });
 
   it("returns failure when env vars are missing", async () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
-    mockedSendContactEmail.mockResolvedValue(SendEmailResult.MissingConfig);
+    mockedSendContactEmail.mockResolvedValue(SEND_EMAIL_RESULT.MISSING_CONFIG);
     const response = createResponse();
 
     await handler(
@@ -159,7 +159,7 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.InternalServerError);
+    expect(response.statusCode).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(
@@ -181,7 +181,7 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.Forbidden);
+    expect(response.statusCode).toBe(HTTP_STATUS.FORBIDDEN);
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.FORBIDDEN_ORIGIN),
@@ -210,7 +210,7 @@ describe("contact handler", () => {
       blockedResponse,
     );
 
-    expect(blockedResponse.statusCode).toBe(HttpStatus.Forbidden);
+    expect(blockedResponse.statusCode).toBe(HTTP_STATUS.FORBIDDEN);
     expect(blockedResponse.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.RATE_LIMITED),
@@ -220,7 +220,7 @@ describe("contact handler", () => {
 
   it("returns failure when resend rejects the email", async () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
-    mockedSendContactEmail.mockResolvedValue(SendEmailResult.Failed);
+    mockedSendContactEmail.mockResolvedValue(SEND_EMAIL_RESULT.FAILED);
     const response = createResponse();
 
     await handler(
@@ -231,7 +231,7 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.BadGateway);
+    expect(response.statusCode).toBe(HTTP_STATUS.BAD_GATEWAY);
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(
@@ -243,7 +243,7 @@ describe("contact handler", () => {
 
   it("returns success when resend accepts the email", async () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
-    mockedSendContactEmail.mockResolvedValue(SendEmailResult.Sent);
+    mockedSendContactEmail.mockResolvedValue(SEND_EMAIL_RESULT.SENT);
     const response = createResponse();
 
     await handler(
@@ -254,7 +254,7 @@ describe("contact handler", () => {
       response,
     );
 
-    expect(response.statusCode).toBe(HttpStatus.Ok);
+    expect(response.statusCode).toBe(HTTP_STATUS.OK);
     expect(response.body).toBe(JSON.stringify(CONTACT_SUCCESS_RESPONSE));
     expect(mockedSendContactEmail).toHaveBeenCalledWith(
       validBody,

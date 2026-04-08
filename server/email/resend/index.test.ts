@@ -42,7 +42,7 @@ vi.mock("resend", () => ({
 import { resetResendClient } from "./client.js";
 import { resetEmailConfig } from "./config.js";
 import { sendContactEmail } from "./index.js";
-import { SendEmailResult } from "../types.js";
+import { SEND_EMAIL_RESULT } from "../types.js";
 import { resetServerEnv } from "../../shared/env.js";
 
 describe("sendContactEmail", () => {
@@ -67,7 +67,7 @@ describe("sendContactEmail", () => {
       { requestId: "req_1" },
     );
 
-    expect(result).toBe(SendEmailResult.MissingConfig);
+    expect(result).toBe(SEND_EMAIL_RESULT.MISSING_CONFIG);
   });
 
   it("returns failed when resend rejects the email", async () => {
@@ -90,7 +90,7 @@ describe("sendContactEmail", () => {
       { requestId: "req_1" },
     );
 
-    expect(result).toBe(SendEmailResult.Failed);
+    expect(result).toBe(SEND_EMAIL_RESULT.FAILED);
   });
 
   it("returns sent when resend accepts the email", async () => {
@@ -113,7 +113,7 @@ describe("sendContactEmail", () => {
       { requestId: "req_1" },
     );
 
-    expect(result).toBe(SendEmailResult.Sent);
+    expect(result).toBe(SEND_EMAIL_RESULT.SENT);
     expect(MockResend).toHaveBeenCalledTimes(1);
     const firstCall = sendEmail.mock.calls[0];
     const firstArg = firstCall?.[0];
