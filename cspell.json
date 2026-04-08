@@ -38,7 +38,9 @@
     "mdlint",
     "frameloop",
     "unstub",
-    "ronin"
+    "ronin",
+    "urlset",
+    "changefreq"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
