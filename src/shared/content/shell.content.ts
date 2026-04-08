@@ -30,11 +30,12 @@ export const shellContent = {
       { href: "#the-way", label: "The Way" },
       { href: "#arsenal", label: "Arsenal" },
       { href: "#forge", label: "Forge" },
+      { href: "#proving-ground", label: "Proving Ground" },
       { href: "#contact", label: "Engagement" },
     ],
     sourceRepo: {
       href: "https://github.com/Anan-Saleh-1995/portfolio",
-      label: "Source",
+      label: "Scroll",
       ariaLabel: "View portfolio source on GitHub",
     },
     backToTopLabel: "Back to top",

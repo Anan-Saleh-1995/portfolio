@@ -17,7 +17,7 @@ export const heroContent = {
   title: "The Dojo",
   subtitle: "Mastery through discipline.",
   role: "Full-Stack Developer",
-  primaryCta: { href: "#the-way", label: "Explore" },
+  primaryCta: { href: "#the-way", label: "Proceed" },
   secondaryCta: {
     href: "https://github.com/Anan-Saleh-1995",
     label: "GitHub",
