@@ -37,7 +37,8 @@
     "TOTP",
     "mdlint",
     "frameloop",
-    "unstub"
+    "unstub",
+    "ronin"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
