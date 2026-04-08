@@ -3,5 +3,5 @@
   "project": ["src/**/*.{ts,tsx}", "api/**/*.ts", "server/**/*.ts"],
   "ignoreBinaries": ["vercel"],
   "ignoreDependencies": ["tailwindcss"],
-  "entry": ["api/contact.ts"]
+  "entry": ["api/*.ts"]
 }
