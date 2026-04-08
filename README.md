@@ -119,6 +119,7 @@ RESEND_FROM_EMAIL=Portfolio <contact@send.anansaleh.com>
 CONTACT_TO_EMAIL=your_inbox@example.com
 UPSTASH_REDIS_REST_URL=https://your-db.upstash.io
 UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+SENTRY_DSN=https://your-dsn.ingest.sentry.io/project-id
 ```
 
 Without them, the contact form UI still renders, but message delivery will fail.

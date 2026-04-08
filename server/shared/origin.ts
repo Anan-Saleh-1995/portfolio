@@ -1,4 +1,5 @@
 import type { ApiRequestShape } from "./types.js";
+import { getHeaderValue } from "./headers.js";
 import { getServerEnv } from "./env.js";
 import { isString } from "./strings.js";
 
@@ -10,13 +11,7 @@ const isLocalhostOrigin = (origin: string) =>
   LOCALHOST_ORIGIN_PATTERN.test(origin);
 
 export const getOriginHeader = (headers: ApiRequestShape["headers"]) => {
-  const origin = headers.origin;
-
-  if (Array.isArray(origin)) {
-    return origin[0];
-  }
-
-  return origin;
+  return getHeaderValue(headers.origin);
 };
 
 export const isAllowedOrigin = (origin: string | undefined) =>

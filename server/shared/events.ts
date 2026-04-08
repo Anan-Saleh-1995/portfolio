@@ -1,5 +1,8 @@
 export const ApiEvent = {
   SharedEnvMissing: "shared.env_missing",
+  SharedSentryDisabled: "shared.sentry_disabled",
+  SharedSentryInitialized: "shared.sentry_initialized",
+  SharedSentryReported: "shared.sentry_reported",
   ContactMethodNotAllowed: "contact.method_not_allowed",
   ContactOriginRejected: "contact.origin_rejected",
   ContactRateLimited: "contact.rate_limited",

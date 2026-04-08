@@ -1,28 +1,22 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { getServerEnv } from "../shared/env.js";
+import { getRequestFingerprintHash } from "../shared/request.js";
 import type { ApiRequestShape } from "../shared/types.js";
 
-const WINDOW_LIMIT = 1;
+const WINDOW_LIMIT = 5;
 const WINDOW_DURATION = "1 d";
 
 let cachedRateLimit: Ratelimit | null | undefined;
 
-const getHeaderValue = (
-  value: string | string[] | undefined,
-): string | undefined => {
-  if (Array.isArray(value)) {
-    return value[0];
-  }
-
-  return value;
-};
-
-const getRequestFingerprint = (headers: ApiRequestShape["headers"]) =>
-  getHeaderValue(headers["x-forwarded-for"]) ??
-  getHeaderValue(headers["x-real-ip"]) ??
-  getHeaderValue(headers.origin) ??
-  "unknown";
+interface RateLimitCheckResult {
+  limited: boolean;
+  fingerprintHash: string;
+  limit: number;
+  window: string;
+  remaining?: number;
+  reset?: number;
+}
 
 const createRateLimit = () => {
   const env = getServerEnv();
@@ -55,15 +49,27 @@ const getRateLimit = () => {
 
 export const isRateLimited = async (headers: ApiRequestShape["headers"]) => {
   const rateLimit = getRateLimit();
+  const fingerprintHash = getRequestFingerprintHash(headers);
 
   if (!rateLimit) {
-    return false;
+    return {
+      limited: false,
+      fingerprintHash,
+      limit: WINDOW_LIMIT,
+      window: WINDOW_DURATION,
+    } satisfies RateLimitCheckResult;
   }
 
-  const fingerprint = getRequestFingerprint(headers);
-  const result = await rateLimit.limit(fingerprint);
+  const result = await rateLimit.limit(fingerprintHash);
 
-  return !result.success;
+  return {
+    limited: !result.success,
+    fingerprintHash,
+    limit: WINDOW_LIMIT,
+    window: WINDOW_DURATION,
+    remaining: result.remaining,
+    reset: result.reset,
+  } satisfies RateLimitCheckResult;
 };
 
 export const resetRateLimitStore = () => {

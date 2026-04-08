@@ -1,6 +1,7 @@
 import { basename, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ApiEventName } from "./events.js";
+import { reportErrorToSentry, reportInfoToSentry } from "./sentry.js";
 
 const serializeError = (error: unknown) => {
   if (error instanceof Error) {
@@ -35,6 +36,7 @@ export const logInfo = (
   event: ApiEventName,
   metadata: Record<string, unknown> = {},
 ) => {
+  reportInfoToSentry(source, event, metadata);
   console.info({
     scope: "api",
     source,
@@ -49,6 +51,7 @@ export const logError = (
   error: unknown,
   metadata: Record<string, unknown> = {},
 ) => {
+  reportErrorToSentry(source, event, error, metadata);
   console.error({
     scope: "api",
     source,
