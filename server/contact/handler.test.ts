@@ -6,7 +6,12 @@ vi.mock("../email/resend", () => ({
 }));
 
 vi.mock("./rateLimit", () => ({
-  isRateLimited: vi.fn().mockResolvedValue(false),
+  isRateLimited: vi.fn().mockResolvedValue({
+    limited: false,
+    fingerprintHash: "hash",
+    limit: 1,
+    window: "1 d",
+  }),
   resetRateLimitStore: vi.fn(),
 }));
 
@@ -75,7 +80,12 @@ describe("contact handler", () => {
   afterEach(() => {
     mockedSendContactEmail.mockReset();
     mockedIsRateLimited.mockReset();
-    mockedIsRateLimited.mockResolvedValue(false);
+    mockedIsRateLimited.mockResolvedValue({
+      limited: false,
+      fingerprintHash: "hash",
+      limit: 1,
+      window: "1 d",
+    });
     resetRateLimitStore();
     vi.unstubAllEnvs();
   });
@@ -179,7 +189,14 @@ describe("contact handler", () => {
 
   it("returns failure when too many requests arrive from the same origin", async () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
-    mockedIsRateLimited.mockResolvedValue(true);
+    mockedIsRateLimited.mockResolvedValue({
+      limited: true,
+      fingerprintHash: "hash",
+      limit: 1,
+      window: "1 d",
+      remaining: 0,
+      reset: Date.now() + 1000,
+    });
 
     const blockedResponse = createResponse();
 
@@ -235,6 +252,11 @@ describe("contact handler", () => {
 
     expect(response.statusCode).toBe(HttpStatus.Ok);
     expect(response.body).toBe(JSON.stringify(CONTACT_SUCCESS_RESPONSE));
-    expect(mockedSendContactEmail).toHaveBeenCalledWith(validBody);
+    expect(mockedSendContactEmail).toHaveBeenCalledWith(
+      validBody,
+      expect.objectContaining({
+        requestId: expect.any(String),
+      }),
+    );
   });
 });

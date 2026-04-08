@@ -56,13 +56,16 @@ describe("sendContactEmail", () => {
   });
 
   it("returns missing_config when env vars are absent", async () => {
-    const result = await sendContactEmail({
-      name: "Anan",
-      email: "anan@example.com",
-      subject: "Hiring Inquiry",
-      message: "This is a valid contact message.",
-      botcheck: "",
-    });
+    const result = await sendContactEmail(
+      {
+        name: "Anan",
+        email: "anan@example.com",
+        subject: "Hiring Inquiry",
+        message: "This is a valid contact message.",
+        botcheck: "",
+      },
+      { requestId: "req_1" },
+    );
 
     expect(result).toBe(SendEmailResult.MissingConfig);
   });
@@ -76,13 +79,16 @@ describe("sendContactEmail", () => {
       error: { message: "blocked" },
     });
 
-    const result = await sendContactEmail({
-      name: "Anan",
-      email: "anan@example.com",
-      subject: "Hiring Inquiry",
-      message: "This is a valid contact message.",
-      botcheck: "",
-    });
+    const result = await sendContactEmail(
+      {
+        name: "Anan",
+        email: "anan@example.com",
+        subject: "Hiring Inquiry",
+        message: "This is a valid contact message.",
+        botcheck: "",
+      },
+      { requestId: "req_1" },
+    );
 
     expect(result).toBe(SendEmailResult.Failed);
   });
@@ -96,13 +102,16 @@ describe("sendContactEmail", () => {
       error: null,
     });
 
-    const result = await sendContactEmail({
-      name: "Anan",
-      email: "anan@example.com",
-      subject: "Hiring Inquiry",
-      message: "This is a valid contact message.",
-      botcheck: "",
-    });
+    const result = await sendContactEmail(
+      {
+        name: "Anan",
+        email: "anan@example.com",
+        subject: "Hiring Inquiry",
+        message: "This is a valid contact message.",
+        botcheck: "",
+      },
+      { requestId: "req_1" },
+    );
 
     expect(result).toBe(SendEmailResult.Sent);
     expect(MockResend).toHaveBeenCalledTimes(1);
@@ -135,21 +144,27 @@ describe("sendContactEmail", () => {
       error: null,
     });
 
-    await sendContactEmail({
-      name: "Anan",
-      email: "anan@example.com",
-      subject: "Hiring Inquiry",
-      message: "First message body",
-      botcheck: "",
-    });
+    await sendContactEmail(
+      {
+        name: "Anan",
+        email: "anan@example.com",
+        subject: "Hiring Inquiry",
+        message: "First message body",
+        botcheck: "",
+      },
+      { requestId: "req_1" },
+    );
 
-    await sendContactEmail({
-      name: "Anan",
-      email: "anan@example.com",
-      subject: "Collaboration",
-      message: "Second message body",
-      botcheck: "",
-    });
+    await sendContactEmail(
+      {
+        name: "Anan",
+        email: "anan@example.com",
+        subject: "Collaboration",
+        message: "Second message body",
+        botcheck: "",
+      },
+      { requestId: "req_2" },
+    );
 
     expect(MockResend).toHaveBeenCalledTimes(1);
   });
