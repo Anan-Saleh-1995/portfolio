@@ -1,6 +1,7 @@
 export const HttpMethod = {
   Get: "GET",
   Post: "POST",
+  HEAD: "HEAD",
 } as const;
 export type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
 

@@ -7,9 +7,18 @@ const HEALTH_RESPONSE = {
 } as const;
 
 export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
-  if (req.method !== HttpMethod.Get) {
-    res.setHeader("Allow", HttpMethod.Get);
+  const method = req.method;
+  const ALLOW_HEADER = `${HttpMethod.Get}, ${HttpMethod.HEAD}`;
+
+  if (method !== HttpMethod.Get && method !== HttpMethod.HEAD) {
+    res.setHeader("Allow", ALLOW_HEADER);
     return json(res, HttpStatus.MethodNotAllowed, HEALTH_RESPONSE);
+  }
+
+  if (method === HttpMethod.HEAD) {
+    res.status(HttpStatus.Ok).setHeader("Content-Length", "0");
+    res.send("");
+    return;
   }
 
   return json(res, HttpStatus.Ok, HEALTH_RESPONSE);
