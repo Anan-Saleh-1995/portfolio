@@ -1,5 +1,5 @@
 import type { HomeContent } from "../home.types";
-import { contactFormContent } from "@/features/contact/contact.content";
+import { contactContent } from "@/features/contact/contact.content";
 
 export const homeContent = {
   nav: {
@@ -200,17 +200,7 @@ export const homeContent = {
     impact:
       "The result is a platform with clearer role boundaries, safer upload and payment flows, better operational visibility, and a backend shape that can grow feature-by-feature instead of collapsing into a monolith of route handlers.",
   },
-  contact: {
-    sectionNumber: "05",
-    sectionTitle: "Engagement",
-    heading: "State Your Intent",
-    subheading:
-      "Opportunities, alliances, and worthy challenges are welcome. Send word.",
-    channelsLabel: "Direct Channels",
-    email: "anansaleh18@gmail.com",
-    github: "https://github.com/Anan-Saleh-1995",
-    form: contactFormContent,
-  },
+  contact: contactContent,
   footer: {
     brand: "anan",
     backToTopLabel: "Back to top",

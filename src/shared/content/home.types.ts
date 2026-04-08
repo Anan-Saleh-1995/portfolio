@@ -1,4 +1,4 @@
-import type { ContactFormContent } from "@/features/contact/contact.content";
+import type { ContactContent } from "@/features/contact/contact.content";
 
 export interface NavLinkContent {
   href: string;
@@ -83,14 +83,14 @@ export interface HomeContent {
     impact: string;
   };
   contact: {
-    sectionNumber: string;
-    sectionTitle: string;
-    heading: string;
-    subheading: string;
-    channelsLabel: string;
-    email: string;
-    github: string;
-    form: ContactFormContent;
+    sectionNumber: ContactContent["sectionNumber"];
+    sectionTitle: ContactContent["sectionTitle"];
+    heading: ContactContent["heading"];
+    subheading: ContactContent["subheading"];
+    channelsLabel: ContactContent["channelsLabel"];
+    email: ContactContent["email"];
+    github: ContactContent["github"];
+    form: ContactContent["form"];
   };
   footer: {
     brand: string;

@@ -41,7 +41,18 @@ export interface ContactFormContent {
   };
 }
 
-export const contactFormContent = {
+export interface ContactContent {
+  sectionNumber: string;
+  sectionTitle: string;
+  heading: string;
+  subheading: string;
+  channelsLabel: string;
+  email: string;
+  github: string;
+  form: ContactFormContent;
+}
+
+const contactFormContent = {
   labels: {
     name: "Name",
     email: "Email",
@@ -89,3 +100,15 @@ export const contactFormContent = {
     rateLimitedTitle: "The Gate Is Closed",
   },
 } satisfies ContactFormContent;
+
+export const contactContent = {
+  sectionNumber: "05",
+  sectionTitle: "Engagement",
+  heading: "State Your Intent",
+  subheading:
+    "Opportunities, alliances, and worthy challenges are welcome. Send word.",
+  channelsLabel: "Direct Channels",
+  email: "anansaleh18@gmail.com",
+  github: "https://github.com/Anan-Saleh-1995",
+  form: contactFormContent,
+} satisfies ContactContent;
