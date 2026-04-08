@@ -76,6 +76,18 @@ npm run vercel:dev
 
 `npm run dev` only starts the Vite frontend, so `/api/contact` will 404 there. Use `npm run vercel:dev` whenever you need the real contact route locally.
 
+For uptime checks, the repo also exposes:
+
+```text
+/api/health
+```
+
+It responds to `GET` with:
+
+```json
+{ "ok": true }
+```
+
 Build for production:
 
 ```bash
