@@ -13,7 +13,7 @@ export const SERVER_ENV_KEY = {
 
 export type ServerEnvKey = (typeof SERVER_ENV_KEY)[keyof typeof SERVER_ENV_KEY];
 
-export interface ServerEnv {
+interface ServerEnv {
   allowedOrigins: string[];
   resendApiKey: string;
   resendFromEmail: string;
