@@ -3,7 +3,6 @@ export const HTTP_METHOD = {
   POST: "POST",
   HEAD: "HEAD",
 } as const;
-export type HttpMethod = (typeof HTTP_METHOD)[keyof typeof HTTP_METHOD];
 
 export const HTTP_STATUS = {
   OK: 200,

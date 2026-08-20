@@ -66,7 +66,7 @@ const getRequestBody = (req: ApiRequestShape) => {
   return JSON.stringify(req.body);
 };
 
-export const createVercelApiHandler =
+const createVercelApiHandler =
   (fallbackPath: string) =>
   async (req: ApiRequestShape, res: ApiResponseShape) => {
     const isHeadRequest = req.method?.toUpperCase() === HTTP_METHOD.HEAD;
