@@ -32,6 +32,7 @@ vi.mock("@upstash/redis", () => ({
 }));
 
 import { resetServerEnv } from "../shared/env.js";
+import { CONTACT_RATE_LIMIT_MISSING_CONFIG } from "../shared/events.js";
 import { isRateLimited, resetRateLimitStore } from "./rateLimit.js";
 
 describe("isRateLimited", () => {
@@ -42,10 +43,15 @@ describe("isRateLimited", () => {
     slidingWindow.mockClear();
     resetRateLimitStore();
     resetServerEnv();
+    vi.restoreAllMocks();
     vi.unstubAllEnvs();
   });
 
   it("fails open when upstash env vars are absent", async () => {
+    const consoleInfo = vi.spyOn(console, "info").mockImplementation(() => {
+      return undefined;
+    });
+
     const result = await isRateLimited({
       origin: "https://portfolio.test",
     });
@@ -57,6 +63,31 @@ describe("isRateLimited", () => {
       window: "1 h",
       fingerprintHash: expect.any(String),
     });
+    expect(consoleInfo).not.toHaveBeenCalled();
+    expect(MockRatelimit).not.toHaveBeenCalled();
+  });
+
+  it("fails open and logs partial upstash config", async () => {
+    const consoleInfo = vi.spyOn(console, "info").mockImplementation(() => {
+      return undefined;
+    });
+
+    vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://redis.test");
+
+    const result = await isRateLimited({
+      origin: "https://portfolio.test",
+    });
+
+    expect(result).toMatchObject({
+      limited: false,
+      policy: "disabled",
+    });
+    expect(consoleInfo).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: CONTACT_RATE_LIMIT_MISSING_CONFIG,
+        missing: ["UPSTASH_REDIS_REST_TOKEN"],
+      }),
+    );
     expect(MockRatelimit).not.toHaveBeenCalled();
   });
 

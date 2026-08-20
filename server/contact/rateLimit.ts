@@ -1,6 +1,8 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { getServerEnv } from "../shared/env.js";
+import { CONTACT_RATE_LIMIT_MISSING_CONFIG } from "../shared/events.js";
+import { getServerEnv, SERVER_ENV_KEY } from "../shared/env.js";
+import { getLogSource, logInfo } from "../shared/logger.js";
 import { getRequestFingerprintHash } from "../shared/request.js";
 import type { ApiRequestShape } from "../shared/types.js";
 
@@ -8,6 +10,7 @@ const RATE_LIMIT_POLICIES = [
   { name: "burst", limit: 5, window: "1 h" },
   { name: "daily", limit: 20, window: "1 d" },
 ] as const;
+const LOG_SOURCE = getLogSource(import.meta.url);
 
 let cachedRateLimits:
   | {
@@ -32,7 +35,17 @@ const createRateLimit = () => {
   const url = env.upstashRedisRestUrl;
   const token = env.upstashRedisRestToken;
 
+  if (url === "" && token === "") {
+    return null;
+  }
+
   if (url === "" || token === "") {
+    logInfo(LOG_SOURCE, CONTACT_RATE_LIMIT_MISSING_CONFIG, {
+      missing: [
+        ...(url === "" ? [SERVER_ENV_KEY.UPSTASH_REDIS_REST_URL] : []),
+        ...(token === "" ? [SERVER_ENV_KEY.UPSTASH_REDIS_REST_TOKEN] : []),
+      ],
+    });
     return null;
   }
 

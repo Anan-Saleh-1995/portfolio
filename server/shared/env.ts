@@ -1,8 +1,18 @@
-import { SHARED_ENV_MISSING } from "./events.js";
-import { getLogSource, logInfo } from "./logger.js";
 import { getEnvString } from "./strings.js";
 
-interface ServerEnv {
+export const SERVER_ENV_KEY = {
+  ALLOWED_ORIGINS: "ALLOWED_ORIGINS",
+  RESEND_API_KEY: "RESEND_API_KEY",
+  RESEND_FROM_EMAIL: "RESEND_FROM_EMAIL",
+  RESEND_CONTACT_TEMPLATE_ID: "RESEND_CONTACT_TEMPLATE_ID",
+  CONTACT_TO_EMAIL: "CONTACT_TO_EMAIL",
+  UPSTASH_REDIS_REST_URL: "UPSTASH_REDIS_REST_URL",
+  UPSTASH_REDIS_REST_TOKEN: "UPSTASH_REDIS_REST_TOKEN",
+} as const;
+
+export type ServerEnvKey = (typeof SERVER_ENV_KEY)[keyof typeof SERVER_ENV_KEY];
+
+export interface ServerEnv {
   allowedOrigins: string[];
   resendApiKey: string;
   resendFromEmail: string;
@@ -19,11 +29,9 @@ interface EnvFieldSchema<
   envKey: TEnvKey;
   field: TField;
   parse: (value: string | undefined) => ServerEnv[TField];
-  isMissing: (value: ServerEnv[TField]) => boolean;
 }
 
 let cachedServerEnv: ServerEnv | undefined;
-const LOG_SOURCE = getLogSource(import.meta.url);
 
 const getEnvStringList = (value: string | undefined) =>
   getEnvString(value)
@@ -33,46 +41,39 @@ const getEnvStringList = (value: string | undefined) =>
 
 const envSchema = {
   allowedOrigins: {
-    envKey: "ALLOWED_ORIGINS",
+    envKey: SERVER_ENV_KEY.ALLOWED_ORIGINS,
     field: "allowedOrigins",
     parse: getEnvStringList,
-    isMissing: (value) => value.length === 0,
   },
   resendApiKey: {
-    envKey: "RESEND_API_KEY",
+    envKey: SERVER_ENV_KEY.RESEND_API_KEY,
     field: "resendApiKey",
     parse: getEnvString,
-    isMissing: (value) => value === "",
   },
   resendFromEmail: {
-    envKey: "RESEND_FROM_EMAIL",
+    envKey: SERVER_ENV_KEY.RESEND_FROM_EMAIL,
     field: "resendFromEmail",
     parse: getEnvString,
-    isMissing: (value) => value === "",
   },
   resendContactTemplateId: {
-    envKey: "RESEND_CONTACT_TEMPLATE_ID",
+    envKey: SERVER_ENV_KEY.RESEND_CONTACT_TEMPLATE_ID,
     field: "resendContactTemplateId",
     parse: getEnvString,
-    isMissing: () => false,
   },
   contactToEmail: {
-    envKey: "CONTACT_TO_EMAIL",
+    envKey: SERVER_ENV_KEY.CONTACT_TO_EMAIL,
     field: "contactToEmail",
     parse: getEnvString,
-    isMissing: (value) => value === "",
   },
   upstashRedisRestUrl: {
-    envKey: "UPSTASH_REDIS_REST_URL",
+    envKey: SERVER_ENV_KEY.UPSTASH_REDIS_REST_URL,
     field: "upstashRedisRestUrl",
     parse: getEnvString,
-    isMissing: (value) => value === "",
   },
   upstashRedisRestToken: {
-    envKey: "UPSTASH_REDIS_REST_TOKEN",
+    envKey: SERVER_ENV_KEY.UPSTASH_REDIS_REST_TOKEN,
     field: "upstashRedisRestToken",
     parse: getEnvString,
-    isMissing: (value) => value === "",
   },
 } satisfies {
   allowedOrigins: EnvFieldSchema<"ALLOWED_ORIGINS", "allowedOrigins">;
@@ -93,44 +94,21 @@ const envSchema = {
   >;
 };
 
-const readEnvField = <TEnvKey extends string, TField extends keyof ServerEnv>(
-  missing: string[],
-  schema: EnvFieldSchema<TEnvKey, TField>,
-) => {
-  const parsedValue = schema.parse(process.env[schema.envKey]);
-
-  if (schema.isMissing(parsedValue)) {
-    missing.push(schema.envKey);
-  }
-
-  return parsedValue;
-};
+const readEnvField = <TEnvKey extends string, TField extends keyof ServerEnv>({
+  envKey,
+  parse,
+}: EnvFieldSchema<TEnvKey, TField>) => parse(process.env[envKey]);
 
 const readServerEnv = (): ServerEnv => {
-  const missing: string[] = [];
-  const env: ServerEnv = {
-    allowedOrigins: readEnvField(missing, envSchema.allowedOrigins),
-    resendApiKey: readEnvField(missing, envSchema.resendApiKey),
-    resendFromEmail: readEnvField(missing, envSchema.resendFromEmail),
-    resendContactTemplateId: readEnvField(
-      missing,
-      envSchema.resendContactTemplateId,
-    ),
-    contactToEmail: readEnvField(missing, envSchema.contactToEmail),
-    upstashRedisRestUrl: readEnvField(missing, envSchema.upstashRedisRestUrl),
-    upstashRedisRestToken: readEnvField(
-      missing,
-      envSchema.upstashRedisRestToken,
-    ),
+  return {
+    allowedOrigins: readEnvField(envSchema.allowedOrigins),
+    resendApiKey: readEnvField(envSchema.resendApiKey),
+    resendFromEmail: readEnvField(envSchema.resendFromEmail),
+    resendContactTemplateId: readEnvField(envSchema.resendContactTemplateId),
+    contactToEmail: readEnvField(envSchema.contactToEmail),
+    upstashRedisRestUrl: readEnvField(envSchema.upstashRedisRestUrl),
+    upstashRedisRestToken: readEnvField(envSchema.upstashRedisRestToken),
   };
-
-  if (missing.length > 0) {
-    logInfo(LOG_SOURCE, SHARED_ENV_MISSING, {
-      missing,
-    });
-  }
-
-  return env;
 };
 
 export const getServerEnv = () => {
