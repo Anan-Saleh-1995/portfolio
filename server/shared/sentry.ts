@@ -4,6 +4,7 @@ import {
   EMAIL_RESEND_REJECTED,
   SHARED_ENV_MISSING,
   SHARED_SENTRY_DISABLED,
+  SHARED_SENTRY_FLUSH_FAILED,
   SHARED_SENTRY_INITIALIZED,
   SHARED_SENTRY_REPORTED,
 } from "./events.js";
@@ -28,6 +29,19 @@ type SentryAlertCode =
 
 const getSentryDsn = () => getEnvString(process.env.SENTRY_DSN);
 const LOG_SOURCE = "sentry.ts";
+
+const serializeFlushError = (error: unknown) => {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+    };
+  }
+
+  return {
+    message: "Unknown error",
+  };
+};
 
 const highSignalInfoEvents = new Set<string>([
   SHARED_ENV_MISSING,
@@ -181,8 +195,18 @@ export const reportErrorToSentry = (
 
 export const flushSentry = async (timeout = 2000) => {
   if (!initialized) {
-    return;
+    return false;
   }
 
-  await Sentry.flush(timeout);
+  try {
+    return await Sentry.flush(timeout);
+  } catch (error) {
+    console.error({
+      scope: "api",
+      source: LOG_SOURCE,
+      event: SHARED_SENTRY_FLUSH_FAILED,
+      error: serializeFlushError(error),
+    });
+    return false;
+  }
 };

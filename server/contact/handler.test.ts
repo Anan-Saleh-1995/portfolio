@@ -148,6 +148,7 @@ describe("contact handler", () => {
     );
 
     expect(response.statusCode).toBe(HTTP_STATUS.BAD_REQUEST);
+    expect(response.headers["X-Request-ID"]).toEqual(expect.any(String));
     expect(mockedIsRateLimited).not.toHaveBeenCalled();
     expect(response.body).toBe(
       JSON.stringify(
@@ -218,6 +219,7 @@ describe("contact handler", () => {
     );
 
     expect(response.statusCode).toBe(HTTP_STATUS.OK);
+    expect(response.headers["X-Request-ID"]).toEqual(expect.any(String));
     expect(response.body).toBe(JSON.stringify(CONTACT_SUCCESS_RESPONSE));
     expect(mockedIsRateLimited).not.toHaveBeenCalled();
     expect(mockedSendContactEmail).not.toHaveBeenCalled();

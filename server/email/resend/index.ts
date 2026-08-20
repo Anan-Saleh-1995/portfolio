@@ -11,9 +11,33 @@ import { getResendClient } from "./client.js";
 import { getEmailConfig } from "./config.js";
 import { getLogSource, logError, logInfo } from "../../shared/logger.js";
 import type { RequestContext } from "../../shared/request.js";
-import { RESEND_TEMPLATE } from "./templates.js";
+import { createContactEmailTemplate } from "./templates.js";
 
 const LOG_SOURCE = getLogSource(import.meta.url);
+
+const getRecordValue = (value: unknown, key: string) => {
+  if (typeof value !== "object" || value === null) {
+    return undefined;
+  }
+
+  return (value as Record<string, unknown>)[key];
+};
+
+const getStringValue = (value: unknown, key: string) => {
+  const property = getRecordValue(value, key);
+  return typeof property === "string" ? property : undefined;
+};
+
+const getNumberValue = (value: unknown, key: string) => {
+  const property = getRecordValue(value, key);
+  return typeof property === "number" ? property : undefined;
+};
+
+const getResendErrorMetadata = (error: unknown) => ({
+  message: getStringValue(error, "message") ?? "Resend request rejected",
+  providerErrorName: getStringValue(error, "name") ?? null,
+  providerStatusCode: getNumberValue(error, "statusCode") ?? null,
+});
 
 export const sendContactEmail = async (
   payload: ContactPayload,
@@ -36,15 +60,7 @@ export const sendContactEmail = async (
       to: config.toEmail,
       replyTo: payload.email,
       subject: payload.subject,
-      template: {
-        id: RESEND_TEMPLATE.DIRECT_WORD,
-        variables: {
-          name: payload.name,
-          email: payload.email,
-          subject: payload.subject,
-          message: payload.message,
-        },
-      },
+      template: createContactEmailTemplate(config.contactTemplateId, payload),
     });
 
     if (error == null) {
@@ -61,7 +77,7 @@ export const sendContactEmail = async (
       ...requestContext,
       durationMs: Date.now() - startedAt,
       provider: EMAIL_PROVIDER.RESEND,
-      message: error.message,
+      ...getResendErrorMetadata(error),
     });
     return SEND_EMAIL_RESULT.FAILED;
   } catch (error) {

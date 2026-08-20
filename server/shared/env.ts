@@ -6,6 +6,7 @@ interface ServerEnv {
   allowedOrigins: string[];
   resendApiKey: string;
   resendFromEmail: string;
+  resendContactTemplateId: string;
   contactToEmail: string;
   upstashRedisRestUrl: string;
   upstashRedisRestToken: string;
@@ -49,6 +50,12 @@ const envSchema = {
     parse: getEnvString,
     isMissing: (value) => value === "",
   },
+  resendContactTemplateId: {
+    envKey: "RESEND_CONTACT_TEMPLATE_ID",
+    field: "resendContactTemplateId",
+    parse: getEnvString,
+    isMissing: () => false,
+  },
   contactToEmail: {
     envKey: "CONTACT_TO_EMAIL",
     field: "contactToEmail",
@@ -71,6 +78,10 @@ const envSchema = {
   allowedOrigins: EnvFieldSchema<"ALLOWED_ORIGINS", "allowedOrigins">;
   resendApiKey: EnvFieldSchema<"RESEND_API_KEY", "resendApiKey">;
   resendFromEmail: EnvFieldSchema<"RESEND_FROM_EMAIL", "resendFromEmail">;
+  resendContactTemplateId: EnvFieldSchema<
+    "RESEND_CONTACT_TEMPLATE_ID",
+    "resendContactTemplateId"
+  >;
   contactToEmail: EnvFieldSchema<"CONTACT_TO_EMAIL", "contactToEmail">;
   upstashRedisRestUrl: EnvFieldSchema<
     "UPSTASH_REDIS_REST_URL",
@@ -101,6 +112,10 @@ const readServerEnv = (): ServerEnv => {
     allowedOrigins: readEnvField(missing, envSchema.allowedOrigins),
     resendApiKey: readEnvField(missing, envSchema.resendApiKey),
     resendFromEmail: readEnvField(missing, envSchema.resendFromEmail),
+    resendContactTemplateId: readEnvField(
+      missing,
+      envSchema.resendContactTemplateId,
+    ),
     contactToEmail: readEnvField(missing, envSchema.contactToEmail),
     upstashRedisRestUrl: readEnvField(missing, envSchema.upstashRedisRestUrl),
     upstashRedisRestToken: readEnvField(

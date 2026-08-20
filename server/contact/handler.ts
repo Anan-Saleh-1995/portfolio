@@ -10,7 +10,10 @@ import {
 } from "../shared/events.js";
 import { HTTP_STATUS, type HttpStatus } from "../shared/http.js";
 import { getLogSource, logInfo } from "../shared/logger.js";
-import { createRequestContext } from "../shared/request.js";
+import {
+  createRequestContext,
+  type RequestContext,
+} from "../shared/request.js";
 import { json } from "../shared/response.js";
 import { flushSentry } from "../shared/sentry.js";
 import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
@@ -29,13 +32,15 @@ import {
 
 const LOG_SOURCE = getLogSource(import.meta.url);
 
-const respond = async (
+const respond = (
   res: ApiResponseShape,
+  requestContext: RequestContext,
   status: HttpStatus,
   body: unknown,
 ) => {
-  await flushSentry();
-  return json(res, status, body);
+  res.setHeader("X-Request-ID", requestContext.requestId);
+  json(res, status, body);
+  void flushSentry();
 };
 
 const describePayloadShape = (body: unknown) => {
@@ -62,14 +67,14 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
 
   if (methodFailure) {
     const failure = applyContactGuardFailure(res, methodFailure);
-    return respond(res, failure.status, failure.body);
+    return respond(res, requestContext, failure.status, failure.body);
   }
 
   const originFailure = checkContactOrigin(req, requestContext, LOG_SOURCE);
 
   if (originFailure) {
     const failure = applyContactGuardFailure(res, originFailure);
-    return respond(res, failure.status, failure.body);
+    return respond(res, requestContext, failure.status, failure.body);
   }
 
   const contentTypeFailure = checkContactContentType(
@@ -80,7 +85,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
 
   if (contentTypeFailure) {
     const failure = applyContactGuardFailure(res, contentTypeFailure);
-    return respond(res, failure.status, failure.body);
+    return respond(res, requestContext, failure.status, failure.body);
   }
 
   const payload = parsePayload(req.body);
@@ -92,6 +97,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     });
     return respond(
       res,
+      requestContext,
       HTTP_STATUS.BAD_REQUEST,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
     );
@@ -101,7 +107,12 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     logInfo(LOG_SOURCE, CONTACT_HONEYPOT_ACCEPTED, {
       ...requestContext,
     });
-    return respond(res, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
+    return respond(
+      res,
+      requestContext,
+      HTTP_STATUS.OK,
+      CONTACT_SUCCESS_RESPONSE,
+    );
   }
 
   const rateLimitFailure = await checkContactRateLimit(
@@ -112,7 +123,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
 
   if (rateLimitFailure) {
     const failure = applyContactGuardFailure(res, rateLimitFailure);
-    return respond(res, failure.status, failure.body);
+    return respond(res, requestContext, failure.status, failure.body);
   }
 
   const result = await sendContactEmail(payload, requestContext);
@@ -123,6 +134,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     });
     return respond(
       res,
+      requestContext,
       HTTP_STATUS.INTERNAL_SERVER_ERROR,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
@@ -135,6 +147,7 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     });
     return respond(
       res,
+      requestContext,
       HTTP_STATUS.BAD_GATEWAY,
       createContactFailureResponse(CONTACT_API_ERROR_CODE.DELIVERY_UNAVAILABLE),
     );
@@ -143,5 +156,5 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
   logInfo(LOG_SOURCE, CONTACT_DELIVERY_SENT, {
     ...requestContext,
   });
-  return respond(res, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
+  return respond(res, requestContext, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
 };
