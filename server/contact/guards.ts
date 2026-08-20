@@ -5,10 +5,13 @@ import {
 import {
   CONTACT_METHOD_NOT_ALLOWED,
   CONTACT_ORIGIN_REJECTED,
+  CONTACT_RATE_LIMIT_SKIPPED,
   CONTACT_RATE_LIMITED,
+  CONTACT_UNSUPPORTED_MEDIA_TYPE,
 } from "../shared/events.js";
+import { getHeaderValue } from "../shared/headers.js";
 import { HTTP_METHOD, HTTP_STATUS, type HttpStatus } from "../shared/http.js";
-import { logInfo } from "../shared/logger.js";
+import { logError, logInfo } from "../shared/logger.js";
 import { getOriginHeader, isAllowedOrigin } from "../shared/origin.js";
 import type { RequestContext } from "../shared/request.js";
 import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
@@ -74,13 +77,57 @@ export const checkContactOrigin = (
   );
 };
 
+const getContentType = (headers: ApiRequestShape["headers"]) =>
+  getHeaderValue(headers["content-type"] ?? headers["Content-Type"]);
+
+export const checkContactContentType = (
+  req: ApiRequestShape,
+  requestContext: RequestContext,
+  logSource: string,
+) => {
+  const contentType = getContentType(req.headers);
+
+  if (contentType?.toLowerCase().includes("application/json")) {
+    return null;
+  }
+
+  logInfo(logSource, CONTACT_UNSUPPORTED_MEDIA_TYPE, {
+    ...requestContext,
+    contentType,
+  });
+
+  return createGuardFailure(
+    HTTP_STATUS.UNSUPPORTED_MEDIA_TYPE,
+    CONTACT_API_ERROR_CODE.INVALID_REQUEST,
+  );
+};
+
+const getRetryAfterSeconds = (reset: number | undefined) => {
+  if (reset === undefined || !Number.isFinite(reset)) {
+    return undefined;
+  }
+
+  return String(Math.max(1, Math.ceil((reset - Date.now()) / 1000)));
+};
+
 export const checkContactRateLimit = async (
   req: ApiRequestShape,
   requestContext: RequestContext,
   logSource: string,
 ) => {
   const origin = getOriginHeader(req.headers);
-  const rateLimit = await isRateLimited(req.headers);
+  let rateLimit: Awaited<ReturnType<typeof isRateLimited>>;
+
+  try {
+    rateLimit = await isRateLimited(req.headers);
+  } catch (error) {
+    logError(logSource, CONTACT_RATE_LIMIT_SKIPPED, error, {
+      ...requestContext,
+      origin,
+    });
+
+    return null;
+  }
 
   if (!rateLimit.limited) {
     return null;
@@ -91,14 +138,18 @@ export const checkContactRateLimit = async (
     origin,
     fingerprintHash: rateLimit.fingerprintHash,
     limit: rateLimit.limit,
+    policy: rateLimit.policy,
     window: rateLimit.window,
     remaining: rateLimit.remaining,
     reset: rateLimit.reset,
   });
 
+  const retryAfter = getRetryAfterSeconds(rateLimit.reset);
+
   return createGuardFailure(
-    HTTP_STATUS.FORBIDDEN,
+    HTTP_STATUS.TOO_MANY_REQUESTS,
     CONTACT_API_ERROR_CODE.RATE_LIMITED,
+    retryAfter ? { "Retry-After": retryAfter } : undefined,
   );
 };
 

@@ -26,3 +26,6 @@ dist-ssr
 
 .vercel
 .env*.local
+
+# Local agent audit (intentionally not published)
+/docs/sol-audit.md

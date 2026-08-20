@@ -60,11 +60,11 @@ describe("submitContactAction", () => {
     });
   });
 
-  it("returns a rate-limit error when the contact api responds with forbidden", async () => {
+  it("returns a rate-limit error when the contact api responds with too many requests", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
-        status: 403,
+        status: 429,
         ok: false,
         headers: new Headers({ "content-type": "application/json" }),
         json: vi.fn().mockResolvedValue({

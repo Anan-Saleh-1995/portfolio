@@ -16,6 +16,7 @@ import { flushSentry } from "../shared/sentry.js";
 import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
 import {
   applyContactGuardFailure,
+  checkContactContentType,
   checkContactMethod,
   checkContactOrigin,
   checkContactRateLimit,
@@ -71,14 +72,14 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
     return respond(res, failure.status, failure.body);
   }
 
-  const rateLimitFailure = await checkContactRateLimit(
+  const contentTypeFailure = checkContactContentType(
     req,
     requestContext,
     LOG_SOURCE,
   );
 
-  if (rateLimitFailure) {
-    const failure = applyContactGuardFailure(res, rateLimitFailure);
+  if (contentTypeFailure) {
+    const failure = applyContactGuardFailure(res, contentTypeFailure);
     return respond(res, failure.status, failure.body);
   }
 
@@ -101,6 +102,17 @@ export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
       ...requestContext,
     });
     return respond(res, HTTP_STATUS.OK, CONTACT_SUCCESS_RESPONSE);
+  }
+
+  const rateLimitFailure = await checkContactRateLimit(
+    req,
+    requestContext,
+    LOG_SOURCE,
+  );
+
+  if (rateLimitFailure) {
+    const failure = applyContactGuardFailure(res, rateLimitFailure);
+    return respond(res, failure.status, failure.body);
   }
 
   const result = await sendContactEmail(payload, requestContext);

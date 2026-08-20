@@ -23,7 +23,7 @@ export const CONTACT_FEEDBACK_MESSAGE = {
   DELIVERY_FAILED:
     "Your word could not be delivered. Try again or use a direct channel.",
   RATE_LIMITED:
-    "The channel is cooling. Try again in 24 hours or use a direct channel.",
+    "The channel is cooling. Try again later or use a direct channel.",
   DELIVERY_SUCCEEDED:
     "Your message has been received. I will respond within 48 hours.",
 } as const;

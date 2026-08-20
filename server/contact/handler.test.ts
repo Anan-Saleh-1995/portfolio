@@ -9,8 +9,9 @@ vi.mock("./rateLimit", () => ({
   isRateLimited: vi.fn().mockResolvedValue({
     limited: false,
     fingerprintHash: "hash",
-    limit: 1,
-    window: "1 d",
+    limit: 5,
+    policy: "burst",
+    window: "1 h",
   }),
   resetRateLimitStore: vi.fn(),
 }));
@@ -69,9 +70,29 @@ const validBody = {
   botcheck: "",
 } satisfies ContactPayload;
 
+const defaultHeaders: ApiRequestShape["headers"] = {
+  origin: TEST_SITE_URL,
+  "content-type": "application/json",
+};
+
 const createRequest = (request: Partial<ApiRequestShape>): ApiRequestShape => ({
   method: HTTP_METHOD.POST,
-  headers: {},
+  body: undefined,
+  ...request,
+  headers: {
+    ...defaultHeaders,
+    ...(request.headers ?? {}),
+  },
+});
+
+const createRequestWithoutDefaults = (
+  request: Partial<ApiRequestShape>,
+): ApiRequestShape => ({
+  method: HTTP_METHOD.POST,
+  headers: {
+    origin: TEST_SITE_URL,
+    "content-type": "application/json",
+  },
   body: undefined,
   ...request,
 });
@@ -83,8 +104,9 @@ describe("contact handler", () => {
     mockedIsRateLimited.mockResolvedValue({
       limited: false,
       fingerprintHash: "hash",
-      limit: 1,
-      window: "1 d",
+      limit: 5,
+      policy: "burst",
+      window: "1 h",
     });
     resetRateLimitStore();
     vi.unstubAllEnvs();
@@ -96,7 +118,11 @@ describe("contact handler", () => {
     vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
 
     await handler(
-      createRequest({ method: HTTP_METHOD.GET, body: undefined }),
+      createRequestWithoutDefaults({
+        method: HTTP_METHOD.GET,
+        body: undefined,
+        headers: {},
+      }),
       response,
     );
 
@@ -122,11 +148,61 @@ describe("contact handler", () => {
     );
 
     expect(response.statusCode).toBe(HTTP_STATUS.BAD_REQUEST);
+    expect(mockedIsRateLimited).not.toHaveBeenCalled();
     expect(response.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.INVALID_REQUEST),
       ),
     );
+  });
+
+  it("rejects unsupported content types before reading the payload", async () => {
+    vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
+    const response = createResponse();
+
+    await handler(
+      createRequest({
+        headers: { origin: TEST_SITE_URL, "content-type": "text/plain" },
+        body: validBody,
+      }),
+      response,
+    );
+
+    expect(response.statusCode).toBe(HTTP_STATUS.UNSUPPORTED_MEDIA_TYPE);
+    expect(mockedIsRateLimited).not.toHaveBeenCalled();
+    expect(mockedSendContactEmail).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid email addresses on the server", async () => {
+    vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
+    const response = createResponse();
+
+    await handler(
+      createRequest({
+        body: { ...validBody, email: "not-an-email" },
+      }),
+      response,
+    );
+
+    expect(response.statusCode).toBe(HTTP_STATUS.BAD_REQUEST);
+    expect(mockedIsRateLimited).not.toHaveBeenCalled();
+    expect(mockedSendContactEmail).not.toHaveBeenCalled();
+  });
+
+  it("rejects unsupported subjects on the server", async () => {
+    vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
+    const response = createResponse();
+
+    await handler(
+      createRequest({
+        body: { ...validBody, subject: "Injected subject" },
+      }),
+      response,
+    );
+
+    expect(response.statusCode).toBe(HTTP_STATUS.BAD_REQUEST);
+    expect(mockedIsRateLimited).not.toHaveBeenCalled();
+    expect(mockedSendContactEmail).not.toHaveBeenCalled();
   });
 
   it("returns success for honeypot submissions without sending email", async () => {
@@ -143,6 +219,7 @@ describe("contact handler", () => {
 
     expect(response.statusCode).toBe(HTTP_STATUS.OK);
     expect(response.body).toBe(JSON.stringify(CONTACT_SUCCESS_RESPONSE));
+    expect(mockedIsRateLimited).not.toHaveBeenCalled();
     expect(mockedSendContactEmail).not.toHaveBeenCalled();
   });
 
@@ -194,8 +271,9 @@ describe("contact handler", () => {
     mockedIsRateLimited.mockResolvedValue({
       limited: true,
       fingerprintHash: "hash",
-      limit: 1,
-      window: "1 d",
+      limit: 5,
+      policy: "burst",
+      window: "1 h",
       remaining: 0,
       reset: Date.now() + 1000,
     });
@@ -210,12 +288,31 @@ describe("contact handler", () => {
       blockedResponse,
     );
 
-    expect(blockedResponse.statusCode).toBe(HTTP_STATUS.FORBIDDEN);
+    expect(blockedResponse.statusCode).toBe(HTTP_STATUS.TOO_MANY_REQUESTS);
+    expect(Number(blockedResponse.headers["Retry-After"])).toBeGreaterThan(0);
+    expect(mockedSendContactEmail).not.toHaveBeenCalled();
     expect(blockedResponse.body).toBe(
       JSON.stringify(
         createContactFailureResponse(CONTACT_API_ERROR_CODE.RATE_LIMITED),
       ),
     );
+  });
+
+  it("continues delivery when the rate limit backend is unavailable", async () => {
+    vi.stubEnv("ALLOWED_ORIGINS", TEST_ALLOWED_ORIGINS);
+    mockedIsRateLimited.mockRejectedValue(new Error("redis unavailable"));
+    mockedSendContactEmail.mockResolvedValue(SEND_EMAIL_RESULT.SENT);
+    const response = createResponse();
+
+    await handler(
+      createRequest({
+        body: validBody,
+      }),
+      response,
+    );
+
+    expect(response.statusCode).toBe(HTTP_STATUS.OK);
+    expect(mockedSendContactEmail).toHaveBeenCalledOnce();
   });
 
   it("returns failure when resend rejects the email", async () => {
