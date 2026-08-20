@@ -46,7 +46,7 @@ export const contactPayloadSchema = z
       z.string().min(1).max(CONTACT_FIELD_LIMIT.NAME_MAX),
     ),
     email: trimmedString.pipe(
-      z.string().min(1).max(CONTACT_FIELD_LIMIT.EMAIL_MAX).email(),
+      z.string().min(1).max(CONTACT_FIELD_LIMIT.EMAIL_MAX).pipe(z.email()),
     ),
     subject: trimmedString
       .transform((value) => value || CONTACT_DEFAULT_SUBJECT)
