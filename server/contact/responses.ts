@@ -1,4 +1,4 @@
-import type { ContactApiErrorCode } from "../../src/shared/contracts/contact.js";
+import type { ContactApiErrorCode } from "../../shared/contact.js";
 
 export const CONTACT_SUCCESS_RESPONSE = { success: true } as const;
 

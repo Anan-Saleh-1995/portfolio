@@ -11,8 +11,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:ci": "vitest run --pool=forks --maxWorkers=1",
-    "format": "prettier --write \"{api,server,src}/**/*.{ts,tsx,css,md}\" \"*.{js,json,md}\" \".github/**/*.{yml,yaml}\"",
-    "format:check": "prettier --check \"{api,server,src}/**/*.{ts,tsx,css,md}\" \"*.{js,json,md}\" \".github/**/*.{yml,yaml}\"",
+    "format": "prettier --write \"{api,server,shared,src}/**/*.{ts,tsx,css,md}\" \"*.{js,json,md}\" \".github/**/*.{yml,yaml}\"",
+    "format:check": "prettier --check \"{api,server,shared,src}/**/*.{ts,tsx,css,md}\" \"*.{js,json,md}\" \".github/**/*.{yml,yaml}\"",
     "spellcheck": "cspell \"src/**/*.{ts,tsx}\" \"*.md\"",
     "mdlint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
     "knip": "knip",
@@ -33,7 +33,8 @@
     "react-dom": "^19.2.4",
     "resend": "^6.10.0",
     "sonner": "^2.0.7",
-    "three": "^0.183.2"
+    "three": "^0.183.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",

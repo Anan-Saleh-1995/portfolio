@@ -29,7 +29,12 @@ export default defineConfig([
     },
   },
   {
-    files: ["api/**/*.ts", "server/**/*.ts", "vite.config.ts"],
+    files: [
+      "api/**/*.ts",
+      "server/**/*.ts",
+      "shared/**/*.ts",
+      "vite.config.ts",
+    ],
     ignores: ["server/**/*.test.ts"],
     extends: [
       js.configs.recommended,

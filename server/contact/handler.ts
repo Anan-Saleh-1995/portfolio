@@ -1,4 +1,4 @@
-import { CONTACT_API_ERROR_CODE } from "../../src/shared/contracts/contact.js";
+import { CONTACT_API_ERROR_CODE } from "../../shared/contact.js";
 import { sendContactEmail } from "../email/resend/index.js";
 import { SEND_EMAIL_RESULT } from "../email/types.js";
 import {

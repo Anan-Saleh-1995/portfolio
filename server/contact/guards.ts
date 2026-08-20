@@ -1,7 +1,7 @@
 import {
   CONTACT_API_ERROR_CODE,
   type ContactApiErrorCode,
-} from "../../src/shared/contracts/contact.js";
+} from "../../shared/contact.js";
 import {
   CONTACT_METHOD_NOT_ALLOWED,
   CONTACT_ORIGIN_REJECTED,

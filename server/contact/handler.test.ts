@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CONTACT_API_ERROR_CODE } from "../../src/shared/contracts/contact.js";
+import { CONTACT_API_ERROR_CODE } from "../../shared/contact.js";
 
 vi.mock("../email/resend", () => ({
   sendContactEmail: vi.fn(),

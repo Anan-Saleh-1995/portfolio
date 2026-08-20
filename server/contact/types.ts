@@ -1,7 +1,1 @@
-export interface ContactPayload {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  botcheck: string;
-}
+export type { ContactPayload } from "../../shared/contact.js";
