@@ -53,7 +53,7 @@ That split matters more than adding clever abstractions.
 Install dependencies:
 
 ```bash
-npm install
+npm ci
 ```
 
 Frontend only:
@@ -100,7 +100,9 @@ npm run preview
 
 ```bash
 npm run lint
-npm run test
+npm run format:check
+npm run typecheck
+npm run test:ci
 npm run knip
 npm run spellcheck
 npm run build
@@ -108,19 +110,24 @@ npm run build
 
 ## Environment variables
 
-Create `.env.local` with:
+Copy `.env.example` to `.env.local` and replace the placeholder values:
 
 ```env
-ALLOWED_ORIGINS=https://anansaleh.com,https://www.anansaleh.com
-RESEND_API_KEY=your_key
-RESEND_FROM_EMAIL=Portfolio <contact@send.anansaleh.com>
-CONTACT_TO_EMAIL=your_inbox@example.com
-UPSTASH_REDIS_REST_URL=https://your-db.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your_upstash_token
-SENTRY_DSN=https://your-dsn.ingest.sentry.io/project-id
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+RESEND_API_KEY=re_replace_with_your_resend_key
+RESEND_FROM_EMAIL=Portfolio <contact@send.example.com>
+RESEND_CONTACT_TEMPLATE_ID=direct-word
+CONTACT_TO_EMAIL=you@example.com
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+SENTRY_DSN=
 ```
 
 Use the same variables in Vercel for deployed environments.
+
+`RESEND_CONTACT_TEMPLATE_ID` defaults to `direct-word` when omitted. Upstash and
+Sentry are optional locally; leave both Upstash values blank to disable local
+rate limiting.
 
 ## Contact pipeline
 
@@ -151,6 +158,12 @@ It returns:
 
 ```json
 { "ok": true }
+```
+
+For safe readiness diagnostics without secrets:
+
+```text
+/api/health?ready=1
 ```
 
 ## Why the repo is shaped this way
