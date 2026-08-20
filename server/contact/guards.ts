@@ -14,7 +14,7 @@ import { HTTP_METHOD, HTTP_STATUS, type HttpStatus } from "../shared/http.js";
 import { logError, logInfo } from "../shared/logger.js";
 import { getOriginHeader, isAllowedOrigin } from "../shared/origin.js";
 import type { RequestContext } from "../shared/request.js";
-import type { ApiRequestShape, ApiResponseShape } from "../shared/types.js";
+import type { ApiRequestShape } from "../shared/types.js";
 import { isRateLimited } from "./rateLimit.js";
 import { createContactFailureResponse } from "./responses.js";
 
@@ -151,15 +151,4 @@ export const checkContactRateLimit = async (
     CONTACT_API_ERROR_CODE.RATE_LIMITED,
     retryAfter ? { "Retry-After": retryAfter } : undefined,
   );
-};
-
-export const applyContactGuardFailure = (
-  res: ApiResponseShape,
-  failure: ContactGuardFailure,
-) => {
-  for (const [name, value] of Object.entries(failure.headers ?? {})) {
-    res.setHeader(name, value);
-  }
-
-  return failure;
 };

@@ -1,1 +1,1 @@
-export { handler as default } from "../server/contact/handler.js";
+export { contactApiHandler as default } from "../server/api/vercel.js";

@@ -1,7 +1,5 @@
-import type { HttpMethod } from "./http.js";
-
 export interface ApiRequestShape<TBody = unknown> {
-  method?: HttpMethod;
+  method?: string;
   headers: Record<string, string | string[] | undefined>;
   body?: TBody;
   query?: Record<string, string | string[] | undefined>;
