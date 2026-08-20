@@ -6,6 +6,11 @@ import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 
+const typedParserOptions = {
+  projectService: true,
+  tsconfigRootDir: import.meta.dirname,
+};
+
 export default defineConfig([
   globalIgnores(["dist"]),
   {
@@ -20,14 +25,12 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+      parserOptions: typedParserOptions,
     },
   },
   {
-    files: ["api/**/*.ts", "vite.config.ts"],
+    files: ["api/**/*.ts", "server/**/*.ts", "vite.config.ts"],
+    ignores: ["server/**/*.test.ts"],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
@@ -36,10 +39,15 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.node,
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+      parserOptions: typedParserOptions,
+    },
+  },
+  {
+    files: ["server/**/*.test.ts"],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
     },
   },
   eslintConfigPrettier,

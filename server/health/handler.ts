@@ -83,7 +83,7 @@ const getReadinessResponse = () => {
   } as const;
 };
 
-export const handler = async (req: ApiRequestShape, res: ApiResponseShape) => {
+export const handler = (req: ApiRequestShape, res: ApiResponseShape) => {
   const requestContext = createRequestContext();
   const method = req.method;
 

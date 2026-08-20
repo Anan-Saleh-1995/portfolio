@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useActionState } from "react";
 import { toast } from "sonner";
+import { CONTACT_FEEDBACK_CODE } from "../contact.feedback";
 
 vi.mock("react", async () => {
   const actual = await vi.importActual<typeof import("react")>("react");
@@ -88,9 +89,8 @@ describe("ContactForm", () => {
           message: "Hold the line.",
         },
         feedback: {
+          code: CONTACT_FEEDBACK_CODE.DELIVERY_FAILED,
           kind: "error",
-          title: "Delivery Faltered",
-          message: "Your word could not be delivered.",
         },
       },
       action,
@@ -104,7 +104,8 @@ describe("ContactForm", () => {
     expect(screen.getByLabelText("Purpose")).toHaveValue("Hiring Inquiry");
     expect(screen.getByLabelText("Message")).toHaveValue("Hold the line.");
     expect(mockedToast.error).toHaveBeenCalledWith("Delivery Faltered", {
-      description: "Your word could not be delivered.",
+      description:
+        "Your word could not be delivered. Try again or use a direct channel.",
       duration: 5000,
     });
   });
@@ -116,8 +117,7 @@ describe("ContactForm", () => {
       {
         success: false,
         errors: {},
-        errorMessage:
-          "The channel is cooling. Try again in 24 hours or use a direct channel.",
+        errorMessage: "",
         values: {
           name: "Anan",
           email: "anan@example.com",
@@ -125,10 +125,8 @@ describe("ContactForm", () => {
           message: "Hold the line.",
         },
         feedback: {
+          code: CONTACT_FEEDBACK_CODE.RATE_LIMITED,
           kind: "warning",
-          title: "The Gate Is Closed",
-          message:
-            "The channel is cooling. Try again in 24 hours or use a direct channel.",
         },
       },
       action,
@@ -139,12 +137,12 @@ describe("ContactForm", () => {
 
     expect(
       screen.queryByText(
-        "The channel is cooling. Try again in 24 hours or use a direct channel.",
+        "The channel is cooling. Try again later or use a direct channel.",
       ),
     ).not.toBeInTheDocument();
     expect(mockedToast.warning).toHaveBeenCalledWith("The Gate Is Closed", {
       description:
-        "The channel is cooling. Try again in 24 hours or use a direct channel.",
+        "The channel is cooling. Try again later or use a direct channel.",
       duration: 7000,
     });
   });
