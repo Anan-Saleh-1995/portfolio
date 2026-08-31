@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion } from "./motion";
+import { useReducedMotion } from "./useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,12 +13,38 @@ interface MobileMenuToggleDetail {
 }
 
 export const useSmoothScroll = () => {
+  const reducedMotion = useReducedMotion();
+
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      return;
+    let lenis: Lenis | null = null;
+
+    const handleMenuToggle = (event: Event) => {
+      const { detail } = event as CustomEvent<MobileMenuToggleDetail>;
+
+      if (detail?.open) {
+        lenis?.stop();
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+        return;
+      }
+
+      lenis?.start();
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener(MOBILE_MENU_EVENT, handleMenuToggle);
+
+    if (reducedMotion) {
+      return () => {
+        window.removeEventListener(MOBILE_MENU_EVENT, handleMenuToggle);
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+      };
     }
 
-    const lenis = new Lenis({
+    lenis = new Lenis({
       anchors: true,
       lerp: 0.1,
       smoothWheel: true,
@@ -27,36 +53,18 @@ export const useSmoothScroll = () => {
     lenis.on("scroll", () => ScrollTrigger.update());
 
     const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
+      lenis?.raf(time * 1000);
     };
 
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
-    const handleMenuToggle = (event: Event) => {
-      const { detail } = event as CustomEvent<MobileMenuToggleDetail>;
-
-      if (detail?.open) {
-        lenis.stop();
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
-        return;
-      }
-
-      lenis.start();
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-      ScrollTrigger.refresh();
-    };
-
-    window.addEventListener(MOBILE_MENU_EVENT, handleMenuToggle);
-
     return () => {
       window.removeEventListener(MOBILE_MENU_EVENT, handleMenuToggle);
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
-      lenis.destroy();
+      lenis?.destroy();
       gsap.ticker.remove(tickerCallback);
     };
-  }, []);
+  }, [reducedMotion]);
 };

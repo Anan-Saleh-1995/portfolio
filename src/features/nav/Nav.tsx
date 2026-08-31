@@ -1,35 +1,90 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { Menu, X } from "lucide-react";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
+import { LanguageSwitcher } from "@/shared/ui/LanguageSwitcher";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
-import { useHideOnScroll } from "./useHideOnScroll";
 import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import { SourceRepoLink } from "./SourceRepoLink";
+import { useHideOnScroll } from "./useHideOnScroll";
 import styles from "./Nav.module.css";
 
-const MOBILE_MENU_EVENT = "portfolio:mobile-menu-toggle";
+interface NavigationLink {
+  href: string;
+  label: ReactNode;
+}
 
 export const Nav = () => {
+  const { t } = useLingui();
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const { nav } = getHomeContent();
+  const wasMenuOpenRef = useRef(false);
+  const restoreFocusRef = useRef(false);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
-  useEscapeKey(closeMenu, menuOpen);
+  const navigationLinks: NavigationLink[] = [
+    {
+      href: "#the-way",
+      label: <Trans id="nav.link.theWay">The Way</Trans>,
+    },
+    {
+      href: "#arsenal",
+      label: <Trans id="nav.link.arsenal">Arsenal</Trans>,
+    },
+    {
+      href: "#forge",
+      label: <Trans id="nav.link.forge">Forge</Trans>,
+    },
+    {
+      href: "#proving-ground",
+      label: <Trans id="nav.link.provingGround">Proving Ground</Trans>,
+    },
+    {
+      href: "#contact",
+      label: <Trans id="nav.link.engagement">Engagement</Trans>,
+    },
+  ];
+
+  const closeMenu = useCallback((restoreFocus = true) => {
+    restoreFocusRef.current = restoreFocus;
+    setMenuOpen(false);
+  }, []);
+
+  const openMenu = useCallback(() => {
+    restoreFocusRef.current = true;
+    setMenuOpen(true);
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    if (menuOpen) {
+      closeMenu();
+      return;
+    }
+
+    openMenu();
+  }, [closeMenu, menuOpen, openMenu]);
+
+  useEscapeKey(() => closeMenu(), menuOpen);
 
   useEffect(() => {
     window.dispatchEvent(
-      new CustomEvent(MOBILE_MENU_EVENT, {
+      new CustomEvent("portfolio:mobile-menu-toggle", {
         detail: { open: menuOpen },
       }),
     );
 
     return () => {
       window.dispatchEvent(
-        new CustomEvent(MOBILE_MENU_EVENT, {
+        new CustomEvent("portfolio:mobile-menu-toggle", {
           detail: { open: false },
         }),
       );
@@ -37,28 +92,82 @@ export const Nav = () => {
   }, [menuOpen]);
 
   useEffect(() => {
-    if (!menuOpen) {
-      toggleRef.current?.focus();
+    if (menuOpen) {
+      wasMenuOpenRef.current = true;
+      drawerCloseRef.current?.focus();
       return;
     }
 
-    const firstLink =
-      mobileMenuRef.current?.querySelector<HTMLAnchorElement>("a");
-    firstLink?.focus();
+    if (wasMenuOpenRef.current && restoreFocusRef.current) {
+      toggleRef.current?.focus();
+    }
+
+    wasMenuOpenRef.current = false;
+    restoreFocusRef.current = false;
   }, [menuOpen]);
 
-  const handleMobileMenuKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const main = document.getElementById("main-content");
+    const footer = document.querySelector("footer");
+    const mainWasInert = main?.inert ?? false;
+    const footerWasInert = footer?.inert ?? false;
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    if (main) {
+      main.inert = true;
+    }
+    if (footer) {
+      footer.inert = true;
+    }
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+
+      if (!mainWasInert) {
+        if (main) {
+          main.inert = false;
+        }
+      }
+      if (!footerWasInert) {
+        if (footer) {
+          footer.inert = false;
+        }
+      }
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const handleDesktopChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        closeMenu(false);
+      }
+    };
+
+    desktopQuery.addEventListener("change", handleDesktopChange);
+    return () =>
+      desktopQuery.removeEventListener("change", handleDesktopChange);
+  }, [closeMenu]);
+
+  const handleMobileMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== "Tab") {
       return;
     }
 
-    const focusable = mobileMenuRef.current?.querySelectorAll<
-      HTMLAnchorElement | HTMLButtonElement
-    >("a[href], button:not([disabled])");
+    const focusable = mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+      "a[href],button:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex='-1'])",
+    );
 
-    if (!focusable || focusable.length === 0) {
+    if (!focusable?.length) {
+      event.preventDefault();
       return;
     }
 
@@ -78,72 +187,168 @@ export const Nav = () => {
     }
   };
 
+  const openMenuLabel = t({
+    id: "nav.menu.open",
+    message: "Open menu",
+  });
+  const closeMenuLabel = t({
+    id: "nav.menu.close",
+    message: "Close menu",
+  });
+  const mainNavigationLabel = t({
+    id: "nav.mainNavigation",
+    message: "Main navigation",
+  });
+  const mobileNavigationLabel = t({
+    id: "nav.mobileNavigation",
+    message: "Mobile navigation",
+  });
+
   return (
-    <header className={`${styles.root} ${hidden ? styles.hidden : ""}`}>
-      <a href="#main-content" className={styles.skipLink}>
-        Skip to content
+    <header
+      className={`${styles.root} ${hidden && !menuOpen ? styles.hidden : ""}`}
+    >
+      <a
+        href="#main-content"
+        className="absolute -top-full start-4 z-[104] inline-flex min-h-11 items-center border border-[var(--token)] bg-[var(--bg)] px-4 py-3 [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text)] focus:top-3 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] rtl:tracking-normal"
+      >
+        <Trans id="nav.skipToContent">Skip to content</Trans>
       </a>
-      <div className={styles.inner}>
-        <a href="#" className={styles.brand} aria-label={nav.backToTopLabel}>
-          <EnsoMark size={20} />
-          <span className={styles.brandName}>{nav.brand}</span>
-        </a>
-
-        <nav className={styles.desktopNav} aria-label={nav.mainNavigationLabel}>
-          <ul className={styles.navList} role="list">
-            {nav.links.map(({ href, label }) => (
-              <li key={href}>
-                <a href={href} className={styles.navLink}>
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div className={styles.utilityGroup}>
-            <SourceRepoLink />
-            <ThemeToggle />
-          </div>
-        </nav>
-
-        <div className={styles.mobileControls}>
-          <SourceRepoLink compact />
-          <ThemeToggle />
-          <button
-            ref={toggleRef}
-            className={styles.hamburger}
-            onClick={() => setMenuOpen((prev) => !prev)}
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? nav.closeMenuLabel : nav.openMenuLabel}
-            aria-controls="mobile-menu"
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
 
       <div
-        id="mobile-menu"
-        ref={mobileMenuRef}
-        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
-        aria-hidden={!menuOpen}
-        {...(!menuOpen ? { inert: true } : {})}
-        onKeyDown={handleMobileMenuKeyDown}
+        className="relative mx-auto flex h-[4.5rem] max-w-[1440px] items-center justify-between px-[clamp(1rem,3vw,2.5rem)]"
+        {...(menuOpen ? { inert: true, "aria-hidden": true } : {})}
       >
-        <nav aria-label={nav.mobileNavigationLabel}>
-          <ul className={styles.mobileNavList} role="list">
-            {nav.links.map(({ href, label }) => (
+        <a
+          href="#"
+          className="inline-flex min-h-11 items-center gap-2.5 [font-family:var(--font-mono)] text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
+          aria-label={t({ id: "nav.backToTop", message: "Back to top" })}
+        >
+          <EnsoMark size={24} />
+          <span className="flex flex-col items-start leading-none">
+            <span
+              className="text-sm tracking-[0.12em] opacity-90"
+              dir="ltr"
+              translate="no"
+            >
+              <Trans id="nav.brand">anan</Trans>
+            </span>
+            <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[390px]:block rtl:normal-case rtl:tracking-normal">
+              <Trans id="nav.brandTagline">Crafting digital experiences</Trans>
+            </span>
+          </span>
+        </a>
+
+        <nav
+          className="hidden items-center gap-[clamp(1rem,2vw,2rem)] lg:flex"
+          aria-label={mainNavigationLabel}
+        >
+          <ul
+            className="m-0 flex list-none items-center gap-[clamp(0.9rem,1.5vw,1.75rem)] p-0"
+            role="list"
+          >
+            {navigationLinks.map(({ href, label }) => (
               <li key={href}>
                 <a
                   href={href}
-                  className={styles.mobileNavLink}
-                  onClick={closeMenu}
+                  className="inline-flex min-h-11 items-center [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text-muted)] uppercase no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none rtl:tracking-normal rtl:normal-case"
                 >
                   {label}
                 </a>
               </li>
             ))}
           </ul>
+
+          <div className="flex items-center gap-2.5">
+            <SourceRepoLink />
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
         </nav>
+
+        <div className="flex items-center gap-1.5 lg:hidden">
+          <LanguageSwitcher compact />
+          <ThemeToggle />
+          <button
+            ref={toggleRef}
+            type="button"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text)] transition-colors hover:bg-[color-mix(in_srgb,var(--surface-raised)_72%,transparent)] hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
+            onClick={toggleMenu}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? closeMenuLabel : openMenuLabel}
+            aria-controls="mobile-menu"
+          >
+            {menuOpen ? (
+              <X size={20} aria-hidden={true} />
+            ) : (
+              <Menu size={20} aria-hidden={true} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        className={`fixed inset-0 z-[102] flex lg:hidden ${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        aria-hidden={!menuOpen}
+        {...(!menuOpen ? { inert: true } : {})}
+      >
+        <div
+          className={`absolute inset-0 ${styles.mobileBackdrop}`}
+          aria-hidden={true}
+          onClick={() => closeMenu()}
+        />
+
+        <div
+          ref={mobileMenuRef}
+          className={`relative z-[1] ms-auto flex h-dvh w-[min(88vw,26rem)] flex-col overflow-y-auto border-s border-[var(--border)] px-[clamp(1.25rem,5vw,2rem)] pt-4 pb-8 motion-reduce:transition-none ${styles.mobilePanel} ${
+            menuOpen
+              ? "translate-x-0"
+              : "translate-x-full rtl:-translate-x-full"
+          }`}
+          role="dialog"
+          aria-modal="true"
+          aria-label={mobileNavigationLabel}
+          onKeyDown={handleMobileMenuKeyDown}
+        >
+          <div className="mb-[clamp(2rem,7vh,4.5rem)] flex min-h-12 items-center justify-between">
+            <span className="[font-family:var(--font-mono)] text-xs tracking-[0.14em] text-[var(--text-muted)] uppercase rtl:tracking-normal rtl:normal-case">
+              <Trans id="nav.navigation">Navigation</Trans>
+            </span>
+            <button
+              ref={drawerCloseRef}
+              type="button"
+              className="inline-flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text)] transition-colors hover:bg-[color-mix(in_srgb,var(--surface-raised)_72%,transparent)] hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
+              onClick={() => closeMenu()}
+              aria-label={closeMenuLabel}
+            >
+              <X size={20} aria-hidden={true} />
+            </button>
+          </div>
+
+          <nav aria-label={mobileNavigationLabel}>
+            <ul
+              className="m-0 flex list-none flex-col items-start gap-[clamp(1.25rem,4vh,2.25rem)] p-0"
+              role="list"
+            >
+              {navigationLinks.map(({ href, label }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className="inline-flex min-h-11 items-center [font-family:var(--font-display)] text-[clamp(2rem,8vw,var(--text-3xl))] leading-none font-semibold text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none rtl:tracking-normal rtl:normal-case"
+                    onClick={() => closeMenu()}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="mt-auto flex items-center pt-8">
+            <SourceRepoLink />
+          </div>
+        </div>
       </div>
     </header>
   );
