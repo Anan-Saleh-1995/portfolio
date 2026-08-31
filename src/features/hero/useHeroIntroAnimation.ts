@@ -1,37 +1,57 @@
-import { useEffect, type RefObject } from "react";
+import { useLayoutEffect, type RefObject } from "react";
 import gsap from "gsap";
-import { prefersReducedMotion } from "@/shared/lib/motion";
 
 export const useHeroIntroAnimation = (
-  overlayRef: RefObject<HTMLDivElement | null>,
+  heroRef: RefObject<HTMLElement | null>,
+  reduceMotion: boolean,
 ) => {
-  useEffect(() => {
-    const overlay = overlayRef.current;
-    if (!overlay) return;
+  useLayoutEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
 
-    const introTargets =
-      overlay.querySelectorAll<HTMLElement>("[data-animate]");
-    if (!introTargets.length) return;
+    const context = gsap.context(() => {
+      const introTargets = gsap.utils.toArray<HTMLElement>(
+        "[data-hero-animate]",
+        hero,
+      );
+      const media = hero.querySelector<HTMLElement>("[data-hero-media]");
 
-    if (prefersReducedMotion()) {
-      introTargets.forEach((target) => {
-        target.style.opacity = "1";
-        target.style.transform = "none";
-      });
-      return;
-    }
+      if (reduceMotion) {
+        gsap.set(introTargets, { clearProps: "all" });
+        if (media) gsap.set(media, { clearProps: "all" });
+        return;
+      }
 
-    const introAnimation = gsap.to(introTargets, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      stagger: 0.15,
-      delay: 0.4,
-    });
+      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    return () => {
-      introAnimation.kill();
-    };
-  }, [overlayRef]);
+      timeline.fromTo(
+        introTargets,
+        { autoAlpha: 0, y: 18 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.72,
+          stagger: 0.09,
+          clearProps: "opacity,visibility,transform",
+        },
+        0.08,
+      );
+
+      if (media) {
+        timeline.fromTo(
+          media,
+          { autoAlpha: 0, scale: 0.985 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.92,
+            clearProps: "opacity,visibility,transform",
+          },
+          0.16,
+        );
+      }
+    }, hero);
+
+    return () => context.revert();
+  }, [heroRef, reduceMotion]);
 };

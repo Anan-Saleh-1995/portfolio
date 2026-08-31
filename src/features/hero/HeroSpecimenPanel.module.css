@@ -1,0 +1,275 @@
+.header,
+.content {
+  min-inline-size: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.specimenRule {
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  inline-size: 3.25rem;
+  block-size: 2px;
+  background: var(--token);
+}
+
+.anatomyMap {
+  position: relative;
+  isolation: isolate;
+  inline-size: 100%;
+  aspect-ratio: 317 / 334;
+  overflow: hidden;
+}
+
+.anatomyMap::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.52;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 84%,
+    transparent 100%
+  );
+}
+
+.anatomyMap::after {
+  position: absolute;
+  z-index: 3;
+  inset-block-end: 2%;
+  inset-inline-start: 0;
+  inline-size: 4.5rem;
+  block-size: 1px;
+  content: "";
+  background: var(--border-strong);
+  opacity: 0.72;
+}
+
+.figure {
+  position: absolute;
+  z-index: 1;
+  inset-block: 1% 2%;
+  inset-inline-start: -2%;
+  inline-size: 63%;
+  block-size: 97%;
+  object-fit: contain;
+  object-position: 50% 50%;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 7%,
+      black 92%,
+      transparent 100%
+    );
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 7%,
+      black 92%,
+      transparent 100%
+    );
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+  user-select: none;
+}
+
+.schematic {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  color: color-mix(in srgb, var(--text-muted) 52%, transparent);
+  pointer-events: none;
+}
+
+.schematic path {
+  stroke: currentColor;
+  stroke-width: 0.85;
+  vector-effect: non-scaling-stroke;
+}
+
+.schematic circle {
+  fill: var(--token);
+  stroke: var(--hero-canvas);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.disciplineList {
+  position: absolute;
+  z-index: 4;
+  inset-block: 1.5% 8%;
+  inset-inline-end: 0;
+  display: grid;
+  inline-size: 39%;
+  margin: 0;
+  padding: 0;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  list-style: none;
+}
+
+.disciplineItem {
+  display: grid;
+  min-inline-size: 0;
+  grid-template-columns: 1.45rem minmax(0, 1fr);
+  align-content: start;
+  gap: 0.45rem;
+  text-align: start;
+}
+
+.index {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--token);
+  font-variant-numeric: tabular-nums;
+}
+
+.disciplineCopy {
+  display: grid;
+  min-inline-size: 0;
+  gap: 0.16rem;
+}
+
+.armor {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.14em;
+  color: var(--text);
+}
+
+.discipline {
+  max-inline-size: 11ch;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1.24;
+  color: var(--text-muted);
+  overflow-wrap: normal;
+}
+
+:global([dir="rtl"]) .schematic {
+  transform: scaleX(-1);
+  transform-origin: center;
+}
+
+:global([dir="rtl"]) .index,
+:global([dir="rtl"]) .armor {
+  text-align: end;
+}
+
+:global([dir="rtl"]) .discipline {
+  text-align: start;
+}
+
+:global([data-theme="light"]) .figure {
+  mix-blend-mode: multiply;
+  opacity: 0.84;
+}
+
+:global([data-theme="light"]) .schematic {
+  color: color-mix(in srgb, var(--text-muted) 42%, transparent);
+}
+
+@media (max-width: 47.999rem) {
+  .identityDetail {
+    display: none;
+  }
+}
+
+@media (min-width: 48rem) {
+  .action {
+    order: 1;
+  }
+}
+
+@media (min-width: 80rem) {
+  .specimenRule {
+    inset-block-start: 0;
+    inset-inline-start: -1px;
+    inline-size: 2px;
+    block-size: 3.25rem;
+  }
+}
+
+@media (min-width: 80rem) and (max-width: 89.999rem),
+  (min-width: 80rem) and (max-height: 50rem) {
+  .title {
+    font-size: 2.55rem;
+  }
+
+  .summary {
+    margin-block-start: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+  }
+
+  .content {
+    margin-block-start: 0.75rem;
+  }
+
+  .anatomyMap {
+    inline-size: min(100%, 14.5rem);
+  }
+
+  .index,
+  .armor {
+    font-size: 0.5625rem;
+  }
+
+  .disciplineCopy {
+    gap: 0.08rem;
+  }
+
+  .discipline {
+    max-inline-size: none;
+    font-size: 0.59375rem;
+    line-height: 1.15;
+  }
+
+  .details {
+    gap: 0.5rem;
+    margin-block-start: 0.5rem;
+    padding-block-start: 0.625rem;
+  }
+
+  .action {
+    margin-block-start: 0.25rem;
+  }
+}

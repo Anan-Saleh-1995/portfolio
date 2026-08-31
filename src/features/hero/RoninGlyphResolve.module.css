@@ -1,0 +1,22 @@
+.token {
+  display: inline-block;
+  inline-size: 5.6ch;
+  min-inline-size: 5.6ch;
+  overflow: visible;
+  unicode-bidi: isolate;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.glyph {
+  display: inline-block;
+  font-variant-ligatures: none;
+  transform-origin: 50% 70%;
+  will-change: transform, text-shadow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph {
+    will-change: auto;
+  }
+}

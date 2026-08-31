@@ -1,28 +1,28 @@
-import { lazy, Suspense } from "react";
-import { useMediaQuery } from "@/shared/lib/useMediaQuery";
-import { prefersReducedMotion } from "@/shared/lib/motion";
-import { useTheme } from "@/shared/lib/useTheme";
-import { HeroFallback } from "./HeroFallback";
+import { useRef } from "react";
+import { useReducedMotion } from "@/shared/lib/useReducedMotion";
+import { HeroCoordinates } from "./HeroCoordinates";
 import { HeroOverlay } from "./HeroOverlay";
+import { HeroSignalField } from "./HeroSignalField";
+import { useHeroIntroAnimation } from "./useHeroIntroAnimation";
 import styles from "./Hero.module.css";
 
-const HeroScene = lazy(() => import("./HeroScene"));
-
 export const Hero = () => {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const reduceMotion = prefersReducedMotion();
-  const { theme } = useTheme();
+  const heroRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useHeroIntroAnimation(heroRef, reduceMotion);
 
   return (
-    <section className={styles.root}>
-      {isDesktop && !reduceMotion ? (
-        <Suspense fallback={<HeroFallback />}>
-          <HeroScene theme={theme} />
-        </Suspense>
-      ) : (
-        <HeroFallback />
-      )}
+    <section
+      ref={heroRef}
+      className={`${styles.root} relative isolate min-h-[100svh] overflow-clip`}
+      aria-labelledby="hero-title"
+      data-hero-coordinate-surface
+    >
+      <div className={styles.atmosphere} aria-hidden="true" />
       <HeroOverlay />
+      <HeroSignalField />
+      <HeroCoordinates />
     </section>
   );
 };
