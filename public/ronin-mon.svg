@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .canvas { fill: #050a10; }
+    .blade { stroke: #f0ede8; }
+    @media (prefers-color-scheme: light) {
+      .canvas { fill: #f5f0e8; }
+      .blade { stroke: #1a1208; }
+    }
+  </style>
+  <rect class="canvas" width="64" height="64" rx="12"/>
+  <path d="M51 19C43 8 27 6 16 15C4 25 6 44 19 53C31 61 48 55 55 43" fill="none" stroke="#c41e3a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M48 15C40 8 29 7 20 12M55 40L59 45M54 43L57 50" fill="none" stroke="#c41e3a" stroke-width="1.8" stroke-linecap="round" opacity=".72"/>
+  <path class="blade" d="M37 16L31 46M23 34L40 38" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M29 49L32 46L35 50L31 55Z" fill="#c41e3a"/>
+</svg>

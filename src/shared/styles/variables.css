@@ -5,10 +5,13 @@
 
 /* Dark Mode — Midnight Samurai (default) */
 [data-theme="dark"] {
-  --bg: #0d0d0d;
+  --bg: #030a13;
   --surface: #161616;
   --surface-raised: #1e1e1e;
+  --surface-inset: #090909;
+  --surface-overlay: rgba(3, 10, 19, 0.88);
   --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.18);
   --text: #f0ede8;
   --text-muted: #888888;
   --accent: #c41e3a;
@@ -16,6 +19,21 @@
   --accent-glow: rgba(196, 30, 58, 0.25);
   --gold: #c9a84c;
   --text-on-accent: #ffffff;
+  --focus: #f06478;
+  --focus-ring: rgba(240, 100, 120, 0.34);
+  --selection: rgba(196, 30, 58, 0.42);
+  --success: #88a984;
+  --warning: #d5b65d;
+  --danger: #e05a6f;
+  --info: #7ea5bb;
+  --skeleton-base: #191919;
+  --skeleton-highlight: #292929;
+  --shadow-raised: 0 24px 64px rgba(0, 0, 0, 0.34);
+  --shadow-overlay: 0 32px 90px rgba(0, 0, 0, 0.52);
+  --hero-canvas: var(--bg);
+  --hero-canvas-deep: #01050a;
+  --hero-haze: rgba(29, 58, 78, 0.48);
+  --hero-grid-line: rgba(176, 202, 218, 0.055);
   --token: var(--accent);
 }
 
@@ -24,7 +42,10 @@
   --bg: #f5f0e8;
   --surface: #ede8de;
   --surface-raised: #e4ddd2;
+  --surface-inset: #ded5c8;
+  --surface-overlay: rgba(245, 240, 232, 0.9);
   --border: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(26, 18, 8, 0.24);
   --text: #1a1208;
   --text-muted: #6b5d4f;
   --accent: #8b0000;
@@ -32,5 +53,20 @@
   --accent-glow: rgba(139, 0, 0, 0.15);
   --gold: #8b6914;
   --text-on-accent: #ffffff;
+  --focus: #8b0000;
+  --focus-ring: rgba(139, 0, 0, 0.22);
+  --selection: rgba(139, 0, 0, 0.2);
+  --success: #416b43;
+  --warning: #76570a;
+  --danger: #8b1d2c;
+  --info: #315f77;
+  --skeleton-base: #ded6cb;
+  --skeleton-highlight: #eee8df;
+  --shadow-raised: 0 24px 64px rgba(45, 31, 17, 0.14);
+  --shadow-overlay: 0 32px 90px rgba(45, 31, 17, 0.2);
+  --hero-canvas: #f5f0e8;
+  --hero-canvas-deep: #e8dfd2;
+  --hero-haze: rgba(139, 0, 0, 0.13);
+  --hero-grid-line: rgba(74, 51, 31, 0.055);
   --token: var(--accent);
 }

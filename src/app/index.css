@@ -5,14 +5,33 @@
 @import "../shared/styles/animations.css";
 
 @theme {
+  --breakpoint-cinema: 90rem;
   --font-family-display: var(--font-display);
   --font-family-body: var(--font-body);
   --font-family-mono: var(--font-mono);
 }
 
+@theme inline {
+  --color-canvas: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-inset: var(--surface-inset);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-border-subtle: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text);
+  --color-text-secondary: var(--text-muted);
+  --color-signal: var(--accent);
+  --color-signal-strong: var(--accent-deep);
+  --color-earned: var(--gold);
+  --color-focus: var(--focus);
+  --color-skeleton: var(--skeleton-base);
+  --color-skeleton-highlight: var(--skeleton-highlight);
+}
+
 .samuraiToast {
   border: 1px solid var(--border) !important;
-  border-left: 3px solid var(--token) !important;
+  border-inline-start: 3px solid var(--token) !important;
   border-radius: 0 !important;
   background: color-mix(
     in srgb,
@@ -53,7 +72,7 @@
 }
 
 .samuraiToastSuccess {
-  border-left-color: var(--gold) !important;
+  border-inline-start-color: var(--gold) !important;
   background:
     linear-gradient(
       135deg,
@@ -64,7 +83,7 @@
 }
 
 .samuraiToastWarning {
-  border-left-color: var(--token) !important;
+  border-inline-start-color: var(--token) !important;
   background:
     linear-gradient(
       135deg,
@@ -75,11 +94,11 @@
 }
 
 .samuraiToastWarning {
-  border-left-color: var(--accent) !important;
+  border-inline-start-color: var(--accent) !important;
 }
 
 .samuraiToastError {
-  border-left-color: var(--accent-deep) !important;
+  border-inline-start-color: var(--accent-deep) !important;
   background:
     linear-gradient(
       135deg,

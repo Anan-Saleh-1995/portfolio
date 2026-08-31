@@ -1,17 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/ronin-mon.svg?v=2" />
 
     <script>
       function initTheme() {
         var saved = localStorage.getItem("theme");
-        var preferred = window.matchMedia("(prefers-color-scheme: dark)").matches
+        var preferred = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
           ? "dark"
           : "light";
-        document.documentElement.setAttribute("data-theme", saved || preferred || "dark");
+        document.documentElement.setAttribute(
+          "data-theme",
+          saved || preferred || "dark",
+        );
       }
       initTheme();
     </script>
@@ -21,49 +25,62 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Arabic:wght@400;500;600&family=Noto+Sans+Hebrew:wght@400;500;600&family=Noto+Serif+Hebrew:wght@600;700&display=swap"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Arabic:wght@400;500;600&family=Noto+Sans+Hebrew:wght@400;500;600&family=Noto+Serif+Hebrew:wght@600;700&display=swap"
       rel="stylesheet"
       media="print"
-      onload="this.media='all'"
+      onload="this.media = 'all'"
     />
     <noscript>
       <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Arabic:wght@400;500;600&family=Noto+Sans+Hebrew:wght@400;500;600&family=Noto+Serif+Hebrew:wght@600;700&display=swap"
         rel="stylesheet"
       />
     </noscript>
 
     <title>Anan Saleh — Full Stack Developer | The Dojo</title>
 
-    <meta name="description" content="Portfolio of Anan Saleh — full stack developer and student of the craft. Clean code, disciplined systems, and the path of continuous mastery." />
+    <meta
+      name="description"
+      content="Portfolio of Anan Saleh — full stack developer and student of the craft. Clean code, disciplined systems, and the path of continuous mastery."
+    />
     <meta name="author" content="Anan Saleh" />
     <link rel="canonical" href="https://anansaleh.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://anansaleh.com/" />
-    <meta property="og:title" content="Anan Saleh — Full Stack Developer | The Dojo" />
-    <meta property="og:description" content="Full stack developer and student of the craft. Clean code, disciplined systems, and the path of continuous mastery." />
+    <meta
+      property="og:title"
+      content="Anan Saleh — Full Stack Developer | The Dojo"
+    />
+    <meta
+      property="og:description"
+      content="Full stack developer and student of the craft. Clean code, disciplined systems, and the path of continuous mastery."
+    />
     <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Anan Saleh — Full Stack Developer | The Dojo" />
-    <meta name="twitter:description" content="Full stack developer and student of the craft. Clean code, disciplined systems." />
+    <meta
+      name="twitter:title"
+      content="Anan Saleh — Full Stack Developer | The Dojo"
+    />
+    <meta
+      name="twitter:description"
+      content="Full stack developer and student of the craft. Clean code, disciplined systems."
+    />
 
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Anan Saleh",
-      "jobTitle": "Full Stack Developer",
-      "url": "https://anansaleh.com",
-      "email": "anansaleh18@gmail.com",
-      "sameAs": [
-        "https://github.com/Anan-Saleh-1995"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Anan Saleh",
+        "jobTitle": "Full Stack Developer",
+        "url": "https://anansaleh.com",
+        "email": "anansaleh18@gmail.com",
+        "sameAs": ["https://github.com/Anan-Saleh-1995"]
+      }
     </script>
   </head>
   <body>
