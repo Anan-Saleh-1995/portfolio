@@ -1,0 +1,280 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: he\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.summary"
+msgstr "לוחם ללא אדון. מונע בידי קוד. מונחה בידי עקרונות."
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.brand"
+msgstr "anan"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.approachLabel"
+msgstr "גישה"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.arsenal"
+msgstr "הארסנל"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.backToTop"
+msgstr "חזרה לראש העמוד"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.architecture"
+msgstr "מערכות צד־שרת"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.menu.close"
+msgstr "סגירת התפריט"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.brandTagline"
+msgstr "יוצר חוויות דיגיטליות"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.data"
+msgstr "נתונים והתמדה"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.approach"
+msgstr "לעצב מתוך תכלית. להנדס לעומק. לספק במשמעת."
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.engagement"
+msgstr "יצירת קשר"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.eyebrow"
+msgstr "כניסה"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.primaryAction"
+msgstr "כניסה לתיק"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.scrollCue"
+msgstr "כניסה לתיק"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.focusLabel"
+msgstr "מיקוד"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.forge"
+msgstr "החישול"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.role"
+msgstr "מהנדס פול־סטאק"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.thesis"
+msgstr "אני בונה חוויות דיגיטליות מהמערכת שבבסיס הממשק."
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.infrastructure"
+msgstr "תשתיות"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.action"
+msgstr "עיון בתיק"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.interfaces"
+msgstr "הנדסת ממשקים"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.focus"
+msgstr "ממשקים · מערכות · פרוטוקולים"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.changeFailed"
+msgstr "לא הצלחנו לשנות את השפה. אפשר לנסות שוב."
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.current"
+msgstr "שפה: {activeOptionLabel}"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.mainNavigation"
+msgstr "ניווט ראשי"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.mobileNavigation"
+msgstr "ניווט לנייד"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.navigation"
+msgstr "ניווט"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.visual.lineTwo"
+msgstr "ה־<0/>"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.menu.open"
+msgstr "פתיחת התפריט"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.motion.pause"
+msgstr "השהיית תנועת הכותרת"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroFallback.tsx
+msgid "hero.media.unavailable"
+msgstr "תמונת הרונין אינה זמינה"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.preview"
+msgstr "תצוגה מקדימה"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.protocols"
+msgstr "פרוטוקולים וכלים"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.provingGround"
+msgstr "שדה הניסוי"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.principles"
+msgstr "תכלית. דיוק. משמעת."
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.motion.resume"
+msgstr "המשך תנועת הכותרת"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.ariaLabel"
+msgstr "מוצג הנדסי של רונין"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.scrollCue.ariaLabel"
+msgstr "גלילה למקטע הבא"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.security"
+msgstr "אבטחה וזהות"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.skipToContent"
+msgstr "דלג לתוכן"
+
+#. js-lingui-explicit-id
+#: src/features/nav/SourceRepoLink.tsx
+msgid "nav.source.label"
+msgstr "קוד מקור"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.label"
+msgstr "מוצג"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/ThemeToggle.tsx
+msgid "theme.switchToDark"
+msgstr "מעבר למצב כהה"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/ThemeToggle.tsx
+msgid "theme.switchToLight"
+msgstr "מעבר למצב בהיר"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.switching"
+msgstr "מעבר לשפה {pendingEndonym}"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.theWay"
+msgstr "הדרך"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.visual.lineOne"
+msgstr "דרכו של"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.accessible"
+msgstr "דרכו של הרונין."
+
+#. js-lingui-explicit-id
+#: src/features/hero/Hero.tsx
+msgid "hero.specimen.coordinatesLabel"
+msgstr "קואורדינטות ייחוס: טוקיו"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.github.ariaLabel"
+msgstr "צפייה בפרופיל של ענאן ב־GitHub (נפתח בכרטיסייה חדשה)"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.github"
+msgstr "צפייה ב־GitHub"
+
+#. js-lingui-explicit-id
+#: src/features/nav/SourceRepoLink.tsx
+msgid "nav.source.ariaLabel"
+msgstr "צפייה בקוד המקור של תיק העבודות ב־GitHub"

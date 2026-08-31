@@ -13,12 +13,16 @@ export const Home = () => (
     <Nav />
     <main id="main-content" className={styles.root}>
       <Hero />
-      <TheWay />
-      <Arsenal />
-      <Forge />
-      <ProvingGround />
-      <Contact />
+      <div lang="en" dir="ltr">
+        <TheWay />
+        <Arsenal />
+        <Forge />
+        <ProvingGround />
+        <Contact />
+      </div>
     </main>
-    <Footer />
+    <div lang="en" dir="ltr">
+      <Footer />
+    </div>
   </>
 );

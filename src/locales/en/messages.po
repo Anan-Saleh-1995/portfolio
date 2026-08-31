@@ -1,0 +1,280 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.summary"
+msgstr "A warrior without a master. Driven by code. Guided by principle."
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.brand"
+msgstr "anan"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.approachLabel"
+msgstr "Approach"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.arsenal"
+msgstr "Arsenal"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.backToTop"
+msgstr "Back to top"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.architecture"
+msgstr "Backend systems"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.menu.close"
+msgstr "Close menu"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.brandTagline"
+msgstr "Crafting digital experiences"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.data"
+msgstr "Data & persistence"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.approach"
+msgstr "Design with purpose. Engineer with depth. Ship with discipline."
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.engagement"
+msgstr "Engagement"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.eyebrow"
+msgstr "Enter"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.primaryAction"
+msgstr "Enter the record"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.scrollCue"
+msgstr "Enter the record"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.focusLabel"
+msgstr "Focus"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.forge"
+msgstr "Forge"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.role"
+msgstr "Full-stack engineer"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.thesis"
+msgstr "I build digital experiences from the system underneath the interface."
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.infrastructure"
+msgstr "Infrastructure"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.action"
+msgstr "Inspect the record"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.interfaces"
+msgstr "Interface engineering"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.focus"
+msgstr "Interfaces · Systems · Protocols"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.changeFailed"
+msgstr "Language change failed. Try again."
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.current"
+msgstr "Language: {activeOptionLabel}"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.mainNavigation"
+msgstr "Main navigation"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.mobileNavigation"
+msgstr "Mobile navigation"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.navigation"
+msgstr "Navigation"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.visual.lineTwo"
+msgstr "of the <0/>"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.menu.open"
+msgstr "Open menu"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.motion.pause"
+msgstr "Pause title signal"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroFallback.tsx
+msgid "hero.media.unavailable"
+msgstr "Portrait unavailable"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.preview"
+msgstr "Preview"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.protocols"
+msgstr "Protocols & tools"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.provingGround"
+msgstr "Proving Ground"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.principles"
+msgstr "Purpose. Precision. Discipline."
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.motion.resume"
+msgstr "Resume title signal"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.ariaLabel"
+msgstr "Ronin engineering specimen"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.scrollCue.ariaLabel"
+msgstr "Scroll to the next section"
+
+#. Hero specimen engineering discipline
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.security"
+msgstr "Security & identity"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.skipToContent"
+msgstr "Skip to content"
+
+#. js-lingui-explicit-id
+#: src/features/nav/SourceRepoLink.tsx
+msgid "nav.source.label"
+msgstr "Source"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroSpecimenPanel.tsx
+msgid "hero.specimen.label"
+msgstr "Specimen"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/ThemeToggle.tsx
+msgid "theme.switchToDark"
+msgstr "Switch to dark mode"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/ThemeToggle.tsx
+msgid "theme.switchToLight"
+msgstr "Switch to light mode"
+
+#. js-lingui-explicit-id
+#: src/shared/ui/LanguageSwitcher.tsx
+msgid "language.switching"
+msgstr "Switching language to {pendingEndonym}"
+
+#. js-lingui-explicit-id
+#: src/features/nav/Nav.tsx
+msgid "nav.link.theWay"
+msgstr "The Way"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.visual.lineOne"
+msgstr "The Way"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.title.accessible"
+msgstr "The Way of the Rōnin."
+
+#. js-lingui-explicit-id
+#: src/features/hero/Hero.tsx
+msgid "hero.specimen.coordinatesLabel"
+msgstr "Tokyo reference coordinates"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.github.ariaLabel"
+msgstr "View Anan's GitHub profile (opens in a new tab)"
+
+#. js-lingui-explicit-id
+#: src/features/hero/HeroOverlay.tsx
+msgid "hero.github"
+msgstr "View GitHub"
+
+#. js-lingui-explicit-id
+#: src/features/nav/SourceRepoLink.tsx
+msgid "nav.source.ariaLabel"
+msgstr "View portfolio source on GitHub"
