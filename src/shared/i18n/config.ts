@@ -4,8 +4,6 @@ export type Direction = "ltr" | "rtl";
 
 export const defaultLocale: Locale = "en";
 
-export const LOCALE_STORAGE_KEY = "portfolio.locale";
-
 export type LocaleMetadata = Readonly<{
   endonym: string;
   shortLabel: string;

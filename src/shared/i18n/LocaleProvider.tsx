@@ -2,7 +2,6 @@ import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getLocaleDirection, type Locale } from "./config";
 import { applyDocumentLocale } from "./direction";
-import { persistLocalePreference } from "./detectLocale";
 import { activateLocale, i18n } from "./i18n";
 import { LocaleContext, type LocaleContextValue } from "./LocaleContext";
 
@@ -51,7 +50,6 @@ export const LocaleProvider = ({
       }
 
       applyDocumentLocale(nextLocale);
-      persistLocalePreference(nextLocale);
       setActiveLocale(nextLocale);
       setTransition(initialTransitionState);
 

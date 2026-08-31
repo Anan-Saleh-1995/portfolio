@@ -1,31 +1,20 @@
-import { describe, expect, it } from "vitest";
-import { detectLocale } from "./detectLocale";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { detectInitialLocale } from "./detectLocale";
 
-describe("detectLocale", () => {
-  it("prioritizes a supported stored explicit choice", () => {
-    expect(
-      detectLocale({
-        storedLocale: "he",
-        navigatorCandidates: ["ar-EG", "en-US"],
-      }),
-    ).toBe("he");
+describe("detectInitialLocale", () => {
+  afterEach(() => {
+    window.localStorage.clear();
+    vi.restoreAllMocks();
   });
 
-  it("uses the first supported navigator candidate in order", () => {
-    expect(
-      detectLocale({
-        storedLocale: "fr",
-        navigatorCandidates: ["de-DE", "iw-IL", "ar-EG"],
-      }),
-    ).toBe("he");
-  });
+  it("always starts in English regardless of stored or browser preferences", () => {
+    window.localStorage.setItem("portfolio.locale", "ar");
+    vi.spyOn(window.navigator, "languages", "get").mockReturnValue([
+      "he-IL",
+      "ar-EG",
+    ]);
+    vi.spyOn(window.navigator, "language", "get").mockReturnValue("he-IL");
 
-  it("falls back to English when no candidate is supported", () => {
-    expect(
-      detectLocale({
-        storedLocale: null,
-        navigatorCandidates: ["fr-FR", "de-DE"],
-      }),
-    ).toBe("en");
+    expect(detectInitialLocale()).toBe("en");
   });
 });
