@@ -10,7 +10,6 @@ import {
   isLocale,
   localeMetadata,
   locales,
-  type Locale,
 } from "@/shared/i18n/config";
 import { useLocale } from "@/shared/i18n/useLocale";
 

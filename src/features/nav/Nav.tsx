@@ -145,7 +145,7 @@ export const Nav = () => {
   }, [menuOpen]);
 
   useEffect(() => {
-    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const desktopQuery = window.matchMedia("(min-width: 1280px)");
     const handleDesktopChange = (event: MediaQueryListEvent) => {
       if (event.matches) {
         closeMenu(false);
@@ -221,7 +221,7 @@ export const Nav = () => {
       >
         <a
           href="#"
-          className="inline-flex min-h-11 items-center gap-2.5 [font-family:var(--font-mono)] text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
+          className="inline-flex min-h-11 shrink-0 items-center gap-2.5 [font-family:var(--font-mono)] text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
           aria-label={t({ id: "nav.backToTop", message: "Back to top" })}
         >
           <EnsoMark size={24} />
@@ -233,14 +233,14 @@ export const Nav = () => {
             >
               <Trans id="nav.brand">anan</Trans>
             </span>
-            <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[390px]:block rtl:normal-case rtl:tracking-normal">
+            <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[430px]:block rtl:normal-case rtl:tracking-normal">
               <Trans id="nav.brandTagline">Crafting digital experiences</Trans>
             </span>
           </span>
         </a>
 
         <nav
-          className="hidden items-center gap-[clamp(1rem,2vw,2rem)] lg:flex"
+          className={`${styles.desktopNav} items-center gap-[clamp(1rem,2vw,2rem)]`}
           aria-label={mainNavigationLabel}
         >
           <ul
@@ -266,7 +266,7 @@ export const Nav = () => {
           </div>
         </nav>
 
-        <div className="flex items-center gap-1.5 lg:hidden">
+        <div className={`${styles.compactUtilities} items-center gap-1.5`}>
           <LanguageSwitcher compact />
           <ThemeToggle />
           <button
@@ -289,7 +289,7 @@ export const Nav = () => {
 
       <div
         id="mobile-menu"
-        className={`fixed inset-0 z-[102] flex lg:hidden ${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        className={`fixed inset-0 z-[102] flex ${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
         aria-hidden={!menuOpen}
         {...(!menuOpen ? { inert: true } : {})}
       >
