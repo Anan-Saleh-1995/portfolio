@@ -15,7 +15,7 @@ export const Hero = () => {
   return (
     <section
       ref={heroRef}
-      className={`${styles.root} relative isolate min-h-[100svh] overflow-clip`}
+      className={`${styles.root} relative isolate`}
       aria-labelledby="hero-title"
       data-hero-coordinate-surface
     >

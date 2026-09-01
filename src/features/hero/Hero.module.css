@@ -32,6 +32,10 @@
     );
 }
 
+.coordinates {
+  display: inline-flex;
+}
+
 .root::after {
   position: absolute;
   z-index: 15;
@@ -102,6 +106,24 @@
 
   .atmosphere {
     opacity: 0.42;
+  }
+}
+
+@media (max-width: 79.999rem) and (orientation: landscape) and (max-height: 31.25rem) {
+  .root {
+    background-image: radial-gradient(
+      ellipse 58% 64% at 72% 52%,
+      color-mix(in srgb, var(--hero-haze) 66%, transparent) 0%,
+      transparent 76%
+    );
+  }
+
+  :global([dir="rtl"]) .root {
+    background-image: radial-gradient(
+      ellipse 58% 64% at 28% 52%,
+      color-mix(in srgb, var(--hero-haze) 66%, transparent) 0%,
+      transparent 76%
+    );
   }
 }
 
@@ -192,5 +214,11 @@
       color-mix(in srgb, var(--hero-canvas) 84%, transparent) 94%,
       var(--hero-canvas) 100%
     );
+  }
+}
+
+@media (max-width: 79.999rem), (max-height: 49.999rem), (pointer: coarse) {
+  .coordinates {
+    display: none;
   }
 }

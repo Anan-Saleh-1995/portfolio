@@ -47,7 +47,19 @@
 }
 
 @media (max-width: 47.999rem) {
-  .signal:nth-child(n + 14) {
+  .signal:nth-child(n + 10) {
+    display: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .signal:nth-child(n + 12) {
+    display: none;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 31.25rem) {
+  .signal:nth-child(n + 8) {
     display: none;
   }
 }

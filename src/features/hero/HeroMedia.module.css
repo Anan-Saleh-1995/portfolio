@@ -2,9 +2,9 @@
   position: absolute;
   z-index: 10;
   isolation: isolate;
-  inset-block-start: clamp(4rem, 8svh, 5rem);
+  inset-block-start: clamp(9rem, 18svh, 10rem);
   left: 50%;
-  inline-size: min(132vw, 38rem);
+  inline-size: min(138vw, 39rem);
   aspect-ratio: 8 / 9;
   overflow: visible;
   transform: translateX(-42%);
@@ -77,10 +77,10 @@
 
 @media (min-width: 48rem) {
   .stage {
-    position: absolute;
-    inset-block-start: -1.5rem;
+    inset-block-start: 4.5rem;
     left: 52%;
-    inline-size: min(92vw, 44rem);
+    inline-size: auto;
+    block-size: min(46rem, calc(100% - 4.5rem));
     aspect-ratio: 8 / 9;
     transform: translateX(-38%);
   }
@@ -133,10 +133,10 @@
 
 @media (min-width: 80rem) {
   .stage {
-    position: absolute;
     inset-block-start: 4.5rem;
     left: 46%;
-    inline-size: min(46vw, calc(90svh - 4.05rem), 52rem);
+    inline-size: auto;
+    block-size: min(69vw, calc(135svh - 6.075rem), 78rem);
     aspect-ratio: 2 / 3;
     transform: translateX(-50%);
   }
@@ -161,7 +161,15 @@
 
 @media (min-width: 80rem) and (max-width: 87.499rem) {
   .stage {
-    inline-size: min(48vw, calc(92svh - 4.14rem), 44rem);
+    block-size: min(72vw, calc(138svh - 6.21rem), 66rem);
+  }
+}
+
+@media (min-width: 80rem) and (max-height: 49.999rem) {
+  .stage {
+    inline-size: auto;
+    block-size: min(42rem, calc(100% - 4.5rem));
+    aspect-ratio: 8 / 9;
   }
 }
 
@@ -174,15 +182,15 @@
     -webkit-mask-image: linear-gradient(
       to bottom,
       black 0%,
-      black 96%,
-      rgb(0 0 0 / 88%) 98%,
+      black 92%,
+      rgb(0 0 0 / 88%) 96%,
       transparent 100%
     );
     mask-image: linear-gradient(
       to bottom,
       black 0%,
-      black 96%,
-      rgb(0 0 0 / 88%) 98%,
+      black 92%,
+      rgb(0 0 0 / 88%) 96%,
       transparent 100%
     );
   }
@@ -191,6 +199,63 @@
 @media (max-width: 47.999rem) {
   :global([dir="rtl"]) .stage {
     transform: translateX(-58%);
+  }
+}
+
+@media (max-width: 79.999rem) and (orientation: landscape) and (max-height: 31.25rem) {
+  .stage {
+    inset-block-start: 3.5rem;
+    left: 72%;
+    inline-size: min(60vw, 34rem);
+    block-size: min(30rem, calc(100svh - 3.5rem));
+    aspect-ratio: auto;
+    transform: translateX(-50%);
+  }
+
+  .image {
+    --hero-image-edge-direction: to right;
+    object-position: 50% 17%;
+    -webkit-mask-image:
+      linear-gradient(
+        var(--hero-image-edge-direction),
+        transparent 0%,
+        rgb(0 0 0 / 68%) 8%,
+        black 20%,
+        black 100%
+      ),
+      linear-gradient(
+        to bottom,
+        black 0%,
+        black 91%,
+        rgb(0 0 0 / 88%) 95%,
+        transparent 100%
+      );
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(
+        var(--hero-image-edge-direction),
+        transparent 0%,
+        rgb(0 0 0 / 68%) 8%,
+        black 20%,
+        black 100%
+      ),
+      linear-gradient(
+        to bottom,
+        black 0%,
+        black 91%,
+        rgb(0 0 0 / 88%) 95%,
+        transparent 100%
+      );
+    mask-composite: intersect;
+  }
+
+  :global([dir="rtl"]) .stage {
+    left: 28%;
+    transform: translateX(-50%);
+  }
+
+  :global([dir="rtl"]) .image {
+    --hero-image-edge-direction: to left;
   }
 }
 

@@ -5,9 +5,10 @@ import { useReducedMotion } from "@/shared/lib/useReducedMotion";
 import { HeroMedia } from "./HeroMedia";
 import { HeroSpecimenPanel } from "./HeroSpecimenPanel";
 import { RoninGlyphResolve } from "./RoninGlyphResolve";
+import styles from "./HeroOverlay.module.css";
 
 const actionClassName =
-  "inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap px-5 py-3 [font-family:var(--font-mono)] text-xs font-medium tracking-[0.08em] no-underline transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring,var(--token))] md:w-full lg:w-auto lg:flex-1 xl:flex-none rtl:tracking-normal";
+  "inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap px-5 py-3 [font-family:var(--font-mono)] text-xs font-medium tracking-[0.08em] no-underline transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring,var(--token))] rtl:tracking-normal";
 
 export const HeroOverlay = () => {
   const { t } = useLingui();
@@ -15,9 +16,8 @@ export const HeroOverlay = () => {
   const [titleMotionPaused, setTitleMotionPaused] = useState(false);
 
   return (
-    <div className="relative mx-auto grid min-h-[100svh] w-full max-w-[96rem] content-start gap-x-8 gap-y-8 px-6 pb-24 pt-24 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(17rem,0.92fr)] md:items-start md:gap-y-10 md:px-10 md:pb-14 lg:px-12 xl:content-center xl:items-center xl:grid-cols-[minmax(0,4fr)_minmax(20rem,5fr)_minmax(14rem,3fr)] xl:gap-x-8 xl:px-10 xl:pb-10 xl:pt-20 cinema:gap-x-12 2xl:px-10">
-      <div className="relative min-h-[calc(min(148.5vw,42.75rem)-1.5rem)] overflow-clip md:col-span-2 md:min-h-[calc(min(103.5vw,49.5rem)-1.5rem)] xl:contents xl:overflow-visible">
-        <div className="relative z-20 self-center text-start md:w-[calc(52%-1rem)] md:pe-3 lg:pe-0 xl:col-start-1 xl:w-auto">
+    <div className={styles.layout}>
+      <div className={`${styles.story} text-start`}>
         <p
           className="inline-flex items-center gap-2 [font-family:var(--font-mono)] text-xs font-medium uppercase tracking-[0.16em] text-[var(--token)] rtl:normal-case rtl:tracking-normal"
           data-hero-animate
@@ -45,7 +45,7 @@ export const HeroOverlay = () => {
         </h1>
 
         <div
-          className="mt-5 [font-family:var(--font-display)] text-[clamp(3.7rem,15vw,6rem)] font-semibold leading-[0.86] tracking-[-0.045em] text-[var(--text)] md:text-[clamp(4.6rem,8vw,6.5rem)] lg:text-[clamp(4.25rem,5.7vw,7rem)] xl:text-[clamp(3.8rem,4.8vw,5rem)] cinema:text-[clamp(4.25rem,5.7vw,7rem)] rtl:leading-[1.08] rtl:tracking-normal"
+          className={`${styles.displayTitle} mt-5 [font-family:var(--font-display)] text-[clamp(3.7rem,15vw,6rem)] font-semibold leading-[0.86] tracking-[-0.045em] text-[var(--text)] md:text-[clamp(4.6rem,8vw,6.5rem)] lg:text-[clamp(4.25rem,5.7vw,7rem)] xl:text-[clamp(3.8rem,4.8vw,5rem)] cinema:text-[clamp(4.25rem,5.7vw,7rem)] rtl:leading-[1.08] rtl:tracking-normal`}
           aria-hidden="true"
           data-hero-animate
         >
@@ -60,7 +60,7 @@ export const HeroOverlay = () => {
         </div>
 
         <p
-          className="mt-7 max-w-[34rem] text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8"
+          className={`${styles.thesis} mt-7 max-w-[34rem] text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8`}
           data-hero-animate
         >
           <Trans id="hero.thesis">
@@ -70,7 +70,7 @@ export const HeroOverlay = () => {
         </p>
 
         <div
-          className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1"
+          className={`${styles.principles} mt-3 flex flex-wrap items-center gap-x-4 gap-y-1`}
           data-hero-animate
         >
           <p className="[font-family:var(--font-mono)] text-xs uppercase tracking-[0.12em] text-[var(--text)] rtl:normal-case rtl:tracking-normal">
@@ -80,7 +80,7 @@ export const HeroOverlay = () => {
           {!reduceMotion && (
             <button
               type="button"
-              className="inline-flex min-h-11 items-center gap-1.5 px-1 [font-family:var(--font-mono)] text-[0.625rem] uppercase tracking-[0.1em] text-[var(--text-muted)] underline decoration-[var(--border)] underline-offset-4 transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--focus-ring,var(--token))] motion-reduce:transition-none rtl:normal-case rtl:tracking-normal"
+              className={`${styles.motionControl} inline-flex min-h-11 items-center gap-1.5 px-1 [font-family:var(--font-mono)] text-[0.625rem] uppercase tracking-[0.1em] text-[var(--text-muted)] underline decoration-[var(--border)] underline-offset-4 transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--focus-ring,var(--token))] motion-reduce:transition-none rtl:normal-case rtl:tracking-normal`}
               aria-pressed={titleMotionPaused}
               onClick={() => setTitleMotionPaused((paused) => !paused)}
             >
@@ -99,12 +99,12 @@ export const HeroOverlay = () => {
         </div>
 
         <div
-          className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:flex-col md:items-stretch lg:flex-row lg:items-stretch xl:items-center"
+          className={`${styles.actions} mt-8`}
           data-hero-animate
         >
           <a
             href="#the-way"
-            className={`${actionClassName} border border-[var(--token)] bg-[var(--token)] text-[var(--text-on-accent)] hover:bg-[var(--accent-deep)]`}
+            className={`${styles.action} ${actionClassName} border border-[var(--token)] bg-[var(--token)] text-[var(--text-on-accent)] hover:bg-[var(--accent-deep)]`}
           >
             <Trans id="hero.primaryAction">Enter the record</Trans>
             <ArrowDown size={16} strokeWidth={1.8} aria-hidden="true" />
@@ -113,7 +113,7 @@ export const HeroOverlay = () => {
             href="https://github.com/Anan-Saleh-1995"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${actionClassName} border border-[var(--border-strong)] bg-[color-mix(in_srgb,var(--hero-canvas)_86%,transparent)] text-[var(--text)] hover:border-[var(--token)] hover:bg-[var(--hero-canvas)] hover:text-[var(--token)]`}
+            className={`${styles.action} ${actionClassName} border border-[var(--border-strong)] bg-[color-mix(in_srgb,var(--hero-canvas)_86%,transparent)] text-[var(--text)] hover:border-[var(--token)] hover:bg-[var(--hero-canvas)] hover:text-[var(--token)]`}
             aria-label={t({
               id: "hero.github.ariaLabel",
               message: "View Anan's GitHub profile (opens in a new tab)",
@@ -123,8 +123,9 @@ export const HeroOverlay = () => {
             <ArrowUpRight size={16} strokeWidth={1.8} aria-hidden="true" />
           </a>
         </div>
-        </div>
+      </div>
 
+      <div className={styles.mediaClip}>
         <HeroMedia />
       </div>
 
@@ -132,7 +133,7 @@ export const HeroOverlay = () => {
 
       <a
         href="#the-way"
-        className="absolute bottom-4 start-1/2 z-30 hidden min-h-11 -translate-x-1/2 items-center gap-2 px-3 [font-family:var(--font-mono)] text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--text-muted)] transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring,var(--token))] xl:inline-flex rtl:translate-x-1/2 rtl:normal-case rtl:tracking-normal"
+        className={`${styles.scrollCue} absolute bottom-4 start-1/2 z-30 min-h-11 -translate-x-1/2 items-center gap-2 px-3 [font-family:var(--font-mono)] text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--text-muted)] transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring,var(--token))] rtl:translate-x-1/2 rtl:normal-case rtl:tracking-normal`}
         aria-label={t({
           id: "hero.scrollCue.ariaLabel",
           message: "Scroll to the next section",
