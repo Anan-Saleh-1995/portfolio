@@ -78,7 +78,7 @@ export const HeroSpecimenPanel = () => {
 
   return (
     <aside
-      className="relative z-20 border-t border-[var(--border)] pt-6 md:col-span-2 md:grid md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:items-start md:gap-8 xl:col-span-1 xl:col-start-3 xl:block xl:self-center xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0 cinema:ps-8"
+      className={`${styles.panel} relative z-20 border-t border-[var(--border)] pt-6 md:col-span-2 md:grid md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:items-start md:gap-8 xl:col-span-1 xl:col-start-3 xl:block xl:self-center xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0 cinema:ps-8`}
       aria-label={t({
         id: "hero.specimen.ariaLabel",
         message: "Ronin engineering specimen",
@@ -86,7 +86,9 @@ export const HeroSpecimenPanel = () => {
       data-hero-animate
     >
       <div className={`${styles.header} xl:rtl:translate-x-2`}>
-        <p className="inline-flex items-center gap-2 [font-family:var(--font-mono)] text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-[var(--token)] rtl:normal-case rtl:tracking-normal">
+        <p
+          className={`${styles.specimenLabel} inline-flex items-center gap-2 [font-family:var(--font-mono)] text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-[var(--token)] rtl:normal-case rtl:tracking-normal`}
+        >
           <Trans id="hero.specimen.label">Specimen</Trans>
           <span className="text-[var(--gold)]" aria-hidden="true">
             /

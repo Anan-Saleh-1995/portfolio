@@ -1,3 +1,4 @@
+.panel,
 .header,
 .content {
   min-inline-size: 0;
@@ -208,8 +209,60 @@
 }
 
 @media (max-width: 47.999rem) {
+  .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.75rem;
+  }
+
+  .header,
+  .content {
+    display: contents;
+  }
+
+  .specimenLabel {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .identityDetail {
     display: none;
+  }
+
+  .action {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    font-size: 0.625rem;
+  }
+
+  .anatomyMap,
+  .details {
+    grid-column: 1 / -1;
+  }
+
+  .anatomyMap {
+    margin-block-start: 1.5rem;
+  }
+}
+
+@media (max-width: 22.499rem) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .action {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    margin-block-start: 0.75rem;
+  }
+
+  .anatomyMap {
+    grid-row: 3;
   }
 }
 
@@ -229,7 +282,7 @@
 }
 
 @media (min-width: 80rem) and (max-width: 89.999rem),
-  (min-width: 80rem) and (max-height: 50rem) {
+  (min-width: 80rem) and (max-height: 49.999rem) {
   .title {
     font-size: 2.55rem;
   }
@@ -271,5 +324,12 @@
 
   .action {
     margin-block-start: 0.25rem;
+  }
+}
+
+@media (min-width: 80rem) and (max-height: 49.999rem) {
+  .summary,
+  .details {
+    display: none;
   }
 }
