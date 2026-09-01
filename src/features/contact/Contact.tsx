@@ -21,47 +21,56 @@ export const Contact = () => {
           />
         </div>
 
-        <div className={styles.body} data-animate>
-          <div className={styles.formColumn}>
+        <div className={styles.body}>
+          <div className={styles.formColumn} data-animate>
             <h2 className={styles.heading}>{contact.heading}</h2>
             <p className={styles.sub}>{contact.subheading}</p>
 
             <ContactForm />
           </div>
-        </div>
 
-        <div className={styles.channels} data-animate>
-          <span className={styles.channelsLabel}>{contact.channelsLabel}</span>
-          <ul className={styles.links} role="list">
-            <li>
-              <a href={`mailto:${contact.email}`} className={styles.link}>
-                <Mail size={16} aria-hidden="true" />
-                {contact.email}
-              </a>
-            </li>
-            <li>
-              <a
-                href={contact.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-              >
-                <ExternalLink size={16} aria-hidden="true" />
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a
-                href={contact.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-              >
-                <ExternalLink size={16} aria-hidden="true" />
-                Resume
-              </a>
-            </li>
-          </ul>
+          <aside
+            className={styles.channels}
+            aria-labelledby="contact-channels-label"
+            data-animate
+          >
+            <span
+              id="contact-channels-label"
+              className={styles.channelsLabel}
+            >
+              {contact.channelsLabel}
+            </span>
+            <ul className={styles.links} role="list">
+              <li>
+                <a href={`mailto:${contact.email}`} className={styles.link}>
+                  <Mail size={16} aria-hidden="true" />
+                  {contact.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={contact.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  <ExternalLink size={16} aria-hidden="true" />
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href={contact.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  <ExternalLink size={16} aria-hidden="true" />
+                  Resume
+                </a>
+              </li>
+            </ul>
+          </aside>
         </div>
       </div>
     </section>
