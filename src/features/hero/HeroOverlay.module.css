@@ -1,7 +1,7 @@
 .layout {
   --hero-gutter: 1.5rem;
   --hero-top-space: 6rem;
-  --hero-story-block: clamp(34rem, 162vw, 47rem);
+  --hero-story-block: 0px;
   position: relative;
   display: grid;
   inline-size: 100%;
@@ -9,41 +9,92 @@
   margin-inline: auto;
   padding-block: var(--hero-top-space) 2rem;
   padding-inline: var(--hero-gutter);
-  row-gap: 2rem;
+  row-gap: 0;
 }
 
 .story {
+  display: contents;
+}
+
+.introduction,
+.statement {
   position: relative;
   z-index: 20;
   min-inline-size: 0;
-  min-block-size: var(--hero-story-block);
-  align-self: start;
+}
+
+.introduction {
+  grid-row: 1;
+}
+
+.statement {
+  grid-row: 3;
+  margin-block-start: -1.75rem;
+}
+
+.thesis {
+  margin-block-start: 0;
+  max-inline-size: 31rem;
 }
 
 .mediaClip {
-  position: absolute;
+  position: relative;
   z-index: 10;
-  inset-block-start: 0;
-  inset-inline: 0;
-  block-size: calc(var(--hero-top-space) + var(--hero-story-block) + 3rem);
+  grid-row: 2;
+  block-size: clamp(21rem, 112vw, 39rem);
+  margin-inline: calc(-1 * var(--hero-gutter));
+  margin-block-start: -0.5rem;
   overflow: clip;
   pointer-events: none;
 }
 
+.mediaClip::after {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    var(--hero-canvas) 100%
+  );
+}
+
 .layout > aside {
   grid-column: 1 / -1;
+  grid-row: 4;
+  margin-block-start: 2.25rem;
 }
 
 .actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: stretch;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-block-start: 1.25rem;
 }
 
 .action {
-  inline-size: 100%;
+  inline-size: auto;
   min-inline-size: 0;
+}
+
+@media (max-width: 47.999rem) {
+  .action:last-child {
+    border-color: transparent;
+    background: transparent;
+    padding-inline: 0.25rem;
+  }
+
+  .principles {
+    justify-content: space-between;
+    column-gap: 0.5rem;
+  }
+
+  .motionControl {
+    font-size: 0.5625rem;
+  }
 }
 
 .scrollCue {
@@ -61,7 +112,48 @@
   }
 
   .action {
-    flex: 1 1 0;
+    flex: none;
+  }
+}
+
+@media (min-width: 48rem) {
+  .story {
+    position: relative;
+    z-index: 20;
+    display: block;
+    min-inline-size: 0;
+    min-block-size: var(--hero-story-block);
+    align-self: start;
+  }
+
+  .statement {
+    margin-block-start: 0;
+  }
+
+  .thesis {
+    margin-block-start: 1.75rem;
+  }
+
+  .mediaClip {
+    position: absolute;
+    grid-row: auto;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: calc(var(--hero-top-space) + var(--hero-story-block) + 3rem);
+    margin: 0;
+  }
+
+  .mediaClip::after {
+    display: none;
+  }
+
+  .layout > aside {
+    grid-row: auto;
+    margin-block-start: 0;
+  }
+
+  .actions {
+    margin-block-start: 2rem;
   }
 }
 
@@ -111,10 +203,27 @@
   }
 
   .story {
+    position: relative;
+    z-index: 20;
+    display: block;
+    min-block-size: var(--hero-story-block);
     grid-column: 1;
     grid-row: 1;
     inline-size: auto;
     padding-inline-end: 0;
+  }
+
+  .statement {
+    margin-block-start: 0;
+  }
+
+  .mediaClip {
+    position: absolute;
+    grid-row: auto;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: calc(var(--hero-top-space) + var(--hero-story-block));
+    margin: 0;
   }
 
   .displayTitle {
@@ -134,10 +243,6 @@
 
   .actions {
     margin-block-start: 0.75rem;
-  }
-
-  .motionControl {
-    display: none;
   }
 
   .layout > aside {
@@ -206,12 +311,6 @@
 @media (min-width: 90rem) {
   .layout {
     column-gap: 3rem;
-  }
-}
-
-@media (min-width: 80rem) and (max-height: 42rem) {
-  .motionControl {
-    display: none;
   }
 }
 

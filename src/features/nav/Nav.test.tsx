@@ -23,6 +23,10 @@ describe("Nav", () => {
     renderNav();
 
     expect(screen.getByRole("button", { name: "Open menu" })).not.toHaveFocus();
+    expect(screen.getByRole("link", { name: "Back to top" })).toHaveAttribute(
+      "href",
+      "#top",
+    );
     expect(
       screen.getByText("Crafting digital experiences"),
     ).toBeInTheDocument();
@@ -95,7 +99,7 @@ describe("Nav", () => {
     expect(toggle).toHaveFocus();
   });
 
-  it("keeps the existing one-page anchors and closes after selection", async () => {
+  it("offers four chapter destinations with Work first and closes after selection", async () => {
     const user = userEvent.setup();
     renderNav();
 
@@ -103,8 +107,24 @@ describe("Nav", () => {
     await user.click(toggle);
     const dialog = screen.getByRole("dialog", { name: "Mobile navigation" });
     const link = within(dialog).getByRole("link", { name: "The Way" });
+    const navigation = within(dialog).getByRole("navigation", {
+      name: "Mobile navigation",
+    });
 
+    const chapterLinks = within(navigation).getAllByRole("link");
+
+    expect(chapterLinks).toHaveLength(4);
+    expect(chapterLinks[0]).toHaveAccessibleName("Work");
     expect(link).toHaveAttribute("href", "#the-way");
+    expect(
+      within(navigation).getByRole("link", { name: "Work" }),
+    ).toHaveAttribute("href", "#forge");
+    expect(
+      within(navigation).queryByRole("link", { name: "Case study" }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(navigation).getByRole("link", { name: "Contact" }),
+    ).toHaveAttribute("href", "#contact");
     await user.click(link);
 
     expect(toggle).toHaveAttribute("aria-expanded", "false");

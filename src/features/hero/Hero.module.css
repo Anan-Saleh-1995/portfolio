@@ -36,6 +36,7 @@
 }
 
 .root::after {
+  display: none;
   position: absolute;
   z-index: 15;
   inset: 0;
@@ -115,6 +116,10 @@
 }
 
 @media (min-width: 48rem) {
+  .root::after {
+    display: block;
+  }
+
   .root {
     --hero-wash-inline: linear-gradient(
       to right,

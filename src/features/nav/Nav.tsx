@@ -8,17 +8,14 @@ import {
 import { Menu, X } from "lucide-react";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
+import { shellContent } from "@/shared/content/shell.content";
 import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import { SourceRepoLink } from "./SourceRepoLink";
 import { useHideOnScroll } from "./useHideOnScroll";
 import styles from "./Nav.module.css";
 
-interface NavigationLink {
-  href: string;
-  label: string;
-}
-
 export const Nav = () => {
+  const { nav } = shellContent;
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -26,29 +23,6 @@ export const Nav = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const wasMenuOpenRef = useRef(false);
   const restoreFocusRef = useRef(false);
-
-  const navigationLinks: NavigationLink[] = [
-    {
-      href: "#the-way",
-      label: "The Way",
-    },
-    {
-      href: "#arsenal",
-      label: "Arsenal",
-    },
-    {
-      href: "#forge",
-      label: "Forge",
-    },
-    {
-      href: "#proving-ground",
-      label: "Proving Ground",
-    },
-    {
-      href: "#contact",
-      label: "Engagement",
-    },
-  ];
 
   const closeMenu = useCallback((restoreFocus = true) => {
     restoreFocusRef.current = restoreFocus;
@@ -183,10 +157,12 @@ export const Nav = () => {
     }
   };
 
-  const openMenuLabel = "Open menu";
-  const closeMenuLabel = "Close menu";
-  const mainNavigationLabel = "Main navigation";
-  const mobileNavigationLabel = "Mobile navigation";
+  const {
+    openMenuLabel,
+    closeMenuLabel,
+    mainNavigationLabel,
+    mobileNavigationLabel,
+  } = nav;
 
   return (
     <header
@@ -204,9 +180,9 @@ export const Nav = () => {
         {...(menuOpen ? { inert: true, "aria-hidden": true } : {})}
       >
         <a
-          href="#"
+          href="#top"
           className="inline-flex min-h-11 shrink-0 items-center gap-2.5 [font-family:var(--font-mono)] text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
-          aria-label="Back to top"
+          aria-label={nav.backToTopLabel}
         >
           <EnsoMark size={24} />
           <span className="flex flex-col items-start leading-none">
@@ -215,7 +191,7 @@ export const Nav = () => {
               dir="ltr"
               translate="no"
             >
-              anan
+              {nav.brand}
             </span>
             <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[430px]:block">
               Crafting digital experiences
@@ -231,19 +207,16 @@ export const Nav = () => {
             className="m-0 flex list-none items-center gap-[clamp(0.9rem,1.5vw,1.75rem)] p-0"
             role="list"
           >
-            {navigationLinks.map(({ href, label }) => (
+            {nav.links.map(({ href, label }) => (
               <li key={href}>
-                <a
-                  href={href}
-                  className="inline-flex min-h-11 items-center [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text-muted)] uppercase no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
-                >
+                <a href={href} className={styles.chapterLink}>
                   {label}
                 </a>
               </li>
             ))}
           </ul>
 
-          <div className="flex items-center gap-2.5">
+          <div className={styles.desktopUtilities}>
             <SourceRepoLink />
             <ThemeToggle />
           </div>
@@ -291,9 +264,9 @@ export const Nav = () => {
           aria-label={mobileNavigationLabel}
           onKeyDown={handleMobileMenuKeyDown}
         >
-          <div className="mb-[clamp(2rem,7vh,4.5rem)] flex min-h-12 items-center justify-between">
+          <div className="mb-8 flex min-h-12 items-center justify-between">
             <span className="[font-family:var(--font-mono)] text-xs tracking-[0.14em] text-[var(--text-muted)] uppercase">
-              Navigation
+              {nav.chapterNavigationLabel}
             </span>
             <button
               ref={drawerCloseRef}
@@ -306,18 +279,20 @@ export const Nav = () => {
             </button>
           </div>
 
+          <p className={styles.menuIntroduction}>{nav.menuIntroduction}</p>
+
           <nav aria-label={mobileNavigationLabel}>
-            <ul
-              className="m-0 flex list-none flex-col items-start gap-[clamp(1.25rem,4vh,2.25rem)] p-0"
-              role="list"
-            >
-              {navigationLinks.map(({ href, label }) => (
+            <ul className={styles.mobileChapters} role="list">
+              {nav.links.map(({ href, label }, index) => (
                 <li key={href}>
                   <a
                     href={href}
-                    className="inline-flex min-h-11 items-center [font-family:var(--font-display)] text-[clamp(2rem,8vw,var(--text-3xl))] leading-none font-semibold text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
+                    className={styles.mobileChapterLink}
                     onClick={() => closeMenu()}
                   >
+                    <span className={styles.chapterNumber} aria-hidden="true">
+                      {String(index + 2).padStart(2, "0")}
+                    </span>
                     {label}
                   </a>
                 </li>

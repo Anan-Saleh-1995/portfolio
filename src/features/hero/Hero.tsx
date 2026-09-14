@@ -14,6 +14,7 @@ export const Hero = () => {
 
   return (
     <section
+      id="top"
       ref={heroRef}
       className={`${styles.root} relative isolate`}
       aria-labelledby="hero-title"

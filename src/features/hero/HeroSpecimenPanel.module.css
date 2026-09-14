@@ -1,321 +1,256 @@
-.panel,
-.header,
-.content {
+.panel {
+  position: relative;
+  z-index: 20;
   min-inline-size: 0;
+  border-block-start: 1px solid var(--border);
+  padding-block-start: 1rem;
 }
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
-
-.specimenRule {
+.panel::before {
+  content: "";
   position: absolute;
   inset-block-start: -1px;
-  inset-inline-start: 0;
   inline-size: 3.25rem;
   block-size: 2px;
   background: var(--token);
 }
-
-.anatomyMap {
-  position: relative;
-  isolation: isolate;
-  inline-size: 100%;
-  aspect-ratio: 317 / 334;
-  overflow: hidden;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
-
-.anatomyMap::before {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
-  background-size: 18px 18px;
-  opacity: 0.52;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 12%,
-    black 84%,
-    transparent 100%
-  );
-}
-
-.anatomyMap::after {
-  position: absolute;
-  z-index: 3;
-  inset-block-end: 2%;
-  inset-inline-start: 0;
-  inline-size: 4.5rem;
-  block-size: 1px;
-  content: "";
-  background: var(--border-strong);
-  opacity: 0.72;
-}
-
-.figure {
-  position: absolute;
-  z-index: 1;
-  inset-block: 1% 2%;
-  inset-inline-start: -2%;
-  inline-size: 63%;
-  block-size: 97%;
-  object-fit: contain;
-  object-position: 50% 50%;
-  mix-blend-mode: screen;
-  opacity: 0.9;
-  -webkit-mask-image:
-    linear-gradient(
-      to right,
-      transparent 0%,
-      black 8%,
-      black 88%,
-      transparent 100%
-    ),
-    linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 7%,
-      black 92%,
-      transparent 100%
-    );
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(
-      to right,
-      transparent 0%,
-      black 8%,
-      black 88%,
-      transparent 100%
-    ),
-    linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 7%,
-      black 92%,
-      transparent 100%
-    );
-  mask-repeat: no-repeat;
-  mask-composite: intersect;
-  user-select: none;
-}
-
-.schematic {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  inline-size: 100%;
-  block-size: 100%;
-  overflow: visible;
-  color: color-mix(in srgb, var(--text-muted) 52%, transparent);
-  pointer-events: none;
-}
-
-.schematic path {
-  stroke: currentColor;
-  stroke-width: 0.85;
-  vector-effect: non-scaling-stroke;
-}
-
-.schematic circle {
-  fill: var(--token);
-  stroke: var(--hero-canvas);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.disciplineList {
-  position: absolute;
-  z-index: 4;
-  inset-block: 1.5% 8%;
-  inset-inline-end: 0;
-  display: grid;
-  inline-size: 39%;
-  margin: 0;
-  padding: 0;
-  grid-template-rows: repeat(6, minmax(0, 1fr));
-  list-style: none;
-}
-
-.disciplineItem {
-  display: grid;
-  min-inline-size: 0;
-  grid-template-columns: 1.45rem minmax(0, 1fr);
-  align-content: start;
-  gap: 0.45rem;
-  text-align: start;
-}
-
-.index {
+.eyebrow,
+.discipline,
+.number,
+.originCaption,
+.action,
+.disclosure {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--token);
-  font-variant-numeric: tabular-nums;
 }
-
-.disciplineCopy {
-  display: grid;
-  min-inline-size: 0;
-  gap: 0.16rem;
-}
-
-.armor {
-  font-family: var(--font-mono);
+.eyebrow {
+  color: var(--accent-text);
   font-size: 0.625rem;
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  white-space: nowrap;
+}
+.identity {
+  display: none;
+}
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 3.2vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--text);
 }
-
-.discipline {
-  max-inline-size: 11ch;
-  font-size: 0.6875rem;
+.title em {
   font-weight: 400;
-  line-height: 1.24;
+  color: var(--accent-text);
+}
+.description,
+.note {
   color: var(--text-muted);
-  overflow-wrap: normal;
+  font-size: 0.75rem;
+  line-height: 1.7;
 }
-
-:global([data-theme="light"]) .figure {
-  mix-blend-mode: multiply;
-  opacity: 0.84;
+.description {
+  margin-block-start: 1rem;
+  max-inline-size: 30ch;
 }
-
-:global([data-theme="light"]) .schematic {
-  color: color-mix(in srgb, var(--text-muted) 42%, transparent);
+.content[hidden] {
+  display: none;
 }
-
-@media (max-width: 47.999rem) {
+.disclosure {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.disclosure[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.map {
+  position: relative;
+  margin-block: 1.5rem;
+}
+.origin {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  align-items: center;
+  gap: 0.1rem 0.65rem;
+  padding-block: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: var(--text);
+}
+.origin > svg {
+  grid-row: span 2;
+}
+.originCaption {
+  color: var(--text-muted);
+  font-size: 0.5625rem;
+  letter-spacing: 0.015em;
+}
+.paths {
+  position: relative;
+  margin-inline-start: 1.05rem;
+  border-inline-start: 1px solid var(--border-strong);
+  padding: 0 0 0.5rem 1.4rem;
+  transition: border-color 180ms ease;
+}
+.path {
+  position: relative;
+}
+.path::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -1.4rem;
+  inset-block-start: 50%;
+  inline-size: 1.4rem;
+  block-size: 1px;
+  background: var(--border-strong);
+  transition: background-color 180ms ease;
+}
+.map:has(a:hover, a:focus-visible) .paths {
+  border-inline-start-color: var(--accent-text);
+}
+.path:hover::before,
+.path:focus-within::before {
+  background: var(--accent-text);
+}
+.path a {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr) 0.9rem;
+  align-items: center;
+  gap: 0.45rem;
+  min-block-size: 4.15rem;
+  border-block-end: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.number {
+  font-size: 0.5625rem;
+  color: var(--accent-text);
+}
+.pathCopy {
+  display: grid;
+  gap: 0.22rem;
+}
+.discipline {
+  font-size: 0.5625rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+.project {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.1;
+  color: var(--text);
+}
+.path a > svg {
+  color: var(--accent-text);
+  transition: transform 180ms ease;
+}
+.path a:hover > svg,
+.path a:focus-visible > svg {
+  transform: translate(2px, 2px);
+}
+.path a:hover .project {
+  color: var(--accent-text);
+}
+.path a:focus-visible,
+.action:focus-visible,
+.disclosure:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 5px;
+}
+.note {
+  border-block-start: 1px solid var(--border);
+  padding-block-start: 1rem;
+}
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-block-size: 2.75rem;
+  margin-block-start: 0.5rem;
+  color: var(--text);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.action:hover {
+  color: var(--accent-text);
+}
+@media (min-width: 48rem) and (max-width: 79.999rem) {
   .panel {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 0.75rem;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    column-gap: 3rem;
+    padding-block-start: 2rem;
   }
-
-  .header,
-  .content {
-    display: contents;
+}
+@media (min-width: 48rem) {
+  .header {
+    display: block;
   }
-
-  .specimenLabel {
-    grid-column: 1;
-    grid-row: 1;
+  .identity {
+    display: block;
+    margin-block-start: 1.25rem;
   }
-
-  .identityDetail {
-    display: none;
-  }
-
-  .action {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: center;
-    justify-self: end;
-    margin: 0;
-    font-size: 0.625rem;
-  }
-
-  .anatomyMap,
-  .details {
-    grid-column: 1 / -1;
-  }
-
-  .anatomyMap {
+  .map {
     margin-block-start: 1.5rem;
   }
 }
-
-@media (max-width: 22.499rem) {
-  .panel {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .action {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: start;
-    margin-block-start: 0.75rem;
-  }
-
-  .anatomyMap {
-    grid-row: 3;
-  }
-}
-
-@media (min-width: 48rem) {
-  .action {
-    order: 1;
-  }
-}
-
 @media (min-width: 80rem) {
-  .specimenRule {
-    inset-block-start: 0;
+  .panel {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--border);
+    padding: 0 0 0 1.75rem;
+  }
+  .panel::before {
     inset-inline-start: -1px;
+    inset-block-start: 0;
     inline-size: 2px;
     block-size: 3.25rem;
   }
 }
-
-@media (min-width: 80rem) and (max-width: 89.999rem),
-  (min-width: 80rem) and (max-height: 49.999rem) {
+@media (min-width: 80rem) and (max-height: 49.999rem) {
+  .description,
+  .note {
+    display: none;
+  }
   .title {
-    font-size: 2.55rem;
+    font-size: 2.3rem;
   }
-
-  .summary {
-    margin-block-start: 0.75rem;
-    font-size: 0.75rem;
-    line-height: 1.25rem;
+  .path a {
+    min-block-size: 3.5rem;
   }
-
-  .content {
-    margin-block-start: 0.75rem;
-  }
-
-  .anatomyMap {
-    inline-size: min(100%, 14.5rem);
-  }
-
-  .index,
-  .armor {
-    font-size: 0.5625rem;
-  }
-
-  .disciplineCopy {
-    gap: 0.08rem;
-  }
-
-  .discipline {
-    max-inline-size: none;
-    font-size: 0.59375rem;
-    line-height: 1.15;
-  }
-
-  .details {
-    gap: 0.5rem;
-    margin-block-start: 0.5rem;
-    padding-block-start: 0.625rem;
-  }
-
-  .action {
-    margin-block-start: 0.25rem;
+  .map {
+    margin-block: 1rem;
   }
 }
-
-@media (min-width: 80rem) and (max-height: 49.999rem) {
-  .summary,
-  .details {
-    display: none;
+@media (max-width: 22.499rem) {
+  .header {
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .path a,
+  .paths,
+  .path::before,
+  .path a > svg {
+    transition: none;
+  }
+  .path a:hover > svg,
+  .path a:focus-visible > svg {
+    transform: none;
   }
 }

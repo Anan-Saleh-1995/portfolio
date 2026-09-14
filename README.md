@@ -177,6 +177,28 @@ So the repo tries to follow a few simple rules:
 - system logic should use explicit codes, not random string handling
 - decorative ideas should be easy to remove if they are not earning their place
 
+## Updating the portfolio
+
+Project records live in `src/features/forge/projects.content.ts`. Each record owns
+its title, purpose, status, stack, preview, build notes, and related destinations.
+The first four featured records lead the showcase; additional records appear in
+the expandable workbench. Keep each project ID stable so shared `#work-*` links
+continue to work.
+
+Add a `liveUrl` when a site is ready. Until then, the interface shows a quiet
+"Live site soon" status. To replace an interface study with a real screenshot,
+put the image in `public/images/projects`, supply `preview.image.src` and useful
+alt text, and set the preview label to `Project capture`. The current interface
+studies illustrate project scope; they are not screenshots of the applications.
+Nexzon's image is original homepage artwork from that project, generated on
+2026-09-05; its provenance is recorded in the source project's
+`docs/commerce-stage-4-asset-ledger-v1.md`.
+
+Social destinations live in `src/shared/content/shell.content.ts`. Add an `href`
+to the Bluesky or Mastodon record to replace its "Profile soon" state with a
+working link. Toolkit groups and their evidence live together under
+`src/features/arsenal`. Keep implemented work and concepts in study distinct.
+
 ## Notes
 
 - this is still a single-page portfolio

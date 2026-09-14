@@ -14,9 +14,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg);
   border-block-end: 1px solid var(--border);
   pointer-events: none;
 }
@@ -31,6 +29,98 @@
 
 .compactUtilities {
   display: flex;
+}
+
+.desktopUtilities {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline-start: clamp(1rem, 2vw, 1.75rem);
+  border-inline-start: 1px solid var(--border-strong);
+}
+
+.chapterLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.chapterLink::after {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0.4rem;
+  block-size: 1px;
+  background: var(--token);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
+}
+
+.chapterLink:hover {
+  color: var(--text);
+}
+
+.chapterLink:hover::after,
+.chapterLink:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.chapterLink:focus-visible,
+.mobileChapterLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.menuIntroduction {
+  max-inline-size: 25ch;
+  margin: 0 0 2rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-muted);
+}
+
+.mobileChapters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--border-strong);
+}
+
+.mobileChapterLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-block-size: 4rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.mobileChapterLink:hover {
+  color: var(--token);
+}
+
+.chapterNumber {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
 }
 
 .mobileMenu {
@@ -49,9 +139,7 @@
 }
 
 .mobileBackdrop {
-  background: color-mix(in srgb, var(--bg) 58%, transparent);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: var(--surface-overlay);
 }
 
 .mobilePanel {
@@ -81,7 +169,10 @@
 @media (prefers-reduced-motion: reduce) {
   .root,
   .mobileMenu,
-  .mobilePanel {
+  .mobilePanel,
+  .chapterLink,
+  .chapterLink::after,
+  .mobileChapterLink {
     transition: none;
   }
 }

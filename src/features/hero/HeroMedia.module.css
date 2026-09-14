@@ -2,12 +2,12 @@
   position: absolute;
   z-index: 10;
   isolation: isolate;
-  inset-block-start: clamp(9rem, 18svh, 10rem);
+  inset-block-start: 0;
   left: 50%;
-  inline-size: min(138vw, 39rem);
-  aspect-ratio: 8 / 9;
+  inline-size: min(110vw, 40rem);
+  aspect-ratio: 2 / 3;
   overflow: visible;
-  transform: translateX(-42%);
+  transform: translateX(-50%);
 }
 
 .stage::before {
@@ -22,7 +22,6 @@
     color-mix(in srgb, var(--hero-haze) 52%, transparent) 43%,
     transparent 76%
   );
-  filter: blur(24px);
   opacity: 0.78;
 }
 
@@ -36,7 +35,6 @@
   object-fit: cover;
   object-position: 50% 0%;
   opacity: 0;
-  filter: drop-shadow(0 28px 42px color-mix(in srgb, black 42%, transparent));
   -webkit-mask-image: linear-gradient(
     to bottom,
     black 0%,
@@ -67,12 +65,6 @@
     transparent 78%
   );
   opacity: 0.54;
-}
-
-:global([data-theme="light"]) .image {
-  filter: drop-shadow(
-    0 24px 30px color-mix(in srgb, var(--text) 20%, transparent)
-  );
 }
 
 @media (min-width: 48rem) {

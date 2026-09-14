@@ -12,7 +12,12 @@ export const Contact = () => {
   const { contact } = homeContent;
 
   return (
-    <section ref={sectionRef} id="contact" className={styles.root}>
+    <section
+      ref={sectionRef}
+      id="contact"
+      className={styles.root}
+      aria-labelledby="contact-heading"
+    >
       <div className={styles.container}>
         <div data-animate>
           <SectionLabel
@@ -22,52 +27,58 @@ export const Contact = () => {
         </div>
 
         <div className={styles.body}>
-          <div className={styles.formColumn} data-animate>
-            <h2 className={styles.heading}>{contact.heading}</h2>
+          <div className={styles.introduction} data-animate>
+            <h2 id="contact-heading" className={styles.heading}>
+              {contact.heading}
+            </h2>
             <p className={styles.sub}>{contact.subheading}</p>
-
-            <ContactForm />
+            <aside
+              className={styles.channels}
+              aria-labelledby="contact-channels-label"
+            >
+              <h3 id="contact-channels-label" className={styles.channelsLabel}>
+                {contact.channelsLabel}
+              </h3>
+              <ul className={styles.links} role="list">
+                <li className={styles.emailChannel}>
+                  <a href={`mailto:${contact.email}`} className={styles.link}>
+                    <Mail size={16} aria-hidden="true" />
+                    {contact.email}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={contact.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.link}
+                  >
+                    GitHub
+                    <ExternalLink size={14} aria-hidden="true" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={contact.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.link}
+                  >
+                    Resume
+                    <ExternalLink size={14} aria-hidden="true" />
+                  </a>
+                </li>
+              </ul>
+            </aside>
           </div>
 
-          <aside
-            className={styles.channels}
-            aria-labelledby="contact-channels-label"
-            data-animate
-          >
-            <span id="contact-channels-label" className={styles.channelsLabel}>
-              {contact.channelsLabel}
-            </span>
-            <ul className={styles.links} role="list">
-              <li>
-                <a href={`mailto:${contact.email}`} className={styles.link}>
-                  <Mail size={16} aria-hidden="true" />
-                  {contact.email}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={contact.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.link}
-                >
-                  <ExternalLink size={16} aria-hidden="true" />
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href={contact.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.link}
-                >
-                  <ExternalLink size={16} aria-hidden="true" />
-                  Resume
-                </a>
-              </li>
-            </ul>
-          </aside>
+          <div className={styles.formColumn} data-animate>
+            <div className={styles.formHeading}>
+              <span className={styles.formMark} aria-hidden="true" />
+              <h3 className={styles.formLabel}>Start a conversation</h3>
+            </div>
+            <ContactForm />
+          </div>
         </div>
       </div>
     </section>

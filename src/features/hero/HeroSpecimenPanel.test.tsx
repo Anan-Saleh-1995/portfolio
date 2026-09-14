@@ -1,102 +1,47 @@
 import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
-import { ThemeProvider } from "@/shared/lib/ThemeProvider";
+import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { HeroSpecimenPanel } from "./HeroSpecimenPanel";
 
-const renderPanel = () =>
-  render(
-    <ThemeProvider>
-      <HeroSpecimenPanel />
-    </ThemeProvider>,
-  );
+const viewport = vi.hoisted(() => ({ wide: true }));
+vi.mock("@/shared/lib/useMediaQuery", () => ({
+  useMediaQuery: () => viewport.wide,
+}));
 
 describe("HeroSpecimenPanel", () => {
   beforeEach(() => {
-    localStorage.clear();
-    document.documentElement.removeAttribute("data-theme");
+    viewport.wide = true;
   });
 
-  it("renders the reference anatomy vocabulary and textual equivalent", () => {
-    renderPanel();
-
+  it("keeps project navigation available on wider screens", () => {
+    render(<HeroSpecimenPanel />);
     expect(
-      screen.getByRole("complementary", {
-        name: "Ronin engineering specimen",
-      }),
-    ).toBeInTheDocument();
-    expect(screen.getByText("浪人")).toHaveAttribute("lang", "ja");
-    expect(screen.getAllByRole("listitem")).toHaveLength(6);
-
-    for (const label of [
-      "Interface engineering",
-      "Security & identity",
-      "Backend systems",
-      "Data & persistence",
-      "Protocols & tools",
-      "Infrastructure",
-    ]) {
-      expect(screen.getByText(label)).toBeInTheDocument();
-    }
+      screen.getByRole("navigation", { name: "Paths into the projects" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: /Learning Space/ }),
+    ).toHaveAttribute("href", "#work-learning-space");
+    expect(screen.getByRole("link", { name: /Dokimi Ledger/ })).toHaveAttribute(
+      "href",
+      "#work-dokimi",
+    );
+    expect(
+      screen.getByRole("link", { name: "Explore all projects" }),
+    ).toHaveAttribute("href", "#forge");
   });
 
-  it("keeps one inspect entry before the anatomy content in semantic order", () => {
-    const { container } = renderPanel();
-    const specimen = screen.getByRole("complementary", {
-      name: "Ronin engineering specimen",
-    });
-    const actions = screen.getAllByRole("link", { name: "Inspect the record" });
-    const [action] = actions;
-    const anatomyImage = container.querySelector("img");
-    const disciplineList = container.querySelector("ol");
-
-    expect(actions).toHaveLength(1);
-    expect(specimen).not.toHaveAttribute("hidden");
-    expect(specimen).not.toHaveAttribute("aria-hidden");
-    expect(specimen).not.toHaveAttribute("inert");
-    expect(action).toBeVisible();
-    expect(action).toHaveAttribute("href", "#the-way");
-    expect(action).not.toHaveAttribute("aria-hidden");
-    expect(action).not.toHaveAttribute("tabindex", "-1");
-    expect(action?.tabIndex).toBe(0);
-    expect(anatomyImage).not.toBeNull();
-    expect(disciplineList).not.toBeNull();
-    expect(
-      action.compareDocumentPosition(anatomyImage!) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
-    expect(
-      action.compareDocumentPosition(disciplineList!) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
+  it("lets narrow-screen visitors open and close the map without leaving the hero", async () => {
+    viewport.wide = false;
+    const user = userEvent.setup();
+    render(<HeroSpecimenPanel />);
+    const trigger = screen.getByRole("button", { name: "Explore the map" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("link", { name: /Nexzon/ })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Close map" }));
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
   });
-
-  it.each([
-    {
-      theme: "dark",
-      src: "/images/hero/ronin-anatomy-dark-v1.png",
-      width: "971",
-      height: "1619",
-    },
-    {
-      theme: "light",
-      src: "/images/hero/ronin-anatomy-light-v1.png",
-      width: "992",
-      height: "1586",
-    },
-  ])(
-    "uses the dedicated $theme anatomy asset instead of the central hero artwork",
-    ({ theme, src, width, height }) => {
-      localStorage.setItem("theme", theme);
-      const { container } = renderPanel();
-      const anatomyImage = container.querySelector("img");
-
-      expect(anatomyImage).toHaveAttribute("src", src);
-      expect(anatomyImage).toHaveAttribute("width", width);
-      expect(anatomyImage).toHaveAttribute("height", height);
-      expect(anatomyImage).not.toHaveAttribute(
-        "src",
-        "/images/hero/ronin-dark-crimson-enso-alpha-safe-v3.png",
-      );
-    },
-  );
 });
