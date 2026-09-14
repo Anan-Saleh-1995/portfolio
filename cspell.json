@@ -41,7 +41,19 @@
     "ronin",
     "urlset",
     "changefreq",
-    "anansaleh"
+    "anansaleh",
+    "viem",
+    "Solana",
+    "bitcoinjs",
+    "shiki",
+    "Nexzon",
+    "dokimi",
+    "devnet",
+    "utxo",
+    "supabase",
+    "hotspots",
+    "rōnin",
+    "résumé"
   ],
   "ignorePaths": ["node_modules", "dist", "package-lock.json", ".git"]
 }
