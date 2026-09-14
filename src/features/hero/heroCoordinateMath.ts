@@ -3,7 +3,7 @@ export interface HeroCoordinatePair {
   longitude: number;
 }
 
-export interface CoordinateAnchorRect {
+interface CoordinateAnchorRect {
   left: number;
   top: number;
   width: number;

@@ -5,11 +5,6 @@ export const THEMES = {
 
 export type Theme = (typeof THEMES)[keyof typeof THEMES];
 
-export const THEME_ACCENT_HEX: Record<Theme, string> = {
-  [THEMES.dark]: "#c41e3a",
-  [THEMES.light]: "#8b0000",
-};
-
 export const THEME_STORAGE_KEY = "theme";
 
 export const isTheme = (value: unknown): value is Theme =>
