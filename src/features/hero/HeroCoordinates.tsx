@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
 import { useMediaQuery } from "@/shared/lib/useMediaQuery";
 import { useReducedMotion } from "@/shared/lib/useReducedMotion";
 import {
@@ -11,12 +10,15 @@ import {
 } from "./heroCoordinateMath";
 import styles from "./Hero.module.css";
 
-const FINE_POINTER_QUERY = "(pointer: fine)";
+const VISIBLE_POINTER_QUERY =
+  "(pointer: fine) and (min-width: 80rem) and (min-height: 50rem)";
+const SETTLED_DISTANCE = 0.000001;
+const RESPONSE_TIME_MS = 65;
 
 export const HeroCoordinates = () => {
   const rootRef = useRef<HTMLParagraphElement>(null);
   const readoutRef = useRef<HTMLSpanElement>(null);
-  const hasFinePointer = useMediaQuery(FINE_POINTER_QUERY);
+  const hasVisiblePointer = useMediaQuery(VISIBLE_POINTER_QUERY);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export const HeroCoordinates = () => {
 
     readout.textContent = TOKYO_REFERENCE_READOUT;
 
-    if (!hasFinePointer || reduceMotion) return;
+    if (!hasVisiblePointer || reduceMotion) return;
 
     const interactionSurface =
       root.closest<HTMLElement>("[data-hero-coordinate-surface], section") ??
@@ -36,48 +38,146 @@ export const HeroCoordinates = () => {
     const currentCoordinates: HeroCoordinatePair = {
       ...TOKYO_REFERENCE_COORDINATES,
     };
-    let activeTween: gsap.core.Tween | null = null;
+    let targetCoordinates: HeroCoordinatePair = {
+      ...TOKYO_REFERENCE_COORDINATES,
+    };
+    let pointer: { x: number; y: number } | null = null;
+    let anchor: DOMRect | null = null;
+    let geometryChanged = true;
+    let pointerChanged = false;
+    let animationFrame: number | null = null;
+    let previousFrameTime: number | null = null;
+    let lastReadout = TOKYO_REFERENCE_READOUT;
 
-    const animateTo = (coordinates: HeroCoordinatePair) => {
-      activeTween?.kill();
-      activeTween = gsap.to(currentCoordinates, {
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        duration: 0.38,
-        ease: "power3.out",
-        overwrite: "auto",
-        onUpdate: () => {
-          readout.textContent = formatHeroCoordinates(currentCoordinates);
-        },
-      });
+    const writeReadout = () => {
+      const nextReadout = formatHeroCoordinates(currentCoordinates);
+      if (nextReadout === lastReadout) return;
+      readout.textContent = nextReadout;
+      lastReadout = nextReadout;
+    };
+
+    const renderFrame = (time: number) => {
+      animationFrame = null;
+      if (document.hidden) return;
+
+      if (pointer && (pointerChanged || geometryChanged)) {
+        if (!anchor || geometryChanged) {
+          anchor = root.getBoundingClientRect();
+          geometryChanged = false;
+        }
+        targetCoordinates = calculatePointerCoordinates(
+          pointer.x,
+          pointer.y,
+          anchor,
+        );
+        pointerChanged = false;
+      }
+
+      const elapsed =
+        previousFrameTime === null
+          ? 16
+          : Math.min(time - previousFrameTime, 64);
+      previousFrameTime = time;
+      const response = 1 - Math.exp(-elapsed / RESPONSE_TIME_MS);
+      currentCoordinates.latitude +=
+        (targetCoordinates.latitude - currentCoordinates.latitude) * response;
+      currentCoordinates.longitude +=
+        (targetCoordinates.longitude - currentCoordinates.longitude) * response;
+
+      const settled =
+        Math.abs(targetCoordinates.latitude - currentCoordinates.latitude) <
+          SETTLED_DISTANCE &&
+        Math.abs(targetCoordinates.longitude - currentCoordinates.longitude) <
+          SETTLED_DISTANCE;
+
+      if (settled) {
+        Object.assign(currentCoordinates, targetCoordinates);
+        previousFrameTime = null;
+      }
+      writeReadout();
+
+      if (!settled) animationFrame = requestAnimationFrame(renderFrame);
+    };
+
+    const requestFrame = () => {
+      if (animationFrame === null && !document.hidden) {
+        animationFrame = requestAnimationFrame(renderFrame);
+      }
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      animateTo(
-        calculatePointerCoordinates(
-          event.clientX,
-          event.clientY,
-          root.getBoundingClientRect(),
-        ),
-      );
+      if (document.hidden) return;
+      if (pointer?.x === event.clientX && pointer.y === event.clientY) return;
+      pointer = { x: event.clientX, y: event.clientY };
+      pointerChanged = true;
+      requestFrame();
+    };
+
+    const invalidateGeometry = () => {
+      geometryChanged = true;
+    };
+
+    const handlePointerEnter = (event: PointerEvent) => {
+      invalidateGeometry();
+      handlePointerMove(event);
     };
 
     const restoreTokyo = () => {
-      animateTo({ ...TOKYO_REFERENCE_COORDINATES });
+      pointer = null;
+      pointerChanged = false;
+      targetCoordinates = { ...TOKYO_REFERENCE_COORDINATES };
+      requestFrame();
     };
 
+    const stopAnimation = () => {
+      if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+      previousFrameTime = null;
+    };
+
+    const handleVisibilityChange = () => {
+      invalidateGeometry();
+      if (!document.hidden) return;
+      stopAnimation();
+      pointer = null;
+      pointerChanged = false;
+      targetCoordinates = { ...TOKYO_REFERENCE_COORDINATES };
+      Object.assign(currentCoordinates, TOKYO_REFERENCE_COORDINATES);
+      writeReadout();
+    };
+
+    const resizeObserver =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(invalidateGeometry);
+    resizeObserver?.observe(interactionSurface);
+    resizeObserver?.observe(root);
+    interactionSurface.addEventListener("pointerenter", handlePointerEnter, {
+      passive: true,
+    });
     interactionSurface.addEventListener("pointermove", handlePointerMove, {
       passive: true,
     });
     interactionSurface.addEventListener("pointerleave", restoreTokyo);
+    window.addEventListener("resize", invalidateGeometry, { passive: true });
+    window.addEventListener("scroll", invalidateGeometry, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      resizeObserver?.disconnect();
+      interactionSurface.removeEventListener(
+        "pointerenter",
+        handlePointerEnter,
+      );
       interactionSurface.removeEventListener("pointermove", handlePointerMove);
       interactionSurface.removeEventListener("pointerleave", restoreTokyo);
-      activeTween?.kill();
+      window.removeEventListener("resize", invalidateGeometry);
+      window.removeEventListener("scroll", invalidateGeometry);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      stopAnimation();
       readout.textContent = TOKYO_REFERENCE_READOUT;
     };
-  }, [hasFinePointer, reduceMotion]);
+  }, [hasVisiblePointer, reduceMotion]);
 
   return (
     <p

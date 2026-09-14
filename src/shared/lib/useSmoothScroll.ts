@@ -17,11 +17,15 @@ export const useSmoothScroll = () => {
 
   useEffect(() => {
     let lenis: Lenis | null = null;
+    let menuWasOpen = false;
 
     const handleMenuToggle = (event: Event) => {
       const { detail } = event as CustomEvent<MobileMenuToggleDetail>;
+      const menuOpen = detail?.open === true;
+      const menuJustClosed = menuWasOpen && !menuOpen;
+      menuWasOpen = menuOpen;
 
-      if (detail?.open) {
+      if (menuOpen) {
         lenis?.stop();
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
@@ -31,7 +35,7 @@ export const useSmoothScroll = () => {
       lenis?.start();
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
-      ScrollTrigger.refresh();
+      if (menuJustClosed) ScrollTrigger.refresh();
     };
 
     window.addEventListener(MOBILE_MENU_EVENT, handleMenuToggle);

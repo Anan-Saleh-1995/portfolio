@@ -1,57 +1,98 @@
-import { fireEvent, render } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { HeroCoordinates } from "./HeroCoordinates";
 import {
   calculatePointerCoordinates,
   formatHeroCoordinates,
   TOKYO_REFERENCE_COORDINATES,
   TOKYO_REFERENCE_READOUT,
-  type HeroCoordinatePair,
 } from "./heroCoordinateMath";
 
 const environment = vi.hoisted(() => ({
-  finePointer: true,
+  interactiveViewport: true,
   reducedMotion: false,
-}));
-
-const gsapMock = vi.hoisted(() => ({
-  kill: vi.fn(),
-  to: vi.fn(),
+  mediaQuery: "",
+  pageHidden: false,
 }));
 
 vi.mock("@/shared/lib/useMediaQuery", () => ({
-  useMediaQuery: () => environment.finePointer,
+  useMediaQuery: (query: string) => {
+    environment.mediaQuery = query;
+    return environment.interactiveViewport;
+  },
 }));
 
 vi.mock("@/shared/lib/useReducedMotion", () => ({
   useReducedMotion: () => environment.reducedMotion,
 }));
 
-vi.mock("gsap", () => ({
-  default: {
-    to: gsapMock.to,
-  },
-}));
+const anchor = { left: 100, top: 50, width: 200, height: 40 };
+const pendingFrames = new Map<number, FrameRequestCallback>();
+let nextFrameId = 0;
+let frameTime = 0;
 
-const renderCoordinates = () =>
-  render(
+const requestFrame = vi.fn((callback: FrameRequestCallback) => {
+  const id = ++nextFrameId;
+  pendingFrames.set(id, callback);
+  return id;
+});
+
+const cancelFrame = vi.fn((id: number) => {
+  pendingFrames.delete(id);
+});
+
+const advanceFrame = () => {
+  frameTime += 16;
+  const callbacks = [...pendingFrames.values()];
+  pendingFrames.clear();
+  callbacks.forEach((callback) => callback(frameTime));
+};
+
+const settleFrames = () => {
+  let frames = 0;
+  while (pendingFrames.size && frames < 120) {
+    advanceFrame();
+    frames += 1;
+  }
+  expect(pendingFrames.size).toBe(0);
+};
+
+const movePointer = (surface: HTMLElement, x: number, y: number) => {
+  fireEvent(
+    surface,
+    new MouseEvent("pointermove", { bubbles: true, clientX: x, clientY: y }),
+  );
+};
+
+const renderCoordinates = () => {
+  const result = render(
     <section data-hero-coordinate-surface>
       <HeroCoordinates />
     </section>,
   );
-
-const getReadout = (container: HTMLElement) => {
-  const readout = container.querySelector<HTMLElement>(
+  const surface = result.container.querySelector("section");
+  const readout = result.container.querySelector<HTMLElement>(
     "[data-coordinate-readout]",
   );
+  const root = readout?.closest("p");
 
-  if (!readout) throw new Error("Coordinate readout was not rendered");
-  return readout;
+  if (!surface || !readout || !root) {
+    throw new Error("Coordinate surface was not rendered");
+  }
+
+  const measure = vi.spyOn(root, "getBoundingClientRect").mockReturnValue({
+    ...anchor,
+    right: 300,
+    bottom: 90,
+    x: 100,
+    y: 50,
+    toJSON: () => ({}),
+  });
+
+  return { ...result, surface, readout, root, measure };
 };
 
 describe("hero coordinate helpers", () => {
-  const anchor = { left: 100, top: 50, width: 200, height: 40 };
-
   it("keeps Tokyo at the center of the readout", () => {
     expect(calculatePointerCoordinates(200, 70, anchor)).toEqual(
       TOKYO_REFERENCE_COORDINATES,
@@ -79,107 +120,130 @@ describe("hero coordinate helpers", () => {
 
 describe("HeroCoordinates", () => {
   beforeEach(() => {
-    environment.finePointer = true;
+    environment.interactiveViewport = true;
     environment.reducedMotion = false;
-    gsapMock.kill.mockReset();
-    gsapMock.to.mockReset();
-    gsapMock.to.mockImplementation(
-      (target: HeroCoordinatePair, vars: Record<string, unknown>) => {
-        target.latitude = vars.latitude as number;
-        target.longitude = vars.longitude as number;
-        (vars.onUpdate as (() => void) | undefined)?.();
-        return { kill: gsapMock.kill };
-      },
+    environment.pageHidden = false;
+    environment.mediaQuery = "";
+    pendingFrames.clear();
+    nextFrameId = 0;
+    frameTime = 0;
+    requestFrame.mockClear();
+    cancelFrame.mockClear();
+    vi.stubGlobal("requestAnimationFrame", requestFrame);
+    vi.stubGlobal("cancelAnimationFrame", cancelFrame);
+    vi.stubGlobal("ResizeObserver", undefined);
+    vi.spyOn(document, "hidden", "get").mockImplementation(
+      () => environment.pageHidden,
     );
   });
 
-  it("keeps the accessible Tokyo value static while the visible LTR readout responds and restores", () => {
-    const { container } = renderCoordinates();
-    const surface = container.querySelector("section");
-    const readout = getReadout(container);
-    const root = readout.closest("p");
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
 
-    if (!surface || !root)
-      throw new Error("Coordinate surface was not rendered");
+  it("starts idle, eases the visible value, and returns to Tokyo after leaving", () => {
+    const { surface, readout, root } = renderCoordinates();
 
-    vi.spyOn(root, "getBoundingClientRect").mockReturnValue({
-      left: 100,
-      top: 50,
-      width: 200,
-      height: 40,
-      right: 300,
-      bottom: 90,
-      x: 100,
-      y: 50,
-      toJSON: () => ({}),
-    });
-
+    expect(pendingFrames.size).toBe(0);
     expect(root).toHaveAccessibleName(
       `Tokyo reference coordinates: ${TOKYO_REFERENCE_READOUT}`,
     );
     expect(readout).toHaveAttribute("dir", "ltr");
     expect(readout).toHaveAttribute("translate", "no");
 
-    fireEvent.pointerMove(surface, { clientX: 520, clientY: 70 });
-
+    movePointer(surface, 520, 70);
+    advanceFrame();
+    expect(readout.textContent).not.toBe(TOKYO_REFERENCE_READOUT);
+    expect(readout.textContent).not.toBe("35.6895° N · 139.7007° E");
+    settleFrames();
     expect(readout).toHaveTextContent("35.6895° N · 139.7007° E");
     expect(root).toHaveAccessibleName(
       `Tokyo reference coordinates: ${TOKYO_REFERENCE_READOUT}`,
     );
 
     fireEvent.pointerLeave(surface);
-
+    advanceFrame();
+    expect(readout.textContent).not.toBe(TOKYO_REFERENCE_READOUT);
+    settleFrames();
     expect(readout).toHaveTextContent(TOKYO_REFERENCE_READOUT);
   });
 
+  it("coalesces a pointer burst into one frame and reuses geometry until it changes", () => {
+    const { surface, readout, measure } = renderCoordinates();
+
+    for (let x = 300; x <= 700; x += 10) movePointer(surface, x, 70);
+
+    expect(requestFrame).toHaveBeenCalledTimes(1);
+    expect(measure).not.toHaveBeenCalled();
+    settleFrames();
+    expect(measure).toHaveBeenCalledTimes(1);
+    expect(readout).toHaveTextContent(
+      formatHeroCoordinates(calculatePointerCoordinates(700, 70, anchor)),
+    );
+
+    movePointer(surface, 600, 70);
+    settleFrames();
+    expect(measure).toHaveBeenCalledTimes(1);
+
+    fireEvent.resize(window);
+    expect(pendingFrames.size).toBe(0);
+    movePointer(surface, 500, 70);
+    settleFrames();
+    expect(measure).toHaveBeenCalledTimes(2);
+  });
+
   it.each([
-    { finePointer: false, reducedMotion: false },
-    { finePointer: true, reducedMotion: true },
+    { interactiveViewport: false, reducedMotion: false },
+    { interactiveViewport: true, reducedMotion: true },
   ])(
-    "stays static for finePointer=$finePointer and reducedMotion=$reducedMotion",
-    ({ finePointer, reducedMotion }) => {
-      environment.finePointer = finePointer;
+    "does no pointer work for interactiveViewport=$interactiveViewport and reducedMotion=$reducedMotion",
+    ({ interactiveViewport, reducedMotion }) => {
+      environment.interactiveViewport = interactiveViewport;
       environment.reducedMotion = reducedMotion;
-      const { container } = renderCoordinates();
-      const surface = container.querySelector("section");
+      const { surface, readout, measure } = renderCoordinates();
 
-      if (!surface) throw new Error("Coordinate surface was not rendered");
+      expect(environment.mediaQuery).toBe(
+        "(pointer: fine) and (min-width: 80rem) and (min-height: 50rem)",
+      );
+      movePointer(surface, 520, 70);
+      fireEvent.pointerLeave(surface);
 
-      fireEvent.pointerMove(surface, { clientX: 520, clientY: 70 });
-
-      expect(getReadout(container)).toHaveTextContent(TOKYO_REFERENCE_READOUT);
-      expect(gsapMock.to).not.toHaveBeenCalled();
+      expect(readout).toHaveTextContent(TOKYO_REFERENCE_READOUT);
+      expect(requestFrame).not.toHaveBeenCalled();
+      expect(measure).not.toHaveBeenCalled();
     },
   );
 
-  it("removes interaction listeners and kills the active tween on cleanup", () => {
-    const { container, unmount } = renderCoordinates();
-    const surface = container.querySelector("section");
-    const readout = getReadout(container);
-    const root = readout.closest("p");
+  it("cancels work while the document is hidden and waits for new input on return", () => {
+    const { surface, readout } = renderCoordinates();
+    movePointer(surface, 520, 70);
+    advanceFrame();
 
-    if (!surface || !root)
-      throw new Error("Coordinate surface was not rendered");
+    environment.pageHidden = true;
+    fireEvent(document, new Event("visibilitychange"));
 
-    vi.spyOn(root, "getBoundingClientRect").mockReturnValue({
-      left: 100,
-      top: 50,
-      width: 200,
-      height: 40,
-      right: 300,
-      bottom: 90,
-      x: 100,
-      y: 50,
-      toJSON: () => ({}),
-    });
+    expect(pendingFrames.size).toBe(0);
+    expect(readout).toHaveTextContent(TOKYO_REFERENCE_READOUT);
+    movePointer(surface, 700, 70);
+    expect(pendingFrames.size).toBe(0);
 
-    fireEvent.pointerMove(surface, { clientX: 520, clientY: 70 });
-    expect(gsapMock.to).toHaveBeenCalledTimes(1);
+    environment.pageHidden = false;
+    fireEvent(document, new Event("visibilitychange"));
+    expect(pendingFrames.size).toBe(0);
+  });
+
+  it("cancels the pending frame and removes listeners on cleanup", () => {
+    const { surface, unmount } = renderCoordinates();
+    movePointer(surface, 520, 70);
+    expect(pendingFrames.size).toBe(1);
 
     unmount();
 
-    expect(gsapMock.kill).toHaveBeenCalledTimes(1);
-    fireEvent.pointerMove(surface, { clientX: 600, clientY: 70 });
-    expect(gsapMock.to).toHaveBeenCalledTimes(1);
+    expect(pendingFrames.size).toBe(0);
+    expect(cancelFrame).toHaveBeenCalledTimes(1);
+    movePointer(surface, 600, 70);
+    expect(requestFrame).toHaveBeenCalledTimes(1);
   });
 });

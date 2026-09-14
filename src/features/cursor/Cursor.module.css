@@ -18,24 +18,24 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1.5px solid var(--token);
   pointer-events: none;
   z-index: 9998;
   will-change: transform;
-  transition:
-    width 200ms ease,
-    height 200ms ease,
-    top 200ms ease,
-    left 200ms ease,
-    opacity 200ms ease,
-    border-color 200ms ease;
+  transition: opacity 200ms ease;
 }
 
-.ring.active {
-  width: 48px;
-  height: 48px;
-  top: -24px;
-  left: -24px;
-  border-color: var(--token);
+.ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid var(--token);
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+
+.ring.active::before {
+  transform: scale(1.5);
   opacity: 0.5;
 }

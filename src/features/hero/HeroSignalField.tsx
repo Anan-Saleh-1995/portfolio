@@ -1,4 +1,5 @@
-import type { CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
+import { useReducedMotion } from "@/shared/lib/useReducedMotion";
 import styles from "./HeroSignalField.module.css";
 
 type SignalStyle = CSSProperties & {
@@ -215,14 +216,47 @@ const SIGNALS: readonly SignalStyle[] = [
   },
 ];
 
-export const HeroSignalField = () => (
-  <div className={styles.field} aria-hidden="true">
-    {SIGNALS.map((signalStyle, index) => (
-      <span
-        key={`hero-signal-${index + 1}`}
-        className={styles.signal}
-        style={signalStyle}
-      />
-    ))}
-  </div>
-);
+const AMBIENT_SIGNALS = SIGNALS.filter((_, index) => index % 2 === 0);
+
+export const HeroSignalField = () => {
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field) return;
+    field.dataset.motion = "paused";
+    if (reduceMotion || typeof IntersectionObserver === "undefined") return;
+
+    let isVisible = false;
+    const syncMotion = () => {
+      field.dataset.motion =
+        isVisible && !document.hidden ? "running" : "paused";
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry?.isIntersecting ?? false;
+      syncMotion();
+    });
+
+    observer.observe(field);
+    document.addEventListener("visibilitychange", syncMotion);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncMotion);
+      field.dataset.motion = "paused";
+    };
+  }, [reduceMotion]);
+
+  return (
+    <div ref={fieldRef} className={styles.field} aria-hidden="true">
+      {AMBIENT_SIGNALS.map((signalStyle, index) => (
+        <span
+          key={`hero-signal-${index + 1}`}
+          className={styles.signal}
+          style={signalStyle}
+        />
+      ))}
+    </div>
+  );
+};

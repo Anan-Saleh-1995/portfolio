@@ -18,13 +18,15 @@
   aspect-ratio: 1;
   border-radius: 999px;
   background: var(--token);
-  box-shadow:
-    0 0 8px color-mix(in srgb, var(--token) 72%, transparent),
-    0 0 18px color-mix(in srgb, var(--token) 28%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--token) 40%, transparent);
   opacity: 0.42;
   animation: signal-drift var(--signal-duration) ease-in-out infinite;
   animation-delay: var(--signal-delay);
-  will-change: transform, opacity;
+  animation-play-state: paused;
+}
+
+.field[data-motion="running"] .signal {
+  animation-play-state: running;
 }
 
 @keyframes signal-drift {
@@ -47,19 +49,19 @@
 }
 
 @media (max-width: 47.999rem) {
-  .signal:nth-child(n + 10) {
+  .signal:nth-child(n + 7) {
     display: none;
   }
 }
 
 @media (pointer: coarse) {
-  .signal:nth-child(n + 12) {
+  .signal:nth-child(n + 7) {
     display: none;
   }
 }
 
 @media (orientation: landscape) and (max-height: 31.25rem) {
-  .signal:nth-child(n + 8) {
+  .signal:nth-child(n + 5) {
     display: none;
   }
 }
