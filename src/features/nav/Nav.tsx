@@ -4,12 +4,9 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
-  type ReactNode,
 } from "react";
 import { Menu, X } from "lucide-react";
-import { Trans, useLingui } from "@lingui/react/macro";
 import { EnsoMark } from "@/shared/ui/EnsoMark";
-import { LanguageSwitcher } from "@/shared/ui/LanguageSwitcher";
 import { ThemeToggle } from "@/shared/ui/ThemeToggle";
 import { useEscapeKey } from "@/shared/lib/useEscapeKey";
 import { SourceRepoLink } from "./SourceRepoLink";
@@ -18,11 +15,10 @@ import styles from "./Nav.module.css";
 
 interface NavigationLink {
   href: string;
-  label: ReactNode;
+  label: string;
 }
 
 export const Nav = () => {
-  const { t } = useLingui();
   const hidden = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -34,23 +30,23 @@ export const Nav = () => {
   const navigationLinks: NavigationLink[] = [
     {
       href: "#the-way",
-      label: <Trans id="nav.link.theWay">The Way</Trans>,
+      label: "The Way",
     },
     {
       href: "#arsenal",
-      label: <Trans id="nav.link.arsenal">Arsenal</Trans>,
+      label: "Arsenal",
     },
     {
       href: "#forge",
-      label: <Trans id="nav.link.forge">Forge</Trans>,
+      label: "Forge",
     },
     {
       href: "#proving-ground",
-      label: <Trans id="nav.link.provingGround">Proving Ground</Trans>,
+      label: "Proving Ground",
     },
     {
       href: "#contact",
-      label: <Trans id="nav.link.engagement">Engagement</Trans>,
+      label: "Engagement",
     },
   ];
 
@@ -187,22 +183,10 @@ export const Nav = () => {
     }
   };
 
-  const openMenuLabel = t({
-    id: "nav.menu.open",
-    message: "Open menu",
-  });
-  const closeMenuLabel = t({
-    id: "nav.menu.close",
-    message: "Close menu",
-  });
-  const mainNavigationLabel = t({
-    id: "nav.mainNavigation",
-    message: "Main navigation",
-  });
-  const mobileNavigationLabel = t({
-    id: "nav.mobileNavigation",
-    message: "Mobile navigation",
-  });
+  const openMenuLabel = "Open menu";
+  const closeMenuLabel = "Close menu";
+  const mainNavigationLabel = "Main navigation";
+  const mobileNavigationLabel = "Mobile navigation";
 
   return (
     <header
@@ -210,9 +194,9 @@ export const Nav = () => {
     >
       <a
         href="#main-content"
-        className="absolute -top-full start-4 z-[104] inline-flex min-h-11 items-center border border-[var(--token)] bg-[var(--bg)] px-4 py-3 [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text)] focus:top-3 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] rtl:tracking-normal"
+        className="absolute -top-full start-4 z-[104] inline-flex min-h-11 items-center border border-[var(--token)] bg-[var(--bg)] px-4 py-3 [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text)] focus:top-3 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)]"
       >
-        <Trans id="nav.skipToContent">Skip to content</Trans>
+        Skip to content
       </a>
 
       <div
@@ -222,7 +206,7 @@ export const Nav = () => {
         <a
           href="#"
           className="inline-flex min-h-11 shrink-0 items-center gap-2.5 [font-family:var(--font-mono)] text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
-          aria-label={t({ id: "nav.backToTop", message: "Back to top" })}
+          aria-label="Back to top"
         >
           <EnsoMark size={24} />
           <span className="flex flex-col items-start leading-none">
@@ -231,10 +215,10 @@ export const Nav = () => {
               dir="ltr"
               translate="no"
             >
-              <Trans id="nav.brand">anan</Trans>
+              anan
             </span>
-            <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[430px]:block rtl:normal-case rtl:tracking-normal">
-              <Trans id="nav.brandTagline">Crafting digital experiences</Trans>
+            <span className="mt-1 hidden whitespace-nowrap text-[0.48rem] uppercase tracking-[0.13em] text-[var(--token)] min-[430px]:block">
+              Crafting digital experiences
             </span>
           </span>
         </a>
@@ -251,7 +235,7 @@ export const Nav = () => {
               <li key={href}>
                 <a
                   href={href}
-                  className="inline-flex min-h-11 items-center [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text-muted)] uppercase no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none rtl:tracking-normal rtl:normal-case"
+                  className="inline-flex min-h-11 items-center [font-family:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--text-muted)] uppercase no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
                 >
                   {label}
                 </a>
@@ -261,13 +245,11 @@ export const Nav = () => {
 
           <div className="flex items-center gap-2.5">
             <SourceRepoLink />
-            <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </nav>
 
         <div className={`${styles.compactUtilities} items-center gap-1.5`}>
-          <LanguageSwitcher compact />
           <ThemeToggle />
           <button
             ref={toggleRef}
@@ -302,9 +284,7 @@ export const Nav = () => {
         <div
           ref={mobileMenuRef}
           className={`relative z-[1] ms-auto flex h-dvh w-[min(88vw,26rem)] flex-col overflow-y-auto border-s border-[var(--border)] px-[clamp(1.25rem,5vw,2rem)] pt-4 pb-8 motion-reduce:transition-none ${styles.mobilePanel} ${
-            menuOpen
-              ? "translate-x-0"
-              : "translate-x-full rtl:-translate-x-full"
+            menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
           role="dialog"
           aria-modal="true"
@@ -312,8 +292,8 @@ export const Nav = () => {
           onKeyDown={handleMobileMenuKeyDown}
         >
           <div className="mb-[clamp(2rem,7vh,4.5rem)] flex min-h-12 items-center justify-between">
-            <span className="[font-family:var(--font-mono)] text-xs tracking-[0.14em] text-[var(--text-muted)] uppercase rtl:tracking-normal rtl:normal-case">
-              <Trans id="nav.navigation">Navigation</Trans>
+            <span className="[font-family:var(--font-mono)] text-xs tracking-[0.14em] text-[var(--text-muted)] uppercase">
+              Navigation
             </span>
             <button
               ref={drawerCloseRef}
@@ -335,7 +315,7 @@ export const Nav = () => {
                 <li key={href}>
                   <a
                     href={href}
-                    className="inline-flex min-h-11 items-center [font-family:var(--font-display)] text-[clamp(2rem,8vw,var(--text-3xl))] leading-none font-semibold text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none rtl:tracking-normal rtl:normal-case"
+                    className="inline-flex min-h-11 items-center [font-family:var(--font-display)] text-[clamp(2rem,8vw,var(--text-3xl))] leading-none font-semibold text-[var(--text)] no-underline transition-colors hover:text-[var(--token)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[var(--token)] motion-reduce:transition-none"
                     onClick={() => closeMenu()}
                   >
                     {label}

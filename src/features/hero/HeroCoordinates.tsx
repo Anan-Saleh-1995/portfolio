@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useLingui } from "@lingui/react/macro";
 import gsap from "gsap";
 import { useMediaQuery } from "@/shared/lib/useMediaQuery";
 import { useReducedMotion } from "@/shared/lib/useReducedMotion";
@@ -15,7 +14,6 @@ import styles from "./Hero.module.css";
 const FINE_POINTER_QUERY = "(pointer: fine)";
 
 export const HeroCoordinates = () => {
-  const { t } = useLingui();
   const rootRef = useRef<HTMLParagraphElement>(null);
   const readoutRef = useRef<HTMLSpanElement>(null);
   const hasFinePointer = useMediaQuery(FINE_POINTER_QUERY);
@@ -81,16 +79,11 @@ export const HeroCoordinates = () => {
     };
   }, [hasFinePointer, reduceMotion]);
 
-  const accessibleLabel = t({
-    id: "hero.specimen.coordinatesLabel",
-    message: "Tokyo reference coordinates",
-  });
-
   return (
     <p
       ref={rootRef}
       className={`${styles.coordinates} pointer-events-none absolute bottom-4 right-6 z-30 items-center gap-2 whitespace-nowrap [font-family:var(--font-mono)] text-[0.625rem] tabular-nums tracking-[0.08em] text-[var(--text-muted)] sm:right-8 lg:right-10`}
-      aria-label={`${accessibleLabel}: ${TOKYO_REFERENCE_READOUT}`}
+      aria-label={`Tokyo reference coordinates: ${TOKYO_REFERENCE_READOUT}`}
     >
       <span
         className="size-1.5 rounded-full bg-[var(--token)]"

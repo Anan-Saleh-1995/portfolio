@@ -1,28 +1,14 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { ThemeProvider } from "@/shared/lib/ThemeProvider";
 import { ThemeToggle } from "./ThemeToggle";
 
-const testI18n = setupI18n({
-  locale: "en",
-  messages: {
-    en: {
-      "theme.switchToDark": "Switch to dark mode",
-      "theme.switchToLight": "Switch to light mode",
-    },
-  },
-});
-
 const renderToggle = () =>
   render(
-    <I18nProvider i18n={testI18n}>
-      <ThemeProvider>
-        <ThemeToggle />
-      </ThemeProvider>
-    </I18nProvider>,
+    <ThemeProvider>
+      <ThemeToggle />
+    </ThemeProvider>,
   );
 
 describe("ThemeToggle", () => {

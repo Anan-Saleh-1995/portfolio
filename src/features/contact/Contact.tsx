@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Mail, ExternalLink } from "lucide-react";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import { ContactForm } from "./ContactForm/ContactForm";
@@ -9,7 +9,7 @@ import styles from "./Contact.module.css";
 export const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { contact } = getHomeContent();
+  const { contact } = homeContent;
 
   return (
     <section ref={sectionRef} id="contact" className={styles.root}>
@@ -34,10 +34,7 @@ export const Contact = () => {
             aria-labelledby="contact-channels-label"
             data-animate
           >
-            <span
-              id="contact-channels-label"
-              className={styles.channelsLabel}
-            >
+            <span id="contact-channels-label" className={styles.channelsLabel}>
               {contact.channelsLabel}
             </span>
             <ul className={styles.links} role="list">

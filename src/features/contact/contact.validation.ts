@@ -4,7 +4,7 @@ import {
   CONTACT_FIELD_LIMIT,
   contactPayloadSchema,
 } from "@/shared/contracts/contact";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 
 const getStringField = (formData: FormData, key: string) => {
   const value = formData.get(key);
@@ -19,7 +19,7 @@ const hasIssueForField = (
   result.error.issues.some((issue) => issue.path[0] === field);
 
 export const validateContactForm = (formData: FormData): ContactErrors => {
-  const { validation } = getHomeContent().contact.form;
+  const { validation } = homeContent.contact.form;
   const name = getStringField(formData, "name");
   const email = getStringField(formData, "email");
   const subject =

@@ -1,6 +1,6 @@
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import {
   CONTACT_FEEDBACK_MESSAGE,
   CONTACT_FEEDBACK_TITLE,
@@ -28,7 +28,7 @@ interface ContactFormContentProps {
 }
 
 const ContactFormContent = ({ onReset }: ContactFormContentProps) => {
-  const { form } = getHomeContent().contact;
+  const { form } = homeContent.contact;
   const [state, formAction, isPending] = useActionState(
     submitContactAction,
     initialContactFormState,

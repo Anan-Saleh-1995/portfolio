@@ -1,5 +1,3 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Hero } from "./Hero";
@@ -16,21 +14,7 @@ vi.mock("./HeroOverlay", () => ({
   HeroOverlay: () => <h1 id="hero-title">The Way of the Rōnin.</h1>,
 }));
 
-const testI18n = setupI18n({
-  locale: "en",
-  messages: {
-    en: {
-      "hero.specimen.coordinatesLabel": "Tokyo reference coordinates",
-    },
-  },
-});
-
-const renderHero = () =>
-  render(
-    <I18nProvider i18n={testI18n}>
-      <Hero />
-    </I18nProvider>,
-  );
+const renderHero = () => render(<Hero />);
 
 describe("Hero", () => {
   it("keeps the field-wide signal layer direct and hidden from accessibility", () => {

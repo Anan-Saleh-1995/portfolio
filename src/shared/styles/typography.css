@@ -27,13 +27,3 @@
   --leading-normal: 1.6;
   --leading-relaxed: 1.8;
 }
-
-html:lang(he) {
-  --font-display: "Noto Serif Hebrew", "Times New Roman", serif;
-  --font-body: "Noto Sans Hebrew", Arial, sans-serif;
-}
-
-html:lang(ar) {
-  --font-display: "Noto Naskh Arabic", "Geeza Pro", "Times New Roman", serif;
-  --font-body: "Noto Sans Arabic", Tahoma, Arial, sans-serif;
-}

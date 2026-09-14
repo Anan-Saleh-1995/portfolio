@@ -1,4 +1,3 @@
-import { Trans } from "@lingui/react/macro";
 import { ImageOff } from "lucide-react";
 
 interface HeroFallbackProps {
@@ -11,11 +10,9 @@ export const HeroFallback = ({ failed = false }: HeroFallbackProps) => (
     aria-hidden="true"
   >
     {failed ? (
-      <div className="flex flex-col items-center gap-3 text-center [font-family:var(--font-mono)] text-xs uppercase tracking-[0.12em] rtl:normal-case rtl:tracking-normal">
+      <div className="flex flex-col items-center gap-3 text-center [font-family:var(--font-mono)] text-xs uppercase tracking-[0.12em]">
         <ImageOff size={24} strokeWidth={1.5} aria-hidden="true" />
-        <span>
-          <Trans id="hero.media.unavailable">Portrait unavailable</Trans>
-        </span>
+        <span>Portrait unavailable</span>
       </div>
     ) : (
       <span className="h-24 w-px animate-pulse bg-[var(--border)] motion-reduce:animate-none" />

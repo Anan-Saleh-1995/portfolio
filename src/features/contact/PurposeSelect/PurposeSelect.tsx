@@ -1,4 +1,4 @@
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import styles from "./PurposeSelect.module.css";
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const PurposeSelect = ({ defaultValue }: Props) => {
-  const { purposeSelect } = getHomeContent().contact.form;
+  const { purposeSelect } = homeContent.contact.form;
 
   return (
     <div className={styles.selectWrap}>

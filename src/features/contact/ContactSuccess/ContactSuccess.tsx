@@ -1,5 +1,5 @@
 import { EnsoMark } from "@/shared/ui/EnsoMark";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import { CONTACT_FEEDBACK_MESSAGE } from "../contact.feedback";
 import styles from "./ContactSuccess.module.css";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const ContactSuccess = ({ onReset }: Props) => {
-  const { success } = getHomeContent().contact.form;
+  const { success } = homeContent.contact.form;
 
   return (
     <div className={styles.success} role="status" aria-live="polite">

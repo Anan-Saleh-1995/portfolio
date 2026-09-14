@@ -14,7 +14,7 @@ import type {
   ContactFormState,
   ContactFormValues,
 } from "./contact.types";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 
 const getStringField = (formData: FormData, key: string) => {
   const value = formData.get(key);
@@ -55,7 +55,7 @@ export const submitContactAction = async (
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> => {
-  const { delivery } = getHomeContent().contact.form;
+  const { delivery } = homeContent.contact.form;
   const values = getFormValues(formData, delivery.defaultSubject);
   const errors = validateContactForm(formData);
   const failureState: ContactFormState = {

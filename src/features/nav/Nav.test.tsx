@@ -1,62 +1,16 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { ThemeProvider } from "@/shared/lib/ThemeProvider";
 import { Nav } from "./Nav";
 
-const localeMock = vi.hoisted(() => ({
-  state: {
-    locale: "en" as const,
-    direction: "ltr" as const,
-    pendingLocale: null,
-    isLocaleChanging: false,
-    localeChangeError: null,
-    setLocale: vi.fn(() => Promise.resolve(true)),
-  },
-}));
-
-vi.mock("@/shared/i18n/useLocale", () => ({
-  useLocale: () => localeMock.state,
-}));
-
-const messages = {
-  "language.changeFailed": "Language change failed. Try again.",
-  "language.label": "Language",
-  "language.preview": "Preview",
-  "language.switching": "Switching language to {pendingEndonym}",
-  "nav.backToTop": "Back to top",
-  "nav.brand": "anan",
-  "nav.brandTagline": "Crafting digital experiences",
-  "nav.link.arsenal": "Arsenal",
-  "nav.link.engagement": "Engagement",
-  "nav.link.forge": "Forge",
-  "nav.link.provingGround": "Proving Ground",
-  "nav.link.theWay": "The Way",
-  "nav.mainNavigation": "Main navigation",
-  "nav.menu.close": "Close menu",
-  "nav.menu.open": "Open menu",
-  "nav.mobileNavigation": "Mobile navigation",
-  "nav.navigation": "Navigation",
-  "nav.skipToContent": "Skip to content",
-  "nav.source.ariaLabel": "View portfolio source on GitHub",
-  "nav.source.label": "Source",
-  "theme.switchToDark": "Switch to dark mode",
-  "theme.switchToLight": "Switch to light mode",
-};
-
-const testI18n = setupI18n({ locale: "en", messages: { en: messages } });
-
 const renderNav = () =>
   render(
-    <I18nProvider i18n={testI18n}>
-      <ThemeProvider>
-        <Nav />
-        <main id="main-content" />
-        <footer />
-      </ThemeProvider>
-    </I18nProvider>,
+    <ThemeProvider>
+      <Nav />
+      <main id="main-content" />
+      <footer />
+    </ThemeProvider>,
   );
 
 describe("Nav", () => {

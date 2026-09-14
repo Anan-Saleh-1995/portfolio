@@ -1,7 +1,7 @@
 .layout {
   --hero-gutter: 1.5rem;
   --hero-top-space: 6rem;
-  --hero-story-block: clamp(41rem, 162vw, 47rem);
+  --hero-story-block: clamp(34rem, 162vw, 47rem);
   position: relative;
   display: grid;
   inline-size: 100%;
@@ -25,9 +25,7 @@
   z-index: 10;
   inset-block-start: 0;
   inset-inline: 0;
-  block-size: calc(
-    var(--hero-top-space) + var(--hero-story-block) + 3rem
-  );
+  block-size: calc(var(--hero-top-space) + var(--hero-story-block) + 3rem);
   overflow: clip;
   pointer-events: none;
 }
@@ -70,7 +68,7 @@
 @media (min-width: 48rem) and (max-width: 79.999rem) {
   .layout {
     --hero-gutter: 2.5rem;
-    --hero-story-block: clamp(38rem, 72vw, 49rem);
+    --hero-story-block: clamp(38rem, 72vw, 42rem);
     grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.92fr);
     column-gap: 2rem;
     row-gap: 2.5rem;
@@ -97,7 +95,7 @@
 
 @media (min-width: 48rem) and (max-width: 79.999rem) and (orientation: landscape) {
   .layout {
-    --hero-story-block: max(34rem, calc(100svh - var(--hero-top-space)));
+    --hero-story-block: max(34rem, calc(100svh - var(--hero-top-space) - 6rem));
   }
 }
 
@@ -154,8 +152,7 @@
     --hero-top-space: 4.5rem;
     --hero-story-block: 0px;
     min-block-size: max(100svh, 40rem);
-    grid-template-columns:
-      minmax(0, 4fr) minmax(20rem, 5fr) minmax(14rem, 3fr);
+    grid-template-columns: minmax(0, 4fr) minmax(20rem, 5fr) minmax(14rem, 3fr);
     align-content: center;
     align-items: center;
     column-gap: 2rem;

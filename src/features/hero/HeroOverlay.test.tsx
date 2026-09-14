@@ -1,6 +1,3 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
-import { messages as enMessages } from "@/locales/en/messages.po";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
@@ -26,17 +23,7 @@ vi.mock("./RoninGlyphResolve", () => ({
   ),
 }));
 
-const testI18n = setupI18n({
-  locale: "en",
-  messages: { en: enMessages },
-});
-
-const renderOverlay = () =>
-  render(
-    <I18nProvider i18n={testI18n}>
-      <HeroOverlay />
-    </I18nProvider>,
-  );
+const renderOverlay = () => render(<HeroOverlay />);
 
 describe("HeroOverlay", () => {
   it("keeps semantic source order and a labeled secondary GitHub action", () => {

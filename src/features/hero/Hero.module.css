@@ -1,7 +1,6 @@
 .root {
-  --hero-wash-direction: to right;
   --hero-wash-inline: linear-gradient(
-    var(--hero-wash-direction),
+    to right,
     var(--hero-canvas) 0%,
     color-mix(in srgb, var(--hero-canvas) 94%, transparent) 20%,
     color-mix(in srgb, var(--hero-canvas) 72%, transparent) 38%,
@@ -45,10 +44,6 @@
   background: var(--hero-wash-inline), var(--hero-wash-block);
 }
 
-:global([dir="rtl"]) .root {
-  --hero-wash-direction: to left;
-}
-
 .atmosphere {
   position: absolute;
   inset: 0;
@@ -71,7 +66,7 @@
 
 :global([data-theme="light"]) .root {
   --hero-wash-inline: linear-gradient(
-    var(--hero-wash-direction),
+    to right,
     var(--hero-canvas) 0%,
     color-mix(in srgb, var(--hero-canvas) 98%, transparent) 22%,
     color-mix(in srgb, var(--hero-canvas) 82%, transparent) 40%,
@@ -117,20 +112,12 @@
       transparent 76%
     );
   }
-
-  :global([dir="rtl"]) .root {
-    background-image: radial-gradient(
-      ellipse 58% 64% at 28% 52%,
-      color-mix(in srgb, var(--hero-haze) 66%, transparent) 0%,
-      transparent 76%
-    );
-  }
 }
 
 @media (min-width: 48rem) {
   .root {
     --hero-wash-inline: linear-gradient(
-      var(--hero-wash-direction),
+      to right,
       var(--hero-canvas) 0%,
       color-mix(in srgb, var(--hero-canvas) 98%, transparent) 46%,
       color-mix(in srgb, var(--hero-canvas) 80%, transparent) 57%,
@@ -150,7 +137,7 @@
 
   :global([data-theme="light"]) .root {
     --hero-wash-inline: linear-gradient(
-      var(--hero-wash-direction),
+      to right,
       var(--hero-canvas) 0%,
       color-mix(in srgb, var(--hero-canvas) 96%, transparent) 32%,
       color-mix(in srgb, var(--hero-canvas) 70%, transparent) 43%,
@@ -172,7 +159,7 @@
 @media (min-width: 80rem) {
   .root {
     --hero-wash-inline: linear-gradient(
-      var(--hero-wash-direction),
+      to right,
       var(--hero-canvas) 0%,
       color-mix(in srgb, var(--hero-canvas) 98%, transparent) 25%,
       color-mix(in srgb, var(--hero-canvas) 84%, transparent) 33%,
@@ -195,7 +182,7 @@
 
   :global([data-theme="light"]) .root {
     --hero-wash-inline: linear-gradient(
-      var(--hero-wash-direction),
+      to right,
       var(--hero-canvas) 0%,
       color-mix(in srgb, var(--hero-canvas) 98%, transparent) 26%,
       color-mix(in srgb, var(--hero-canvas) 82%, transparent) 33%,

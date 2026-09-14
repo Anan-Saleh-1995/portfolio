@@ -1,38 +1,12 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { ThemeProvider } from "@/shared/lib/ThemeProvider";
 import { HeroSpecimenPanel } from "./HeroSpecimenPanel";
 
-const messages = {
-  "hero.specimen.approach":
-    "Design with purpose. Engineer with depth. Ship with discipline.",
-  "hero.specimen.approachLabel": "Approach",
-  "hero.specimen.architecture": "Backend systems",
-  "hero.specimen.ariaLabel": "Ronin engineering specimen",
-  "hero.specimen.coordinatesLabel": "Tokyo reference coordinates",
-  "hero.specimen.data": "Data & persistence",
-  "hero.specimen.focus": "Interfaces · Systems · Protocols",
-  "hero.specimen.focusLabel": "Focus",
-  "hero.specimen.infrastructure": "Infrastructure",
-  "hero.specimen.interfaces": "Interface engineering",
-  "hero.specimen.label": "Specimen",
-  "hero.specimen.protocols": "Protocols & tools",
-  "hero.specimen.security": "Security & identity",
-  "hero.specimen.summary":
-    "A warrior without a master. Driven by code. Guided by principle.",
-  "hero.specimen.action": "Inspect the record",
-};
-
-const testI18n = setupI18n({ locale: "en", messages: { en: messages } });
-
 const renderPanel = () =>
   render(
     <ThemeProvider>
-      <I18nProvider i18n={testI18n}>
-        <HeroSpecimenPanel />
-      </I18nProvider>
+      <HeroSpecimenPanel />
     </ThemeProvider>,
   );
 
@@ -121,7 +95,7 @@ describe("HeroSpecimenPanel", () => {
       expect(anatomyImage).toHaveAttribute("height", height);
       expect(anatomyImage).not.toHaveAttribute(
         "src",
-        "/images/hero/ronin-dark-crimson-enso-master-v2.png",
+        "/images/hero/ronin-dark-crimson-enso-alpha-safe-v3.png",
       );
     },
   );

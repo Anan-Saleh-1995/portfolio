@@ -4,8 +4,6 @@ import { Cursor } from "@/features/cursor/Cursor";
 import { Home } from "@/pages/Home";
 import { AppToaster } from "./AppToaster";
 import { Analytics } from "@vercel/analytics/react";
-import { LocaleProvider } from "@/shared/i18n/LocaleProvider";
-import type { Locale } from "@/shared/i18n/config";
 
 const AppContent = () => {
   useSmoothScroll();
@@ -19,14 +17,8 @@ const AppContent = () => {
   );
 };
 
-type AppProps = Readonly<{
-  initialLocale: Locale;
-}>;
-
-export const App = ({ initialLocale }: AppProps) => (
-  <LocaleProvider initialLocale={initialLocale}>
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
-  </LocaleProvider>
+export const App = () => (
+  <ThemeProvider>
+    <AppContent />
+  </ThemeProvider>
 );

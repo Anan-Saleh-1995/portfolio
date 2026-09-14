@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./ProvingGround.module.css";
@@ -7,7 +7,7 @@ import styles from "./ProvingGround.module.css";
 export const ProvingGround = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { provingGround } = getHomeContent();
+  const { provingGround } = homeContent;
 
   return (
     <section ref={sectionRef} id="proving-ground" className={styles.root}>

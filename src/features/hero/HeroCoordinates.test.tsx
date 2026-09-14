@@ -1,5 +1,3 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import { fireEvent, render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { HeroCoordinates } from "./HeroCoordinates";
@@ -35,22 +33,11 @@ vi.mock("gsap", () => ({
   },
 }));
 
-const testI18n = setupI18n({
-  locale: "en",
-  messages: {
-    en: {
-      "hero.specimen.coordinatesLabel": "Tokyo reference coordinates",
-    },
-  },
-});
-
 const renderCoordinates = () =>
   render(
-    <I18nProvider i18n={testI18n}>
-      <section data-hero-coordinate-surface>
-        <HeroCoordinates />
-      </section>
-    </I18nProvider>,
+    <section data-hero-coordinate-surface>
+      <HeroCoordinates />
+    </section>,
   );
 
 const getReadout = (container: HTMLElement) => {

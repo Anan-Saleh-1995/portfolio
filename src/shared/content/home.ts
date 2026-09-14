@@ -1,9 +1,9 @@
-import type { HomeContent } from "../home.types";
+import type { HomeContent } from "./home.types";
 import { contactContent } from "@/features/contact/contact.content";
-import { heroContent } from "../hero.content";
-import { shellContent } from "../shell.content";
+import { heroContent } from "./hero.content";
+import { shellContent } from "./shell.content";
 
-export const homeContent = {
+export const homeContent: HomeContent = {
   nav: shellContent.nav,
   hero: heroContent,
   theWay: {
@@ -174,4 +174,4 @@ export const homeContent = {
   },
   contact: contactContent,
   footer: shellContent.footer,
-} satisfies HomeContent;
+};

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./Arsenal.module.css";
@@ -7,7 +7,7 @@ import styles from "./Arsenal.module.css";
 export const Arsenal = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { arsenal } = getHomeContent();
+  const { arsenal } = homeContent;
 
   return (
     <section ref={sectionRef} id="arsenal" className={styles.root}>

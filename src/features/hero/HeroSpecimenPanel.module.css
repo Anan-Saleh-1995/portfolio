@@ -185,20 +185,6 @@
   overflow-wrap: normal;
 }
 
-:global([dir="rtl"]) .schematic {
-  transform: scaleX(-1);
-  transform-origin: center;
-}
-
-:global([dir="rtl"]) .index,
-:global([dir="rtl"]) .armor {
-  text-align: end;
-}
-
-:global([dir="rtl"]) .discipline {
-  text-align: start;
-}
-
 :global([data-theme="light"]) .figure {
   mix-blend-mode: multiply;
   opacity: 0.84;

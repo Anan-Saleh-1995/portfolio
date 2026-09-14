@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { ExternalLink, Lock } from "lucide-react";
-import { getHomeContent } from "@/shared/i18n/getHomeContent";
+import { homeContent } from "@/shared/content/home";
 import { useScrollReveal } from "@/shared/lib/useScrollReveal";
 import { SectionLabel } from "@/shared/ui/SectionLabel";
 import styles from "./Forge.module.css";
@@ -8,7 +8,7 @@ import styles from "./Forge.module.css";
 export const Forge = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
-  const { forge } = getHomeContent();
+  const { forge } = homeContent;
 
   return (
     <section ref={sectionRef} id="forge" className={styles.root}>
