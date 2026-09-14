@@ -14,8 +14,12 @@ const socialProfiles: SocialProfileContent[] = [
     label: "GitHub",
     href: "https://github.com/Anan-Saleh-1995",
   },
+  {
+    brand: "mastodon",
+    label: "Mastodon",
+    href: "https://mastodon.social/@anansaleh",
+  },
   { brand: "bluesky", label: "Bluesky" },
-  { brand: "mastodon", label: "Mastodon" },
 ];
 
 export interface ShellContent {
