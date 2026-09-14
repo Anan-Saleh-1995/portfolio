@@ -29,7 +29,12 @@ export const Footer = () => {
             <ul className={styles.chapterList} role="list">
               {nav.links.map(({ href, label }) => (
                 <li key={href}>
-                  <a className={styles.chapterLink} href={href}>
+                  <a
+                    className={styles.chapterLink}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {label}
                   </a>
                 </li>
@@ -42,7 +47,12 @@ export const Footer = () => {
             <ul className={styles.destinationList} role="list">
               {footer.destinations.map(({ href, label, description }) => (
                 <li key={href}>
-                  <a className={styles.destinationLink} href={href}>
+                  <a
+                    className={styles.destinationLink}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <span className={styles.destinationTitle}>
                       {label}
                       <ArrowUpRight size={16} aria-hidden="true" />
@@ -79,7 +89,12 @@ export const Footer = () => {
               return (
                 <li key={brand}>
                   {href ? (
-                    <a className={styles.socialLink} href={href}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.socialLink}
+                      href={href}
+                    >
                       {content}
                     </a>
                   ) : (

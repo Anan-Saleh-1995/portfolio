@@ -209,7 +209,12 @@ export const Nav = () => {
           >
             {nav.links.map(({ href, label }) => (
               <li key={href}>
-                <a href={href} className={styles.chapterLink}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.chapterLink}
+                >
                   {label}
                 </a>
               </li>
